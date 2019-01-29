@@ -90,7 +90,7 @@ Project Structure
 
 1. Clone the repo
   ```
-  $ git clone https://github.com/realpython/flask-boilerplate.git
+  $ git clone https://github.com/compgirl123/UberSante-Soen344
   $ cd flask-boilerplate
   ```
 
