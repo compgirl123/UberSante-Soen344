@@ -91,7 +91,7 @@ Project Structure
 1. Clone the repo
   ```
   $ git clone https://github.com/compgirl123/UberSante-Soen344
-  $ cd flask-boilerplate
+  $ cd UberSante-Soen344
   ```
 
 2. Initialize and activate a virtualenv:
