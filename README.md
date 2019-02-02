@@ -26,4 +26,7 @@ Email : nbeeri@hotmail.com
 Name: Rodrigo Cordova Cespedes
 Email : rodrigosebastian9@hotmail.com
 
+This Github Repository has been setup in accordance with Heroku with the master branch. This would allow for deployment to occur everytime anything is pushed to master to the website that is live (link below).
+
 Website currently live at http://ubersante.herokuapp.com/
+
