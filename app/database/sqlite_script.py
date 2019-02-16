@@ -2,8 +2,8 @@ import sqlite3
 import sys
 from sqlite3 import Error
 from faker import Faker
-import _updated.app.classes.database_container
-from _updated.app.common_definitions.common_paths import PATH_TO_DATABASE
+import app.classes.database_container
+from app.common_definitions.common_paths import PATH_TO_DATABASE
 
 import time
 import glob
@@ -70,8 +70,9 @@ def initializeAndFillDatabase():
     if len(glob.glob(PATH_TO_DATABASE)) == 1:
         return False
 
-    database = _updated.app.classes.database_container.DatabaseContainer.get_instance()
-    _updated.app.classes.database_container.DatabaseContainer.commit_lock = True
+    database = app.classes.database_container.DatabaseContainer.get_instance()
+
+    app.classes.database_container.DatabaseContainer.commit_lock = True
 
     print("- Filling database -")
 
@@ -97,18 +98,18 @@ def initializeAndFillDatabase():
     for table_name, table_sql in table_creation_dict.items():
         database.execute_query(table_sql)
 
-    _updated.app.classes.database_container.DatabaseContainer.commit_lock = False
+    app.classes.database_container.DatabaseContainer.commit_lock = False
     database.commit_db()
 
     #
 
     # Don't commit until the end
-    _updated.app.classes.database_container.DatabaseContainer.commit_lock = True
+    app.classes.database_container.DatabaseContainer.commit_lock = True
 
     print("- Finished filling database -")
 
     # Turn off commit lock
-    _updated.app.classes.database_container.DatabaseContainer.commit_lock = False
+    app.classes.database_container.DatabaseContainer.commit_lock = False
     database.commit_db()
 
     return True

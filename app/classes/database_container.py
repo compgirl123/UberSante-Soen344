@@ -1,6 +1,6 @@
 import sqlite3
 import sys
-from _updated.app.common_definitions.common_paths import PATH_TO_DATABASE
+from app.common_definitions.common_paths import PATH_TO_DATABASE
 
 
 class DatabaseContainer(object):
@@ -28,14 +28,15 @@ class DatabaseContainer(object):
 
             try:
                 # Make database useable in all threads
+                print(PATH_TO_DATABASE)
                 self.connection = sqlite3.connect(
                     PATH_TO_DATABASE, check_same_thread=False)
-
                 # Make database accessible through index and keys
                 self.connection.row_factory = sqlite3.Row
 
                 print("Made connection!")
             except sqlite3.Error as e:
+                print(e)
                 print(e)
                 sys.exit()
 
