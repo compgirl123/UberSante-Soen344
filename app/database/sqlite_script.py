@@ -79,17 +79,9 @@ def initializeAndFillDatabase():
     # initialized variable with query that creates book table with columns/attributes
     table_creation_dict = {"patient_table": """CREATE TABLE IF NOT EXISTS patient (
                                                             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                                            author TEXT NOT NULL,
-                                                            title TEXT NOT NULL,
-                                                            format TEXT NOT NULL,
-                                                            pages INTEGER NOT NULL,
-                                                            publisher TEXT NOT NULL,
-                                                            year_of_publication INTEGER NOT NULL,
-                                                            language TEXT NOT NULL,
-                                                            isbn_10 TEXT NOT NULL,
-                                                            isbn_13 TEXT NOT NULL,
-                                                            total_quantity INTEGER NOT NULL,
-                                                            quantity_available INTEGER NOT NULL
+                                                            first_name TEXT NOT NULL,
+                                                            last_name TEXT NOT NULL
+                                                            
                                                         );""",
 
                            }
