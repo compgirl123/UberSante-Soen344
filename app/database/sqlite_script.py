@@ -77,13 +77,55 @@ def initializeAndFillDatabase():
     print("- Filling database -")
 
     # initialized variable with query that creates book table with columns/attributes
-    table_creation_dict = {"patient_table": """CREATE TABLE IF NOT EXISTS patient (
-                                                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    table_creation_dict = { 
+                            "doctor_table": """CREATE TABLE IF NOT EXISTS doctor (
+                                                            health_card_id TEXT NOT NULL PRIMARY KEY,
                                                             first_name TEXT NOT NULL,
-                                                            last_name TEXT NOT NULL
-                                                            
+                                                            last_name TEXT NOT NULL,
+                                                            speciality TEXT NOT NULL,
+                                                            city TEXT NOT NULL,
+                                                            password TEXT NOT NULL,
+                                                            CHECK(LENGTH(health_card_id) == 7)
                                                         );""",
-
+                            "patient_table": """CREATE TABLE IF NOT EXISTS patient (
+                                                            health_card_id TEXT NOT NULL PRIMARY KEY,
+                                                            first_name TEXT NOT NULL,
+                                                            last_name TEXT NOT NULL,
+                                                            age INTEGER NOT NULL CHECK(age > 18 and age < 125),
+                                                            gender TEXT CHECK(gender IN ('Male','Female')) NOT NULL,
+                                                            speciality TEXT NOT NULL,
+                                                            birthdate TEXT NOT NULL,
+                                                            phone_number TEXT NOT NULL,
+                                                            email TEXT NOT NULL,
+                                                            address TEXT NOT NULL,
+                                                            password TEXT NOT NULL
+                                                        );""",
+                            "nurse_table": """CREATE TABLE IF NOT EXISTS nurse (
+                                                            access_id TEXT NOT NULL PRIMARY KEY,
+                                                            first_name TEXT NOT NULL,
+                                                            last_name TEXT NOT NULL,
+                                                            password TEXT NOT NULL
+                                                        );""",
+                            "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
+                                                            appointment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                            doctorId TEXT NOT NULL,
+                                                            patientId TEXT NOT NULL,
+                                                            date TEXT NOT NULL,
+                                                            room INTEGER,
+                                                            appt_status INTEGER,
+                                                            appt_type TEXT CHECK(appt_type IN ('Annual','Regular')) NOT NULL,   
+                                                            start_time  INTEGER NOT NULL, 
+                                                            end_time INTEGER NOT NULL,
+                                                            FOREIGN KEY (doctorId) REFERENCES doctor(health_card_id),
+                                                            FOREIGN KEY (patientId) REFERENCES patient(health_card_id)
+                                                        );""",
+                            "doctor_availability_table": """CREATE TABLE IF NOT EXISTS doctor_availability (
+                                                            permit_number TEXT NOT NULL PRIMARY KEY,
+                                                            day_date TEXT NOT NULL,
+                                                            start_time  INTEGER NOT NULL, 
+                                                            end_time INTEGER NOT NULL,
+                                                            FOREIGN KEY (permit_number) REFERENCES doctor(health_card_id)
+                                                        );"""
                            }
 
     # Create all tables
