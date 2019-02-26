@@ -1,0 +1,14 @@
+{% extends 'layouts/form.html' %}
+{% block title %}Register a Doctor{% endblock %}
+{% block content %}
+  <form method="post" class="form">
+    <h3 class="form-heading">Register a Doctor <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    Permit # {{ form.permit_number(class_ = 'form-control first-input', placeholder = form.permit_number.label.text, required = true, autofocus = true) }}
+    {{ form.first_name(class_ = 'form-control', placeholder = form.first_name.label.text, required = true) }}
+    {{ form.last_name(class_ = 'form-control', placeholder = form.last_name.label.text, required = true) }}
+    {{ form.speciality(class_ = 'form-control', placeholder = form.speciality.label.text, required = true) }}
+    {{ form.city(class_ = 'form-control last-input', placeholder = form.city.label.text, required = true) }}
+    <input type="submit" value="Register" class="btn btn-primary btn-lg btn-block">
+    <br>
+  </form>
+{% endblock %}
