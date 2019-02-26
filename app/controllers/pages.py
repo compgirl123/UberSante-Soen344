@@ -53,3 +53,8 @@ def register():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
+@blueprint.route('/register_doctor')
+def register_doctor():
+    form = RegisterDoctorForm(request.form)
+    return render_template('forms/register_doctor.html', form=form)
