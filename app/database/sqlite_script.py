@@ -92,11 +92,12 @@ def initializeAndFillDatabase():
                                                         );""",
 
                            "doctor_table": """CREATE TABLE IF NOT EXISTS doctor (
-                                        permit_number INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                         first_name TEXT NOT NULL,
                                         last_name TEXT NOT NULL,
                                         speciality  TEXT NOT NULL,
-                                        city TEXT NOT NULL
+                                        city TEXT NOT NULL,
+                                        permit_number integer NOT NULL 
                                         
                                     );""",
                            "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
@@ -111,7 +112,7 @@ def initializeAndFillDatabase():
                                         doctor_id INTEGER NOT NULL,
                                         
                                         FOREIGN KEY(patient_id) REFERENCES patient(id),
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(permit_number)
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
                                         
                                     );""",
                            "doctoravailablility_table": """CREATE TABLE IF NOT EXISTS doctoravailability  (
@@ -120,7 +121,7 @@ def initializeAndFillDatabase():
                                         start_time TIME NOT NULL,
                                         end_time TIME NOT NULL ,
                                         doctor_id INTEGER NOT NULL,
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(permit_number)
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
                                     );""",
                            "nurse_table": """CREATE TABLE IF NOT EXISTS nurse  (
                                             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
