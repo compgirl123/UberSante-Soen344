@@ -50,6 +50,9 @@ def home():
 def about():
     return render_template('pages/placeholder.about.html')
 
+@app.route('/findnurse')
+def findnurse():
+    return render_template('nursepages/findnurse.html')
 
 @app.route('/login')
 def login():
