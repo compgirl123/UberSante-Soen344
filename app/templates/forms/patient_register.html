@@ -1,8 +1,8 @@
 {% extends 'layouts/form.html' %}
-{% block title %}Patient Register{% endblock %}
+{% block title %}Patient - Register{% endblock %}
 {% block content %}
   <form method="post" class="form">
-    <h3 class="form-heading">Patient Register <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    <h3 class="form-heading"> <span class="fa fa-user" ></span> Patient - Register <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
     {{ form.healthCardNumber(class_ = 'form-control first-input', placeholder = form.healthCardNumber.label.text, required = true) }}
     {{ form.name(class_ = 'form-control ', placeholder = form.name.label.text, required = true, autofocus = true) }}
     {{ form.lastName(class_ = 'form-control', placeholder = form.lastName.label.text, required = true) }}
@@ -11,9 +11,8 @@
     {{ form.phoneNumber(class_ = 'form-control', placeholder = form.phoneNumber.label.text, required = true) }}
     {{ form.address(class_ = 'form-control', placeholder = form.address.label.text, required = true) }}
     {{ form.gender(class_ = 'form-control', placeholder = form.gender.label.text, required = true) }}
-    <center><p>Already registered? <a href="/login">Login</a></p></center>
-    <input type="submit" value="Register" class="btn btn-primary btn-lg btn-block"  disabled>
+    <center><p>Already registered? <a href="/patient_login">Login</a></p></center>
+    <input type="submit" value="Register" class="btn btn-primary btn-lg btn-block" >
     <br>
-    <p>You must add a database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
   </form>
 {% endblock %}

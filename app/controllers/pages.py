@@ -32,9 +32,9 @@ def nurse_login():
     form = LoginForm(request.form)
     return render_template('forms/nurse_login.html', form=form)
 
-@blueprint.route('/patientlogin')
+@blueprint.route('/patient_login')
 def patient_login():
-    form = LoginForm(request.form)
+    form = PatientLoginForm(request.form)
     return render_template('forms/patient_login.html', form=form)
 
 @blueprint.route('/login')

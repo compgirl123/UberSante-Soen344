@@ -46,6 +46,7 @@ class RegisterDoctorForm(Form):
     city = StringField(
         'City', validators=[DataRequired(), Length(min=2, max=40)]
     )
+
 class PatientRegisterForm(Form):
     email = TextField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
@@ -70,4 +71,12 @@ class PatientRegisterForm(Form):
     )
     healthCardNumber =TextField(
         'Health Card Number', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+
+class PatientLoginForm(Form):
+    healthCardNumber =TextField(
+        'Health Card Number', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    phoneNumber= TextField(
+        'Phone Number', validators=[DataRequired(), Length(min=9, max=9)]
     )
