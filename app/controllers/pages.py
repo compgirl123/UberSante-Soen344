@@ -1,13 +1,12 @@
 from flask import render_template, Blueprint, request
 from app.forms import *
+from app.controllers.nursecontroller import *
 
 blueprint = Blueprint('pages', __name__)
-
 
 ################
 #### routes ####
 ################
-
 
 @blueprint.route('/')
 def home():
@@ -28,7 +27,10 @@ def nursedashboard():
     # stores the name that was entered to the next page
     _password = request.form['password'];
     # stores the password that was entered to the next page
-    return _name;
+    _obj = Nursecontroller()
+    _obj2 = _obj.nurse_table("Nurse Mike")
+    return _obj2
+    #return _name;
     #return _password;
     # return 0;
     # placeholder to test function in order to not make it have an error

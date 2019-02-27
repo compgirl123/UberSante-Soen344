@@ -1,5 +1,5 @@
+class Nursecontroller:
 
-class Nursecontroller(object):
-
-    def __init__(self, database):
-        self.db = database
+    def nurse_table(self, name):
+        return name
+        #print("Hello, " + name)
