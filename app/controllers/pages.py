@@ -24,11 +24,12 @@ def findnurse():
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
     _name = request.form['name'];
+    #_nametest = request.form.get("name", False)
     # stores the name that was entered to the next page
     _password = request.form['password'];
     # stores the password that was entered to the next page
     _obj = Nursecontroller()
-    _obj2 = _obj.nurse_table("Nurse Mike")
+    _obj2 = _obj.nurse_table(_name)
     return _obj2
     #return _name;
     #return _password;
