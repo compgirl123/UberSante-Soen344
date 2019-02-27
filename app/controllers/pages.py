@@ -22,6 +22,21 @@ def about():
 def findnurse():
     return render_template('nursepages/findnurse.html')
 
+@blueprint.route('/doctorlogin')
+def doctor_login():
+    form = LoginForm(request.form)
+    return render_template('forms/doctor_login.html', form=form)
+
+@blueprint.route('/nurselogin')
+def nurse_login():
+    form = LoginForm(request.form)
+    return render_template('forms/nurse_login.html', form=form)
+
+@blueprint.route('/patientlogin')
+def patient_login():
+    form = LoginForm(request.form)
+    return render_template('forms/patient_login.html', form=form)
+
 @blueprint.route('/login')
 def login():
     form = LoginForm(request.form)
@@ -38,3 +53,8 @@ def register():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
+@blueprint.route('/register_doctor')
+def register_doctor():
+    form = RegisterDoctorForm(request.form)
+    return render_template('forms/register_doctor.html', form=form)

@@ -80,9 +80,59 @@ def initializeAndFillDatabase():
     table_creation_dict = {"patient_table": """CREATE TABLE IF NOT EXISTS patient (
                                                             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                                             first_name TEXT NOT NULL,
-                                                            last_name TEXT NOT NULL
+                                                            last_name TEXT NOT NULL,
+                                                            birthday  DATE NOT NULL,
+                                                            gender    TEXT NOT NULL,
+                                                            phone_number TEXT NOT NULL,
+                                                            email  TEXT  NOT NULL ,
+                                                            address TEXT NOT NULL , 
+                                                            age  INTEGER NOT NULL,
+                                                            health_card TEXT NOT NULL
                                                             
                                                         );""",
+
+                           "doctor_table": """CREATE TABLE IF NOT EXISTS doctor (
+                                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                        first_name TEXT NOT NULL,
+                                        last_name TEXT NOT NULL,
+                                        speciality  TEXT NOT NULL,
+                                        city TEXT NOT NULL,
+                                        permit_number integer NOT NULL 
+                                        
+                                    );""",
+                           "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
+                                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                        appointment_room  TEXT NOT NULL,
+                                        appointment_type TEXT NOT NULL,
+                                        appointment_status TEXT NOT NULL,
+                                        appointment_date DATE NOT NULL,
+                                        start_time TIME NOT NULL,
+                                        end_time TIME NOT NULL ,
+                                        patient_id INTEGER NOT NULL,
+                                        doctor_id INTEGER NOT NULL,
+                                        
+                                        FOREIGN KEY(patient_id) REFERENCES patient(id),
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
+                                        
+                                    );""",
+                           "doctoravailablility_table": """CREATE TABLE IF NOT EXISTS doctoravailability  (
+                                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                        date DATE NOT NULL,
+                                        start_time TIME NOT NULL,
+                                        end_time TIME NOT NULL ,
+                                        doctor_id INTEGER NOT NULL,
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
+                                    );""",
+                           "nurse_table": """CREATE TABLE IF NOT EXISTS nurse  (
+                                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                            last_name TEXT NOT NULL,
+                                            first_name TEXT NOT NULL,
+                                            password TEXT NOT NULL, 
+                                            access_id TEXT NOT NULL
+                                            
+                                            
+                                        );""",
+
 
                            }
 

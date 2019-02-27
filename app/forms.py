@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import TextField, PasswordField
+from wtforms import TextField, PasswordField, IntegerField, StringField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 
@@ -28,4 +28,21 @@ class LoginForm(Form):
 class ForgotForm(Form):
     email = TextField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+
+class RegisterDoctorForm(Form):
+    permit_number = IntegerField(
+        'Permit Number', validators=[DataRequired(), Length(min=7, max=7)]
+    )
+    first_name = StringField(
+        'First Name', validators=[DataRequired(), Length(min=2, max=40)]
+    )
+    last_name = StringField(
+        'Last Name', validators=[DataRequired(), Length(min=2, max=40)]
+    )
+    speciality = StringField(
+        'Speciality', validators=[DataRequired(), Length(min=2, max=40)]
+    )
+    city = StringField(
+        'City', validators=[DataRequired(), Length(min=2, max=40)]
     )
