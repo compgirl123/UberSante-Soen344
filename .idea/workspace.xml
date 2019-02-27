@@ -4,6 +4,7 @@
     <list default="true" id="0b874f07-695f-44b9-b50a-b9db3ed5afe2" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/controllers/nursecontroller.py" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/templates/nursepages/findnurse.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
