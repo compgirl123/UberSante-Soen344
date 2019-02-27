@@ -13,14 +13,25 @@ blueprint = Blueprint('pages', __name__)
 def home():
     return render_template('pages/placeholder.home.html')
 
-
 @blueprint.route('/about')
 def about():
     return render_template('pages/placeholder.about.html')
 
-@blueprint.route('/findnurse')
+@blueprint.route('/findnurse', methods=['GET', 'POST'])
 def findnurse():
+    #_name = request.form['form-nurselogin'];
     return render_template('nursepages/findnurse.html')
+
+@blueprint.route('/nursedashboard', methods=['GET', 'POST'])
+def nursedashboard():
+    _name = request.form['name'];
+    # stores the name that was entered to the next page
+    _password = request.form['password'];
+    # stores the password that was entered to the next page
+    return _name;
+    #return _password;
+    # return 0;
+    # placeholder to test function in order to not make it have an error
 
 @blueprint.route('/doctorlogin')
 def doctor_login():

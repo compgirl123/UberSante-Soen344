@@ -1,3 +1,4 @@
+
 class nursecontroller(object):
 
     def __init__(self, database):
