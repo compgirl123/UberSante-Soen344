@@ -29,18 +29,12 @@ class Nursecontroller:
         results = database.execute_query("SELECT id,last_name,first_name,password,access_id FROM nurse;")
 
         for row in database.execute_query("SELECT id,first_name,last_name,password,access_id FROM nurse;"):
-            #personname = row[2] + " " + row[1]
-            #print(row["first_name"])
             ids.append(row["id"])
             first_names.append(row["first_name"])
             last_names.append(row["last_name"])
             passwords.append(row["password"])
             access_ids.append(row["access_id"])
 
-        a = tuple(list(zip(ids,first_names, last_names,passwords,access_ids)))
-        print(a)
-        #print(list(tuple(first_names),tuple(last_names)))
-        #_name = name
-        return a
-        #return tuple(first_names)
-        #print("Hello, " + name)
+        values_from_db = tuple(list(zip(ids,first_names, last_names,passwords,access_ids)))
+        print(values_from_db)
+        return values_from_db
