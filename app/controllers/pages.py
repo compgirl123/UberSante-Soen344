@@ -59,3 +59,8 @@ def patient_register():
     form = PatientRegisterForm(request.form)
     return render_template('forms/patient_register.html', form=form)
 
+
+@blueprint.route('/register_doctor')
+def register_doctor():
+    form = RegisterDoctorForm(request.form)
+    return render_template('forms/register_doctor.html', form=form)
