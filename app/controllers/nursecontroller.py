@@ -38,3 +38,7 @@ class Nursecontroller:
         values_from_db = tuple(list(zip(ids,first_names, last_names,passwords,access_ids)))
         print(values_from_db)
         return values_from_db
+
+    def find_user(self, name, password):
+        print("HELLOO")
+        return 0

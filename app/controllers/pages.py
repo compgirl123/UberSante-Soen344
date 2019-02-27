@@ -43,15 +43,12 @@ def findnurse():
 
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
-    _name = request.form['name'];
-    #nametest = request.form.get("name", False)
-    # stores the name that was entered to the next page
-    _password = request.form['password'];
-
-    # stores the password that was entered to the next page
-
-    _obj = Nursecontroller()
-    _obj2 = _obj.nurse_table(_name)
+    if request.method == "POST":
+        _name = request.form['name'];# stores the name that was entered to the next page
+        _password = request.form['password'];# stores the password that was entered to the next page
+        _obj = Nursecontroller()
+        _user = _obj.find_user(_name,_password)
+        _obj2 = _obj.nurse_table(_name)
     #print()
     #issue lies here
     return "dd"
