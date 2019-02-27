@@ -9,6 +9,17 @@ from app.controllers.nursecontroller import *
 class Nursecontroller:
 
     def nurse_table(self, name):
+
+        '''
+        Creating Arrays to Store the values of each column for the Nurse Table
+        '''
+
+        ids = []
+        first_names = []
+        last_names = []
+        passwords = []
+        access_ids = []
+
         table_creation_dict = {"nurses": """SELECT id,last_name,first_name,password,access_id FROM nurse;"""}
         database = app.classes.database_container.DatabaseContainer.get_instance()
 
@@ -17,12 +28,17 @@ class Nursecontroller:
 
         results = database.execute_query("SELECT id,last_name,first_name,password,access_id FROM nurse;")
 
+        for row in database.execute_query("SELECT id,first_name,last_name,password,access_id FROM nurse;"):
+            ids.append(row["id"])
+            first_names.append(row["first_name"])
+            last_names.append(row["last_name"])
+            passwords.append(row["password"])
+            access_ids.append(row["access_id"])
 
-        for row in database.execute_query("SELECT last_name FROM nurse;"):
-            #personname = row[2] + " " + row[1]
-            for last_name in row.keys():
-                totalinfo = row[last_name]
+        values_from_db = tuple(list(zip(ids,first_names, last_names,passwords,access_ids)))
+        print(values_from_db)
+        return values_from_db
 
-        #_name = name
-        return totalinfo
-        #print("Hello, " + name)
+    def find_user(self, name, password):
+        print("HELLOO")
+        return 0
