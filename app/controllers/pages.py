@@ -13,10 +13,13 @@ blueprint = Blueprint('pages', __name__)
 def home():
     return render_template('pages/placeholder.home.html')
 
-
 @blueprint.route('/about')
 def about():
     return render_template('pages/placeholder.about.html')
+
+@blueprint.route('/doctorschedule')
+def doctorschedule():
+    return render_template('doctorpages/doctorschedule.html')
 
 @blueprint.route('/findnurse')
 def findnurse():
