@@ -36,7 +36,11 @@ def home():
 def about():
     return render_template('pages/placeholder.about.html')
 
-@blueprint.route('/findnurse', methods=['GET', 'POST'])
+@blueprint.route('/doctorschedule')
+def doctorschedule():
+    return render_template('doctorpages/doctorschedule.html')
+
+@blueprint.route('/findnurse')
 def findnurse():
     user_id = request.cookies.get('nurseid')
     password = request.cookies.get('password')
