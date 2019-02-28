@@ -85,29 +85,21 @@ def nursedashboard():
     url = "http://127.0.0.1:5000/nurselogin"
     r = s.post(url, data=data)
     print(s.cookies)
-
     cj = CookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
     # input-type values from the html form
-
     payload = { "username" : request.form['name'], "password": request.form['password'] }
-
     session = requests.Session()
     ss = session.post('http://127.0.0.1:5000/nurselogin',  data=payload)
-
-
     formdata = { "username" : request.form['name'], "password": request.form['password'] }
     #data = urllib.parse.urlencode(d).encode("utf-8")
-
     #data_encoded = urllib.parse.urlencode(formdata)
     3data_encoded = data_encoded.encode('ascii')
-
     #data_encoded = urllib.request.Request(formdata).encode('ascii')
     data_encoded = urllib.request.Request(formdata)
     request1 = urllib.request.Request('http://127.0.0.1:5000/nurselogin')
     base64string = bytes('%s:%s' % (request.form['name'], request.form['password']), 'ascii')
     #print(base64string)
-
     #result = urllib.request.urlopen(request1)
     resulttext = result.read()
     #print(type(data_encoded))
@@ -118,7 +110,6 @@ def nursedashboard():
     #the_page = response.read()
     #content = response.read()
     #print(content)
-
     return base64string
     #return _name;
     #return _password;
