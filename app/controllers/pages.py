@@ -59,62 +59,25 @@ def nursedashboard():
         _name = request.form['name'];# stores the name that was entered to the next page
         _password = request.form['password'];# stores the password that was entered to the next page
         _obj = Nursecontroller()
-        _user = _obj.find_user(_name,_password)
+        _user = _obj.user(_name,_password)
+
+        print(type(_user))
+        print(type(_user) == type(None))
         _user2 = 1
         _obj2 = _obj.nurse_table(_name)
-        if not _user2:
+        if type(_user) == type(None):
             #print("User not found")
-            raise ValueError("Invalid username or password supplied")
-        '''print("HI")
-        print(_user)
-        print(bytes(_obj2[0][0]))'''
-        response = redirect(url_for("pages.nurseaptbook"))
+            response = redirect(url_for("pages.error_nurse_login"))
+            #raise ValueError("Invalid username or password supplied")
+        else:
+            print("H")
+            response = redirect(url_for("pages.nurseaptbook"))
+        #response = redirect(url_for("pages.nurseaptbook"))
         response.set_cookie('nurseid', _name)
         response.set_cookie('password', _password)
         print(request)
         return response
         #return response
-
-    #print()
-    #issue lies here
-    #return "dd"
-
-'''
-    s = requests.Session()
-    data = {"name": request.form['name'], "password": request.form['name']}
-    url = "http://127.0.0.1:5000/nurselogin"
-    r = s.post(url, data=data)
-    print(s.cookies)
-    cj = CookieJar()
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-    # input-type values from the html form
-    payload = { "username" : request.form['name'], "password": request.form['password'] }
-    session = requests.Session()
-    ss = session.post('http://127.0.0.1:5000/nurselogin',  data=payload)
-    formdata = { "username" : request.form['name'], "password": request.form['password'] }
-    #data = urllib.parse.urlencode(d).encode("utf-8")
-    #data_encoded = urllib.parse.urlencode(formdata)
-    3data_encoded = data_encoded.encode('ascii')
-    #data_encoded = urllib.request.Request(formdata).encode('ascii')
-    data_encoded = urllib.request.Request(formdata)
-    request1 = urllib.request.Request('http://127.0.0.1:5000/nurselogin')
-    base64string = bytes('%s:%s' % (request.form['name'], request.form['password']), 'ascii')
-    #print(base64string)
-    #result = urllib.request.urlopen(request1)
-    resulttext = result.read()
-    #print(type(data_encoded))
-    #response = urllib.request.urlopen("http://127.0.0.1:5000/nurselogin")
-    #response = opener.open("http://127.0.0.1:5000/nurselogin", data_encoded)
-    #req = urllib2.Request("http://127.0.0.1:5000/nurselogin", data_encoded)
-    #response = urllib2.urlopen(req)
-    #the_page = response.read()
-    #content = response.read()
-    #print(content)
-    return base64string
-    #return _name;
-    #return _password;
-    # return 0;'''
-    # placeholder to test function in order to not make it have an error
 
 @blueprint.route('/doctorlogin')
 def doctor_login():
@@ -125,6 +88,11 @@ def doctor_login():
 def nurse_login():
     form = LoginForm(request.form)
     return render_template('forms/nurse_login.html', form=form)
+
+@blueprint.route('/errornurselogin')
+def error_nurse_login():
+    form = LoginForm(request.form)
+    return render_template('nursepages/error_nurse_login.html', form=form)
 
 @blueprint.route('/patient_login')
 def patient_login():
