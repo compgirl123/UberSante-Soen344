@@ -38,11 +38,20 @@ def about():
 
 @blueprint.route('/findnurse', methods=['GET', 'POST'])
 def findnurse():
-    user_id = request.cookies.get('YourSessionCookie')
+    user_id = request.cookies.get('nurseid')
+    password = request.cookies.get('password')
     print(user_id)
     #_name = request.form['form-nurselogin'];
     return render_template('nursepages/findnurse.html')
 
+@blueprint.route('/nurseaptbook', methods=['GET', 'POST'])
+def nurseaptbook():
+    user_id = request.cookies.get('nurseid')
+    password = request.cookies.get('password')
+    print(user_id)
+    print(password)
+    #_name = request.form['form-nurselogin'];
+    return render_template('nursepages/nursedashboardbookapts.html', user = user_id )
 
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
@@ -59,9 +68,9 @@ def nursedashboard():
         '''print("HI")
         print(_user)
         print(bytes(_obj2[0][0]))'''
-        response = redirect(url_for("pages.findnurse"))
-        response.set_cookie('YourSessionCookie', _name)
-        response.set_cookie('second', 'hi')
+        response = redirect(url_for("pages.nurseaptbook"))
+        response.set_cookie('nurseid', _name)
+        response.set_cookie('password', _password)
         print(request)
         return response
         #return response
