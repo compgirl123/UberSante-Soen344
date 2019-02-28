@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, make_response
+from flask import render_template, Blueprint, request, make_response , redirect , url_for
 from app.forms import *
 from app.controllers.nursecontroller import *
 import requests
@@ -38,8 +38,20 @@ def about():
 
 @blueprint.route('/findnurse', methods=['GET', 'POST'])
 def findnurse():
+    user_id = request.cookies.get('nurseid')
+    password = request.cookies.get('password')
+    print(user_id)
     #_name = request.form['form-nurselogin'];
     return render_template('nursepages/findnurse.html')
+
+@blueprint.route('/nurseaptbook', methods=['GET', 'POST'])
+def nurseaptbook():
+    user_id = request.cookies.get('nurseid')
+    password = request.cookies.get('password')
+    print(user_id)
+    print(password)
+    #_name = request.form['form-nurselogin'];
+    return render_template('nursepages/nursedashboardbookapts.html', user = user_id )
 
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
@@ -48,10 +60,24 @@ def nursedashboard():
         _password = request.form['password'];# stores the password that was entered to the next page
         _obj = Nursecontroller()
         _user = _obj.find_user(_name,_password)
+        _user2 = 1
         _obj2 = _obj.nurse_table(_name)
+        if not _user2:
+            #print("User not found")
+            raise ValueError("Invalid username or password supplied")
+        '''print("HI")
+        print(_user)
+        print(bytes(_obj2[0][0]))'''
+        response = redirect(url_for("pages.nurseaptbook"))
+        response.set_cookie('nurseid', _name)
+        response.set_cookie('password', _password)
+        print(request)
+        return response
+        #return response
+
     #print()
     #issue lies here
-    return "dd"
+    #return "dd"
 
 '''
     s = requests.Session()
