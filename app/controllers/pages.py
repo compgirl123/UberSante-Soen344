@@ -1,6 +1,8 @@
 from flask import render_template, Blueprint, request
 from app.forms import *
 
+from app.controllers.patient_controller import PatientController
+
 blueprint = Blueprint('pages', __name__)
 
 
@@ -57,10 +59,35 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-@blueprint.route('/patient_register')
+@blueprint.route('/patient_register_page')
+def patient_register_page():
+    return render_template('forms/patient_register.html')
+
+
+@blueprint.route('/patient_register',methods=['POST'])
 def patient_register():
-    form = PatientRegisterForm(request.form)
-    return render_template('forms/patient_register.html', form=form)
+
+    firstName = request.form["firstname"]
+    lastName = request.form["lastname"]
+    phoneNumber = request.form["phonenumber"]
+    email = request.form["email"]
+    birthday = request.form["birthday"]
+    gender = request.form["gender"]
+    healthcard = request.form["healthCard"]
+    address = request.form["address"]
+    age = request.form["age"]
+
+     # Cannot create a new patient if it exists
+    patientCtrl = PatientController()
+    patientList = patientCtrl.get_patient_by_healthCard(healthcard)
+
+    if(len(patientList) == 0):
+
+       patientCtrl.create_patient(firstName, lastName, birthday, email, phoneNumber, gender, address,
+                      age, healthcard); 
+       flash("User created successfully.", 'success')
+
+    return redirect("/")
 
 
 @blueprint.route('/register_doctor')
