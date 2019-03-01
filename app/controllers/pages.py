@@ -91,7 +91,11 @@ def doctor_login():
 @blueprint.route('/nurselogin')
 def nurse_login():
     form = LoginForm(request.form)
-    return render_template('forms/nurse_login.html', form=form)
+    if 'nurseid' in request.cookies:
+        response = redirect(url_for("pages.nurseaptbook"))
+        return response
+    else:
+        return render_template('forms/nurse_login.html', form=form)
 
 @blueprint.route('/errornurselogin')
 def error_nurse_login():
