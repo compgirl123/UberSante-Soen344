@@ -2,16 +2,15 @@
 {% block title %}Doctor - Login{% endblock %}
 {% block content %}
   <form method="post" class="form" action="{{ url_for('pages.doctordashboard') }}">
-    <h3 class="form-heading"><span class="fa fa-user-md"></span> DOCTOR- Login<a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
+    <h3 class="form-heading"><span class="fa fa-stethoscope"></span> NURSE - Login<a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    {{ form.name(id='nurselogin',class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
     {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
     <p class="pull-left"><a href="/forgot">Forgot Password?</a></p>
     <p class="pull-right"><a href="/register">Register</a></p>
     <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
     <br>
-    <div class="alert alert-info">
-        <strong>For Doctors!</strong> Please login with your Permit # as your usrename.
+    <div class="alert alert-danger">
+        <strong>For Doctors!</strong> ERROR: Wrong Username and/or Password. Please Try Again!
     </div>
   </form>
 {% endblock %}
- 

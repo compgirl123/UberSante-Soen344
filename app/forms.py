@@ -59,7 +59,7 @@ class PatientRegisterForm(Form):
     )
     phoneNumber= TextField(
         'Phone Number', validators=[DataRequired(), Length(min=9, max=9)]
-    )    
+    )
     address = TextField(
         'Address', validators=[DataRequired(), Length(min=6, max=40)]
     )
