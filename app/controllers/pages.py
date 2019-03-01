@@ -1,6 +1,7 @@
 from flask import render_template, Blueprint, request, make_response , redirect , url_for
 from app.forms import *
 from app.controllers.nursecontroller import *
+from app.controllers.doctorcontroller import *
 import requests
 
 import base64
@@ -83,10 +84,53 @@ def nursedashboard():
         return response
         #return response
 
+
+@blueprint.route('/doctoraptbook', methods=['GET', 'POST'])
+def doctoraptbook():
+    user_id = request.cookies.get('permitnumber')
+    password = request.cookies.get('password')
+    print(user_id)
+    print(password)
+    #_name = request.form['form-nurselogin'];
+    return render_template('doctorpages/doctordashboardapts.html', user = user_id )
+
+#doctor login controller
+@blueprint.route('/doctordashboard', methods=['GET', 'POST'])
+def doctordashboard():
+    if request.method == "POST":
+        _name = request.form['name'];# stores the name that was entered to the next page
+        _password = request.form['password'];# stores the password that was entered to the next page
+        _obj = Doctorcontroller()
+        _user = _obj.user(_name,_password)
+
+        print(type(_user))
+        print(type(_user) == type(None))
+        _user2 = 1
+        _obj2 = _obj.doctor_table(_name)
+        if type(_user) == type(None):
+            #print("User not found")
+            response = redirect(url_for("pages.error_doctor_login"))
+            #raise ValueError("Invalid username or password supplied")
+        else:
+            print("H")
+            response = redirect(url_for("pages.doctoraptbook"))
+        #response = redirect(url_for("pages.nurseaptbook"))
+        response.set_cookie('permitnumber', _name)
+        response.set_cookie('password', _password)
+        print(request)
+        return response
+        #return response
+
+
+
 @blueprint.route('/doctorlogin')
 def doctor_login():
     form = LoginForm(request.form)
-    return render_template('forms/doctor_login.html', form=form)
+    if 'permitnumber' in request.cookies:
+        response = redirect(url_for("pages.doctoraptbook"))
+        return response
+    else:
+        return render_template('forms/doctor_login.html', form=form)
 
 @blueprint.route('/nurselogin')
 def nurse_login():
@@ -97,10 +141,24 @@ def nurse_login():
     else:
         return render_template('forms/nurse_login.html', form=form)
 
+@blueprint.route('/nurse_doctor_logout')
+def nurse_doctor_logout():
+    response = redirect(url_for("pages.home"))
+    response.set_cookie('nurseid', expires=0)
+    response.set_cookie('permitnumber', expires=0)
+    return response
+    #form = LoginForm(request.form)
+    #return render_template('pages/placeholder.home.html', form=form)
+
 @blueprint.route('/errornurselogin')
 def error_nurse_login():
     form = LoginForm(request.form)
     return render_template('nursepages/error_nurse_login.html', form=form)
+
+@blueprint.route('/errordoctorlogin')
+def error_doctor_login():
+    form = LoginForm(request.form)
+    return render_template('doctorpages/error_doctor_login.html', form=form)
 
 @blueprint.route('/patient_login')
 def patient_login():

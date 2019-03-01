@@ -97,6 +97,7 @@ def initializeAndFillDatabase():
                                         last_name TEXT NOT NULL,
                                         speciality  TEXT NOT NULL,
                                         city TEXT NOT NULL,
+                                        password TEXT NOT NULL,
                                         permit_number integer NOT NULL 
                                         
                                     );""",
