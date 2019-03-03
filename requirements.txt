@@ -6,6 +6,7 @@ coverage==4.5.2
 cryptography==2.5
 enum34==1.1.6
 fabric==2.4.0
+fake-factory==0.5.3
 Flask==1.0.2
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
