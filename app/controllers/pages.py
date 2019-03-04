@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, make_response , redirect , url_for, flash
+from flask import render_template, Blueprint, request, make_response , redirect, url_for, flash
 from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
@@ -196,5 +196,5 @@ def register_doctor():
         _obj = Doctorcontroller()
         message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number)
         flash(message)
-        return render_template('forms/register_doctor.html')
+        return redirect(url_for(".doctor_login"))
     return render_template('forms/register_doctor.html')
