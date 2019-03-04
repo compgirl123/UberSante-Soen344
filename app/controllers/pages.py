@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, make_response , redirect , url_for
+from flask import render_template, Blueprint, request, make_response , redirect, url_for, flash
 from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
@@ -46,7 +46,6 @@ def findnurse():
     user_id = request.cookies.get('nurseid')
     password = request.cookies.get('password')
     print(user_id)
-    #_name = request.form['form-nurselogin'];
     return render_template('nursepages/findnurse.html')
 
 @blueprint.route('/nurseaptbook', methods=['GET', 'POST'])
@@ -55,7 +54,6 @@ def nurseaptbook():
     password = request.cookies.get('password')
     print(user_id)
     print(password)
-    #_name = request.form['form-nurselogin'];
     return render_template('nursepages/nursedashboardbookapts.html', user = user_id )
 
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
@@ -71,18 +69,14 @@ def nursedashboard():
         _user2 = 1
         _obj2 = _obj.nurse_table(_name)
         if type(_user) == type(None):
-            #print("User not found")
             response = redirect(url_for("pages.error_nurse_login"))
-            #raise ValueError("Invalid username or password supplied")
         else:
-            print("H")
             response = redirect(url_for("pages.nurseaptbook"))
-        #response = redirect(url_for("pages.nurseaptbook"))
+
         response.set_cookie('nurseid', _name)
         response.set_cookie('password', _password)
         print(request)
         return response
-        #return response
 
 
 @blueprint.route('/doctoraptbook', methods=['GET', 'POST'])
@@ -91,7 +85,6 @@ def doctoraptbook():
     password = request.cookies.get('password')
     print(user_id)
     print(password)
-    #_name = request.form['form-nurselogin'];
     return render_template('doctorpages/doctordashboardapts.html', user = user_id )
 
 #doctor login controller
@@ -108,20 +101,14 @@ def doctordashboard():
         _user2 = 1
         _obj2 = _obj.doctor_table(_name)
         if type(_user) == type(None):
-            #print("User not found")
             response = redirect(url_for("pages.error_doctor_login"))
-            #raise ValueError("Invalid username or password supplied")
         else:
-            print("H")
             response = redirect(url_for("pages.doctoraptbook"))
-        #response = redirect(url_for("pages.nurseaptbook"))
+
         response.set_cookie('permitnumber', _name)
         response.set_cookie('password', _password)
         print(request)
         return response
-        #return response
-
-
 
 @blueprint.route('/doctorlogin')
 def doctor_login():
@@ -135,7 +122,11 @@ def doctor_login():
 @blueprint.route('/nurselogin')
 def nurse_login():
     form = LoginForm(request.form)
-    return render_template('forms/nurse_login.html', form=form)
+    if 'nurseid' in request.cookies:
+        response = redirect(url_for("pages.nurseaptbook"))
+        return response
+    else:
+        return render_template('forms/nurse_login.html', form=form)
 
 @blueprint.route('/nurse_doctor_logout')
 def nurse_doctor_logout():
@@ -143,8 +134,7 @@ def nurse_doctor_logout():
     response.set_cookie('nurseid', expires=0)
     response.set_cookie('permitnumber', expires=0)
     return response
-    #form = LoginForm(request.form)
-    #return render_template('pages/placeholder.home.html', form=form)
+
 
 @blueprint.route('/errornurselogin')
 def error_nurse_login():
@@ -184,7 +174,17 @@ def patient_register():
     return render_template('forms/patient_register.html', form=form)
 
 
-@blueprint.route('/register_doctor')
+@blueprint.route('/register_doctor',  methods=['GET', 'POST'])
 def register_doctor():
-    form = RegisterDoctorForm(request.form)
-    return render_template('forms/register_doctor.html', form=form)
+    if request.method == 'POST':
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        speciality = request.form.get("speciality")
+        city = request.form.get("city")
+        password = request.form.get("password")
+        permit_number = int(request.form.get("permit_number"))
+        _obj = Doctorcontroller()
+        message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number)
+        flash(message)
+        return redirect(url_for(".doctor_login"))
+    return render_template('forms/register_doctor.html')
