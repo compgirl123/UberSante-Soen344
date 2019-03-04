@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, make_response , redirect , url_for
+from flask import render_template, Blueprint, request, make_response , redirect , url_for, flash
 from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
@@ -184,7 +184,17 @@ def patient_register():
     return render_template('forms/patient_register.html', form=form)
 
 
-@blueprint.route('/register_doctor')
+@blueprint.route('/register_doctor',  methods=['GET', 'POST'])
 def register_doctor():
-    form = RegisterDoctorForm(request.form)
-    return render_template('forms/register_doctor.html', form=form)
+    if request.method == 'POST':
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        speciality = request.form.get("speciality")
+        city = request.form.get("city")
+        password = request.form.get("password")
+        permit_number = int(request.form.get("permit_number"))
+        _obj = Doctorcontroller()
+        message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number)
+        flash(message)
+        return render_template('forms/register_doctor.html')
+    return render_template('forms/register_doctor.html')
