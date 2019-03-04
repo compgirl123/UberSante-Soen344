@@ -1,5 +1,6 @@
 import sqlite3
 import sqlite3 as mysql
+import sqlite3 as sql
 import sys
 from sqlite3 import Error
 import app.classes.database_container
@@ -124,4 +125,16 @@ class Doctorcontroller:
             print ("sorry please try again")
         con.commit()
         con.close()
-        
+
+    def register_doctor(self, first_name, last_name, speciality, city, password, permit_number):
+        try:
+            database = app.classes.database_container.DatabaseContainer.get_instance()
+            #cur = con.cursor()
+            database.execute_query("insert into doctor(first_name, last_name, speciality, city, password, permit_number) VALUES (?,?,?,?,?,?)", (first_name, last_name, speciality, city, password, permit_number))
+            database.commit_db()
+            message = "Record Successfully added"
+        except:
+            message = "Error!!! Registration failed."
+        finally:
+            return message
+            database.close_connection()
