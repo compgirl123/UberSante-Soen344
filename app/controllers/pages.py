@@ -2,6 +2,8 @@ from flask import render_template, Blueprint, request, make_response , redirect,
 from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
+from app.controllers.patientcontroller import *
+
 import requests
 
 import base64
@@ -133,6 +135,7 @@ def nurse_doctor_logout():
     response = redirect(url_for("pages.home"))
     response.set_cookie('nurseid', expires=0)
     response.set_cookie('permitnumber', expires=0)
+    response.set_cookie('healthcard', expires=0)
     return response
 
 
@@ -148,8 +151,12 @@ def error_doctor_login():
 
 @blueprint.route('/patient_login')
 def patient_login():
-    form = PatientLoginForm(request.form)
-    return render_template('forms/patient_login.html', form=form)
+    form = LoginForm(request.form)
+    if 'healthcard' in request.cookies:
+        response = redirect(url_for("pages.patientaptbook"))
+        return response
+    else:
+        return render_template('forms/patient_login.html', form=form)
 
 @blueprint.route('/login')
 def login():
@@ -168,11 +175,55 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-@blueprint.route('/patient_register')
-def patient_register():
-    form = PatientRegisterForm(request.form)
-    return render_template('forms/patient_register.html', form=form)
 
+@blueprint.route('/patient_register',  methods=['GET', 'POST'])
+def patient_register():
+    if request.method == 'POST':
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        birthday = request.form.get("birthday")
+        gender = request.form.get("gender")
+        phone_number = request.form.get("phone_number")
+        email = request.form.get("email")
+        address = request.form.get("address")
+        age = int(request.form.get("age"))
+        healthcard = request.form.get("healthcard")
+        _obj = Patientcontroller()
+        message = _obj.patient_register(first_name, last_name, birthday, gender, phone_number, email,address,age,healthcard)
+        flash(message)
+        return redirect(url_for(".patient_login"))
+    return render_template('forms/patient_register.html')
+
+@blueprint.route('/patientaptbook', methods=['GET', 'POST'])
+def patientaptbook():
+    user_id = request.cookies.get('healthcard')
+    password = request.cookies.get('phoneNumber')
+    print(user_id)
+    print(password)
+    return render_template('patientpages/patientdashboardapts.html', user = user_id )    
+
+#patient login controller
+@blueprint.route('/patientdashboard', methods=['GET', 'POST'])
+def patientdashboard():
+    if request.method == "POST":
+        _healthcard = request.form['healthcard'];
+        _phoneNumber = request.form['phoneNumber'];
+        _obj = Patientcontroller()
+        _user = _obj.user(_healthcard,_phoneNumber)
+
+        print(type(_user))
+        print(type(_user) == type(None))
+        _user2 = 1
+        _obj2 = _obj.patient_table(_healthcard)
+        if type(_user) == type(None):
+            response = redirect(url_for("pages.error_patient_login"))
+        else:
+            response = redirect(url_for("pages.patientaptbook"))
+
+        response.set_cookie('healthcard', _healthcard)
+        response.set_cookie('phoneNumber', _phoneNumber)
+        print(request)
+        return response
 
 @blueprint.route('/register_doctor',  methods=['GET', 'POST'])
 def register_doctor():

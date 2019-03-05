@@ -1,18 +1,49 @@
 {% extends 'layouts/form.html' %}
-{% block title %}Patient - Register{% endblock %}
+{% block title %}Register a Patient{% endblock %}
 {% block content %}
-  <form method="post" class="form">
-    <h3 class="form-heading"> <span class="fa fa-user" ></span> Patient - Register <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.healthCardNumber(class_ = 'form-control first-input', placeholder = form.healthCardNumber.label.text, required = true) }}
-    {{ form.name(class_ = 'form-control ', placeholder = form.name.label.text, required = true, autofocus = true) }}
-    {{ form.lastName(class_ = 'form-control', placeholder = form.lastName.label.text, required = true) }}
-    {{ form.email(class_ = 'form-control', placeholder = form.email.label.text, required = true) }}    
-    {{ form.birthDay(class_ = 'form-control', placeholder = form.birthDay.label.text, required = true) }}
-    {{ form.phoneNumber(class_ = 'form-control', placeholder = form.phoneNumber.label.text, required = true) }}
-    {{ form.address(class_ = 'form-control', placeholder = form.address.label.text, required = true) }}
-    {{ form.gender(class_ = 'form-control', placeholder = form.gender.label.text, required = true) }}
-    <center><p>Already registered? <a href="/patient_login">Login</a></p></center>
-    <input type="submit" value="Register" class="btn btn-primary btn-lg btn-block" >
+  <form method="post" class="form" action="/patient_register">
+    <h3 class="form-heading">Patient - Register <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      <div class="form-group">
+         <label for="healthcard">Health Card Number</label>
+         <input type="text" class="form-control" name="healthcard" placeholder="LOUX 0803 2317" maxlength="15" title="i.e LOUX 0803 2317" required>
+      </div>
+      <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" class="form-control" name="first_name" placeholder="First Name" pattern="[A-Za-z]{1,25}" title="First name of patient" required>
+      </div>
+      <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" class="form-control" name="last_name" placeholder="Last Name" pattern="[A-Za-z]{1,25}" title="Last name of patient" required>
+      </div>
+      <div class="form-group">
+          <label for="birthday">Birthday</label>
+          <input type="date" class="form-control" name="birthday" placeholder="Birthday" pattern="[A-Za-z]{1,25}" title="Birthday" required>
+      </div>
+      <div class="form-group">
+          <label for="gender">Gender</label>
+          <br>
+           <input type="radio" name="gender" value="male"> Male<br>
+           <input type="radio" name="gender" value="female"> Female<br>
+           <input type="radio" name="gender" value="other"> Other<br>
+       </div>
+      <div class="form-group">
+          <label for="phone_number">Phone Number </label>
+          <input type="text" class="form-control" name="phone_number" placeholder="phone number" maxlength="9" pattern="[0-9]{9}" title="7 digits permit number of doctor i.e 1234567" required>
+      </div>
+      <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" placeholder="Email" title="Email" required>
+      </div>
+      <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" class="form-control" name="address" placeholder="Address" title="Address" required>
+      </div>  
+      <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" class="form-control" name="age" placeholder="Age" min="18" title="Age" required>
+      </div>
+
+      <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block">Register</button>
     <br>
   </form>
 {% endblock %}

@@ -1,11 +1,16 @@
 {% extends 'layouts/form.html' %}
 {% block title %}Patient - Login{% endblock %}
 {% block content %}
-  <form method="post" class="form">
+  <form method="post" class="form" action="{{ url_for('pages.patientdashboard') }}">
     <h3 class="form-heading"><span class="fa fa-user" ></span> Patient - Login<a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.healthCardNumber(class_ = 'form-control first-input', placeholder = form.healthCardNumber.label.text, required = true, autofocus = true) }}
-    {{ form.phoneNumber(class_ = 'form-control', placeholder = form.phoneNumber.label.text, required = true) }}
-    
+     <div class="form-group">
+         <label for="healthcard">Health Card Number</label>
+         <input type="text" class="form-control" name="healthcard" placeholder="LOUX 0803 2317" maxlength="15" title="7 digits permit number of doctor i.e 1234567" required>
+      </div>
+       <div class="form-group">
+         <label for="phoneNumber">Phone Number</label>
+         <input type="text" class="form-control" name="phoneNumber" placeholder="7 Digits Permit Number i.e 1234567" maxlength="9" pattern="[0-9]{9}" title="7 digits permit number of doctor i.e 1234567" required>
+      </div>
     <p class="pull-right"><a href="/patient_register">Register</a></p>
     <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block" >
     <br>
