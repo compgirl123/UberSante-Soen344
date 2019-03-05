@@ -53,12 +53,11 @@
         <div class="collapse navbar-collapse">
           
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
             {% if 'nurseid' in request.cookies %}
             <li><a href="/findnurse">Nurse</a></li>
             {% endif %}
 
-            {% if 'nurseid' in request.cookies or 'permitnumber' in request.cookies %}
+            {% if 'permitnumber' in request.cookies %}
             <li><a href="/doctorschedule">Doctor</a></li>
             {% endif %}
           </ul>
@@ -70,7 +69,7 @@
                 <li><a href="/register">Signup</a></li>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/forgot">Reset Password</a></li>
-                <li><a href="/patient_register">Patient Register</a></li>
+                <li><a href="/nurse_doctor_logout">Logout</a></li>
               </ul>
             </li>
           </ul>
