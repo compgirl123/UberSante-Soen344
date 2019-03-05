@@ -48,14 +48,6 @@ def findnurse():
     print(user_id)
     return render_template('nursepages/findnurse.html')
 
-@blueprint.route('/nurseaptbook', methods=['GET', 'POST'])
-def nurseaptbook():
-    user_id = request.cookies.get('nurseid')
-    password = request.cookies.get('password')
-    print(user_id)
-    print(password)
-    return render_template('nursepages/nursedashboardbookapts.html', user = user_id )
-
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
     if request.method == "POST":
@@ -71,7 +63,7 @@ def nursedashboard():
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_nurse_login"))
         else:
-            response = redirect(url_for("pages.nurseaptbook"))
+            response = redirect(url_for("pages.findnurse"))
 
         response.set_cookie('nurseid', _name)
         response.set_cookie('password', _password)
@@ -79,13 +71,13 @@ def nursedashboard():
         return response
 
 
-@blueprint.route('/doctoraptbook', methods=['GET', 'POST'])
+@blueprint.route('/doctorschedule', methods=['GET', 'POST'])
 def doctoraptbook():
     user_id = request.cookies.get('permitnumber')
     password = request.cookies.get('password')
     print(user_id)
     print(password)
-    return render_template('doctorpages/doctordashboardapts.html', user = user_id )
+    return render_template('doctorpages/doctorschedule.html', user = user_id )
 
 #doctor login controller
 @blueprint.route('/doctordashboard', methods=['GET', 'POST'])
@@ -103,7 +95,7 @@ def doctordashboard():
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_doctor_login"))
         else:
-            response = redirect(url_for("pages.doctoraptbook"))
+            response = redirect(url_for("pages.doctorschedule"))
 
         response.set_cookie('permitnumber', _name)
         response.set_cookie('password', _password)
@@ -114,7 +106,7 @@ def doctordashboard():
 def doctor_login():
     form = LoginForm(request.form)
     if 'permitnumber' in request.cookies:
-        response = redirect(url_for("pages.doctoraptbook"))
+        response = redirect(url_for("pages.doctorschedule"))
         return response
     else:
         return render_template('forms/doctor_login.html', form=form)
@@ -123,7 +115,7 @@ def doctor_login():
 def nurse_login():
     form = LoginForm(request.form)
     if 'nurseid' in request.cookies:
-        response = redirect(url_for("pages.nurseaptbook"))
+        response = redirect(url_for("pages.findnurse"))
         return response
     else:
         return render_template('forms/nurse_login.html', form=form)
@@ -155,13 +147,6 @@ def patient_login():
 def login():
     form = LoginForm(request.form)
     return render_template('forms/login.html', form=form)
-
-
-@blueprint.route('/register')
-def register():
-    form = RegisterForm(request.form)
-    return render_template('forms/register.html', form=form)
-
 
 @blueprint.route('/forgot')
 def forgot():
