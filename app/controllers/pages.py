@@ -193,7 +193,14 @@ def register_doctor():
         city = request.form.get("city")
         password = request.form.get("password")
         permit_number = int(request.form.get("permit_number"))
+        permit_number_str = request.form.get("permit_number")
         _obj = Doctorcontroller()
+        users = _obj.find_doctor_by_permit_number(permit_number_str)
+        # checks if the returned list is not empty
+        if len(users) != 0:
+            message = "Registration failed!!! User already exists."
+            flash(message)
+            return redirect(url_for(".doctor_login"))
         message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number)
         flash(message)
         return redirect(url_for(".doctor_login"))
