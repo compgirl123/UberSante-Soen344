@@ -8,8 +8,25 @@ from app.controllers.nursecontroller import *
 
 
 class AppointmentController:
-    def create_appointment(doctor_id, patient_id, appointment_date, start_time, end_time):
+    def isAvailable(doctor_speciality, appointment_date, start_time, end_time):
         conn = connect_database()
+        # If no doctor is available
+        if (find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)) == false:
+            return false
+
+        # If no room is available
+        elif (find_room(conn, appointment_date, start_time, end_time) == false):
+            return false
+        
+        else:
+            return true
+        
+
+    def create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time):
+        conn = connect_database()
+        doctor_id = find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        if doctor_id == false:
+            raise Exception('No doctor is available!')
         appointment_room = find_room(conn, appointment_date, start_time, end_time)
         if appointment_room == false:
             raise Exception('No room is available!')
@@ -21,7 +38,6 @@ class AppointmentController:
         def get_sec(time_str):
             h, m, s = time_str.split(':')
             return int(h) * 3600 + int(m) * 60 + int(s)
-        
         start = get_sec(start_time)
         end = get_sec(end_time)
         if (end - start) == 1200:
@@ -47,6 +63,18 @@ class AppointmentController:
         else:
             return false
 
+    def find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time):
+        query = "SELECT id FROM doctor WHERE speciality=?"
+        query2 = "SELECT doctor_id FROM doctoravailability WHERE date=? AND start_time<=? AND end_time>=?"
+        conn.execute(query,(doctor_speciality))
+        specialists = conn.fetchall()
+        conn.execute(query2,(appointment_date, start_time, end_time))
+        availableDoctors = conn.fetchall()
+        for specialist in specialists:
+            if specialist in availableDoctors:
+                return specialist
+        return false
+        
 
     def connect_database():
         try:
