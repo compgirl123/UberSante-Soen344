@@ -8,6 +8,46 @@ from app.controllers.nursecontroller import *
 
 
 class AppointmentController:
+    def create_appointment(doctor_id, patient_id, appointment_date, start_time, end_time):
+        conn = connect_database()
+        appointment_room = find_room(conn, appointment_date, start_time, end_time)
+        if appointment_room == false:
+            raise Exception('No room is available!')
+        appointment_status = "Approved"
+        appointment_type = getappointment_type(start_time, end_time)
+        finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+
+    def getappointment_type(start_time, end_time):
+        def get_sec(time_str):
+            h, m, s = time_str.split(':')
+            return int(h) * 3600 + int(m) * 60 + int(s)
+        
+        start = get_sec(start_time)
+        end = get_sec(end_time)
+        if (end - start) == 1200:
+            return "Regular"
+        elif (end - start) == 3600:
+            return "Annual"
+        else:
+            return "Special"
+
+
+    def find_room(conn, appointment_date, start_time, end_time):
+        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND start_time>=? AND end_time<=?"
+        query2 = "SELECT id FROM room"
+        conn.execute(query, (appointment_date, start_time, end_time))
+        occupied = conn.fetchall()
+        conn.execute(query2,())
+        availableRooms = conn.fetchall()
+        for room in availableRooms:
+            if room in occupied:
+                availableRooms.remove(room)
+        if availableRooms != []:
+            return availableRooms[0]
+        else:
+            return false
+
+
     def connect_database():
         try:
             conn = sqlite3.connect('./database/SOEN344_DATABASE.db')
@@ -19,7 +59,7 @@ class AppointmentController:
     def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
         try:
             c = conn.cursor()
-            query = '''INSERT INTO appointment_table(appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id) VALUES (?,?,?,?,?,?,?,?)'''
+            query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id) VALUES (?,?,?,?,?,?,?,?)"
             item = (appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
             c.execute(query, item)
             return true
@@ -29,4 +69,4 @@ class AppointmentController:
             return false
 
     def find_appointment(doctor_id, appointment_date):
-        get_query = "SELECT * FROM appointment_table WHERE doctor_id ='" + doctor_id + "' AND appointment_date='" + appointment_date + "'"
+        get_query = "SELECT * FROM appointment WHERE doctor_id ='" + doctor_id + "' AND appointment_date='" + appointment_date + "'"

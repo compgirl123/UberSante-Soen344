@@ -101,6 +101,12 @@ def initializeAndFillDatabase():
                                         permit_number integer NOT NULL 
                                         
                                     );""",
+
+                           "room_table": """CREATE TABLE IF NOT EXISTS room (
+                                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                        name TEXT NOT NULL  
+                                    );""",
+                                    
                            "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                         appointment_room  TEXT NOT NULL,
@@ -112,9 +118,9 @@ def initializeAndFillDatabase():
                                         patient_id INTEGER NOT NULL,
                                         doctor_id INTEGER NOT NULL,
                                         
+                                        FOREIGN KEY(appointment_room) REFERENCES room(id),
                                         FOREIGN KEY(patient_id) REFERENCES patient(id),
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
-                                        
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)  
                                     );""",
                            "doctoravailablility_table": """CREATE TABLE IF NOT EXISTS doctoravailability  (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
