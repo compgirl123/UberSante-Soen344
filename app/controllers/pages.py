@@ -210,7 +210,9 @@ def patientdashboard():
         _user2 = 1
         _obj2 = _obj.patient_table(_healthcard)
         if type(_user) == type(None):
-            response = redirect(url_for("pages.error_patient_login"))
+            message = "Patient is not in the system."
+            flash(message)
+            response = redirect(url_for("pages.patient_login"))
         else:
             response = redirect(url_for("pages.patientaptbook"))
             response.set_cookie('healthcard', _healthcard)
