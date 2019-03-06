@@ -174,6 +174,14 @@ def patient_register():
         age = int(request.form.get("age"))
         healthcard = request.form.get("healthcard")
         _obj = Patientcontroller()
+
+        users = _obj.find_patient_by_health_card(healthcard)
+        # checks if the returned list is not empty
+        if len(users) != 0:
+            message = "Registration failed!!! User already exists."
+            flash(message)
+            return redirect(url_for(".patient_login"))
+
         message = _obj.patient_register(first_name, last_name, birthday, gender, phone_number, email,address,age,healthcard)
         flash(message)
         return redirect(url_for(".patient_login"))
