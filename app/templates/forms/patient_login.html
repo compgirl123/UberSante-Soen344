@@ -5,7 +5,8 @@
     <h3 class="form-heading"><span class="fa fa-user" ></span> Patient - Login<a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
      <div class="form-group">
          <label for="healthcard">Health Card Number</label>
-         <input type="text" class="form-control" name="healthcard" placeholder="LOUX 0803 2317" maxlength="15" title="i.e LOUX 0803 2317" required>
+         <input type="text" class="form-control" name="healthcard" placeholder="LOUX 0803 2317" maxlength="15" title="i.e LOUX 0803 2317" 
+         pattern="[A-Za-z]{4}\s{1}*[0-9]{4}*\s{1}[0-9]{4}" required>
       </div>
        <div class="form-group">
           <label for="phone_number">Phone Number </label>

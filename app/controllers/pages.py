@@ -190,7 +190,7 @@ def patient_register():
 @blueprint.route('/patientaptbook', methods=['GET', 'POST'])
 def patientaptbook():
     user_id = request.cookies.get('healthcard')
-    password = request.cookies.get('phoneNumber')
+    password = request.cookies.get('phone_number')
     print(user_id)
     print(password)
     return render_template('patientpages/patientdashboardapts.html', user = user_id )    
@@ -200,9 +200,9 @@ def patientaptbook():
 def patientdashboard():
     if request.method == "POST":
         _healthcard = request.form['healthcard'];
-        _phoneNumber = request.form['phoneNumber'];
+        _phone_number = request.form['phone_number'];
         _obj = Patientcontroller()
-        _user = _obj.user(_healthcard,_phoneNumber)
+        _user = _obj.user(_healthcard,_phone_number)
 
         print(type(_user))
         print(type(_user) == type(None))
@@ -212,9 +212,9 @@ def patientdashboard():
             response = redirect(url_for("pages.error_patient_login"))
         else:
             response = redirect(url_for("pages.patientaptbook"))
+            response.set_cookie('healthcard', _healthcard)
+            response.set_cookie('phone_number', _phone_number)
 
-        response.set_cookie('healthcard', _healthcard)
-        response.set_cookie('phoneNumber', _phoneNumber)
         print(request)
         return response
 
