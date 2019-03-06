@@ -118,7 +118,7 @@ def initializeAndFillDatabase():
                                     );""",
                            "doctoravailablility_table": """CREATE TABLE IF NOT EXISTS doctoravailability  (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        date DATE NOT NULL,
+                                        date_day TEXT NOT NULL,
                                         start_time TIME NOT NULL,
                                         end_time TIME NOT NULL ,
                                         doctor_id INTEGER NOT NULL,
