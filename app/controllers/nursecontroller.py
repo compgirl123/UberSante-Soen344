@@ -12,7 +12,7 @@ class Nursecontroller:
     def nurse_table(self, name):
 
         '''
-        Creating Arrays to Store the values of each column for the Nurse Table
+                Gets the entire database of nurses. Used as a reference point function
         '''
 
         ids = []
@@ -45,7 +45,7 @@ class Nursecontroller:
 
     def user(self,access_id,password):
         '''
-               Creating Arrays to Store the values of each column for the Nurse Table
+               Returns all the information of the nurse that is validated upon login
         '''
 
         ids = []
@@ -82,16 +82,26 @@ class Nursecontroller:
             return
             #print("INVALID")
 
-        #print(values_from_db)
         return values_from_db
 
+    def find_a_doctor(self,permit_number):
+        '''
+                Finding the particular doctor according to the permit # from the find nurse page
+        '''
+        return 0
+
+    def find_a_patient(self,healthcare_number):
+        '''
+                Finding the particular patient according to the healthcare # from the find nurse page
+        '''
+        return 0
 
 
     def find_user(self, access_id, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
         #print("HELLOO")
         #return 0
-        
+
         self.access_id = access_id
         self.password = password
 
@@ -103,7 +113,7 @@ class Nursecontroller:
             mycursor = con.cursor()
             mycursor.execute(a.access_id, loadaccess_id)
             access_idcheck = mycursor.fetchone()
-        
+
             loadpassword = ("select password from nurse where password = '%s'")
             mycursor2 = con.cursor()
             mycursor2.execute(a.password,loadpassword)

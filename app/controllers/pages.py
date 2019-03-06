@@ -50,6 +50,7 @@ def doctorschedule():
 def findnurse():
     user_id = request.cookies.get('nurseid')
     password = request.cookies.get('password')
+
     return render_template('nursepages/findnurse.html',name=user_id)
 
 @blueprint.route('/nursesearchctrlpermit', methods=['GET', 'POST'])
@@ -69,14 +70,13 @@ def nursesearchctrlhealthcare():
         _healthcare = request.form['healthcare']  # stores the name that was entered to the next page
         response = redirect(url_for("pages.patientresults"))
         response.set_cookie('healthcare', _healthcare)
-
     return response
 
 @blueprint.route('/doctorresults', methods=['GET', 'POST'])
 def doctorresults():
     permit = request.cookies.get('permit')
     healthcare = request.cookies.get('healthcare')
-    return render_template('resultpages/patientresults.html',permit = permit, healthcare = healthcare)
+    return render_template('resultpages/doctorresults.html',permit = permit, healthcare = healthcare)
 
 @blueprint.route('/patientresults', methods=['GET', 'POST'])
 def patientresults():
@@ -84,7 +84,9 @@ def patientresults():
     healthcare = request.cookies.get('healthcare')
     return render_template('resultpages/patientresults.html',permit = permit, healthcare = healthcare)
 
-
+'''
+    End of Nurse Search Page routes
+'''
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
     if request.method == "POST":
