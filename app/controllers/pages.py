@@ -43,12 +43,47 @@ def about():
 def doctorschedule():
     return render_template('doctorpages/doctorschedule.html')
 
-@blueprint.route('/findnurse')
+'''
+    Nurse Search Page routes
+'''
+@blueprint.route('/findnurse', methods=['GET', 'POST'])
 def findnurse():
     user_id = request.cookies.get('nurseid')
     password = request.cookies.get('password')
-    print(user_id)
-    return render_template('nursepages/findnurse.html')
+    return render_template('nursepages/findnurse.html',name=user_id)
+
+@blueprint.route('/nursesearchctrlpermit', methods=['GET', 'POST'])
+def nursesearchctrlpermit():
+
+    if request.method == "POST":
+        _permit = request.form['permit']  # stores the name that was entered to the next page
+        response = redirect(url_for("pages.doctorresults"))
+        response.set_cookie('permit', _permit)
+
+    return response
+
+@blueprint.route('/nursesearchctrlhealthcare', methods=['GET', 'POST'])
+def nursesearchctrlhealthcare():
+
+    if request.method == "POST":
+        _healthcare = request.form['healthcare']  # stores the name that was entered to the next page
+        response = redirect(url_for("pages.patientresults"))
+        response.set_cookie('healthcare', _healthcare)
+
+    return response
+
+@blueprint.route('/doctorresults', methods=['GET', 'POST'])
+def doctorresults():
+    permit = request.cookies.get('permit')
+    healthcare = request.cookies.get('healthcare')
+    return render_template('resultpages/patientresults.html',permit = permit, healthcare = healthcare)
+
+@blueprint.route('/patientresults', methods=['GET', 'POST'])
+def patientresults():
+    permit = request.cookies.get('permit')
+    healthcare = request.cookies.get('healthcare')
+    return render_template('resultpages/patientresults.html',permit = permit, healthcare = healthcare)
+
 
 @blueprint.route('/nursedashboard', methods=['GET', 'POST'])
 def nursedashboard():
@@ -129,7 +164,6 @@ def nurse_doctor_logout():
     response.set_cookie('permitnumber', expires=0)
     response.set_cookie('healthcard', expires=0)
     return response
-
 
 @blueprint.route('/errornurselogin')
 def error_nurse_login():
