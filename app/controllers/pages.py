@@ -5,8 +5,8 @@ from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
 
 import requests
-
 import base64
+import datetime
 
 import urllib.request as urllib2
 from urllib.request import urlopen
@@ -191,9 +191,10 @@ def patient_register():
 def patientaptbook():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
+    time_slot_list = schedule_time_slots()
     print(user_id)
-    print(password)
-    return render_template('patientpages/patientdashboardapts.html', user = user_id )    
+    print(password)   
+    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list )    
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
@@ -214,7 +215,6 @@ def patientdashboard():
             response = redirect(url_for("pages.patientaptbook"))
             response.set_cookie('healthcard', _healthcard)
             response.set_cookie('phone_number', _phone_number)
-
         print(request)
         return response
 
@@ -239,3 +239,30 @@ def register_doctor():
         flash(message)
         return redirect(url_for(".doctor_login"))
     return render_template('forms/register_doctor.html')
+
+
+#function to generate time slots
+def schedule_time_slots():
+    time_slot_list = []
+
+    a = datetime.time(8,0,0)
+    time_slot_list.append(a)
+    #print a          
+    for x in range(0,36):
+        b = addSecs(a, 1200)
+        timeStr = str(b)
+        splitTime = timeStr.split(':')
+        hours = int(splitTime[0])
+        mins = int(splitTime[1])
+        secs = int(splitTime[2])
+        a = datetime.time(hours,mins,secs)
+        #print b
+        time_slot_list.append(b)
+
+    return time_slot_list
+
+def addSecs(tm, secs):
+    fulldate = datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
+    fulldate = fulldate + datetime.timedelta(seconds=secs)
+    return fulldate.time()
+
