@@ -6,6 +6,7 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.doctorcontroller import *
+from app.classes.database_container import DatabaseContainer as db
 
 
 class Doctorcontroller:
@@ -128,8 +129,7 @@ class Doctorcontroller:
 
     def register_doctor(self, first_name, last_name, speciality, city, password, permit_number):
         try:
-            database = app.classes.database_container.DatabaseContainer.get_instance()
-            #cur = con.cursor()
+            database = db.get_instance()
             database.execute_query("insert into doctor(first_name, last_name, speciality, city, password, permit_number) VALUES (?,?,?,?,?,?)", (first_name, last_name, speciality, city, password, permit_number))
             database.commit_db()
             message = "Record Successfully added"
@@ -138,3 +138,12 @@ class Doctorcontroller:
         finally:
             return message
             database.close_connection()
+
+    def find_doctor_by_permit_number(self, permit_number):
+        database = db.get_instance()
+        query = "SELECT * FROM doctor WHERE permit_number="+permit_number
+        print(query)
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        # returns a list of users
+        return data
