@@ -8,9 +8,35 @@
 
 
 <div class="container">
-  <div class="jumbotron">
-    <!-- Search form -->
-        <p class="lead">Patient DETAILS</p>
+  <!--<div class="jumbotron">
+     Search form -->
+        <p class="lead">Book an Appointment</p>
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Time slot</th>
+              <th scope="col">Monday</th>
+              <th scope="col">Tuesday</th>
+              <th scope="col">Wednesday</th>
+              <th scope="col">Thursday</th>
+              <th scope="col">Friday</th>
+            </tr>
+          </thead>
+          <tbody>                          
+              {% for t in tlist %}
+              <tr>
+                <th scope="row" class="bg-info">{{ t }}</th>
+                <td><input type="radio" class="radio" name="test" id=i1 checked></td>
+                <td><input type="radio" class="radio" name="test" id=i1 ></td>
+                <td><input type="radio" class="radio" name="test" id=i1 ></td>
+                <td><input type="radio" class="radio" name="test" id=i1 ></td>
+                <td><input type="radio" class="radio" name="test" id=i1 ></td>
+               </tr> 
+              {%endfor %}                        
+          </tbody>
+        </table>
+        
+
          <!--<label for="permit">Permit #:</label>
         <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="permit" name="permit">
         <br/><br/>
@@ -19,8 +45,8 @@
          <label for="healthcare">Healthcare #:</label>
         <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="healthcare" name="healthcare">
         <br/><br/>
-        <button type="submit" class="btn btn-success btn-lg">Search</button>-->
-  </div>
+        <button type="submit" class="btn btn-success btn-lg">Search</button>
+  </div>-->
   <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
 
 </div>
