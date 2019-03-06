@@ -96,7 +96,6 @@ class Nursecontroller:
         '''
         return 0
 
-
     def find_user(self, access_id, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
         #print("HELLOO")

@@ -2,9 +2,14 @@
 {% block title %}Find Doctor or Patient{% endblock %}
 {% block content %}
 
-<table class="table">
+
+<div class="container">
+  <h2>Results</h2>
+  <div class="panel panel-default">
+    <div class="panel-heading">1 Result found</div>
+    <table class="table table-dark">
   <thead>
-    <tr>
+    <tr class="success">
       <th scope="col">#</th>
       <th scope="col">First</th>
       <th scope="col">Last</th>
@@ -12,26 +17,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr class="warning">
       <th scope="row">{{permit}}</th>
       <td>Mark</td>
       <td>Otto</td>
       <td>@mdo</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+
   </tbody>
 </table>
+
+  </div>
+</div>
+
 
 
 
