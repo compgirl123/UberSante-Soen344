@@ -1,18 +1,50 @@
 {% extends 'layouts/form.html' %}
-{% block title %}Patient - Register{% endblock %}
+{% block title %}Register a Patient{% endblock %}
 {% block content %}
-  <form method="post" class="form">
-    <h3 class="form-heading"> <span class="fa fa-user" ></span> Patient - Register <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.healthCardNumber(class_ = 'form-control first-input', placeholder = form.healthCardNumber.label.text, required = true) }}
-    {{ form.name(class_ = 'form-control ', placeholder = form.name.label.text, required = true, autofocus = true) }}
-    {{ form.lastName(class_ = 'form-control', placeholder = form.lastName.label.text, required = true) }}
-    {{ form.email(class_ = 'form-control', placeholder = form.email.label.text, required = true) }}    
-    {{ form.birthDay(class_ = 'form-control', placeholder = form.birthDay.label.text, required = true) }}
-    {{ form.phoneNumber(class_ = 'form-control', placeholder = form.phoneNumber.label.text, required = true) }}
-    {{ form.address(class_ = 'form-control', placeholder = form.address.label.text, required = true) }}
-    {{ form.gender(class_ = 'form-control', placeholder = form.gender.label.text, required = true) }}
-    <center><p>Already registered? <a href="/patient_login">Login</a></p></center>
-    <input type="submit" value="Register" class="btn btn-primary btn-lg btn-block" >
+  <form method="post" class="form" action="/patient_register">
+    <h3 class="form-heading">Patient - Register <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      <div class="form-group">
+         <label for="healthcard">Health Card Number</label>
+         <input type="text" class="form-control" name="healthcard" placeholder="LOUX 0803 2317" maxlength="15" title="i.e LOUX 0803 2317" 
+           pattern="[A-Za-z]{4}[ ]{1}[0-9]{4}[ ]{1}[0-9]{4}" required>
+      </div>
+      <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" class="form-control" name="first_name" placeholder="First Name" pattern="[A-Za-z]{1,25}" title="First name of patient" required>
+      </div>
+      <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" class="form-control" name="last_name" placeholder="Last Name" pattern="[A-Za-z]{1,25}" title="Last name of patient" required>
+      </div>
+      <div class="form-group">
+          <label for="birthday">Birthday</label>
+          <input type="text" class="form-control" name="birthday" placeholder="MM/DD/YYYY" required pattern="(?:(?:0[1-9]|1[0-2])/(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])/(?:30))|(?:(?:0[13578]|1[02])/31))/(?:19|20)[0-9]{2}" title="Enter a date in this format MM/DD/YYYY" required>
+      </div>
+      <div class="form-group">
+          <label for="gender">Gender</label>
+          <br>
+           <input type="radio" name="gender" value="male" required> Male<br>
+           <input type="radio" name="gender" value="female" required> Female<br>
+           <input type="radio" name="gender" value="other" required> Other<br>
+       </div>
+      <div class="form-group">
+          <label for="phone_number">Phone Number </label>
+          <input type="text" class="form-control" name="phone_number" placeholder="Format: 123-456-7890" pattern="\d{3}[\-]\d{3}[\-]\d{4}" title="Format: 123-456-7890" required>
+      </div>
+      <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" placeholder="Email" title="Email" required>
+      </div>
+      <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" class="form-control" name="address" placeholder="Address" title="Address" required>
+      </div>  
+      <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" class="form-control" name="age" placeholder="Age" min="18" title="Age" required>
+      </div>
+
+      <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block">Register</button>
     <br>
   </form>
 {% endblock %}
