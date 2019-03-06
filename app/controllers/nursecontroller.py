@@ -84,11 +84,6 @@ class Nursecontroller:
 
         return values_from_db
 
-    def find_a_doctor(self,permit_number):
-        '''
-                Finding the particular doctor according to the permit # from the find nurse page
-        '''
-        return 0
 
     def find_a_patient(self,healthcare_number):
         '''

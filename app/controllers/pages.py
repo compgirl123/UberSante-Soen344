@@ -58,8 +58,10 @@ def nursesearchctrlpermit():
 
     if request.method == "POST":
         _permit = request.form['permit']  # stores the name that was entered to the next page
+        _obj = Doctorcontroller()
+        _doctor_found = _obj.find_doctor_by_permit_number(_permit)
         response = redirect(url_for("pages.doctorresults"))
-        response.set_cookie('permit', _permit)
+        response.set_cookie('permit',_permit)
 
     return response
 
@@ -75,8 +77,17 @@ def nursesearchctrlhealthcare():
 @blueprint.route('/doctorresults', methods=['GET', 'POST'])
 def doctorresults():
     permit = request.cookies.get('permit')
+    _obj = Doctorcontroller()
+    _doctor_found = _obj.find_doctor_by_permit_number(permit)
+    print("DOC HERE")
+    print(_doctor_found)
+
+    #print(_doctor_found)
+    _doc_id = request.cookies.get('doc_id')
+
     healthcare = request.cookies.get('healthcare')
-    return render_template('resultpages/doctorresults.html',permit = permit, healthcare = healthcare)
+    #print(doctor_found)
+    return render_template('resultpages/doctorresults.html',doctor_found = _doctor_found, permit = permit, healthcare = healthcare)
 
 @blueprint.route('/patientresults', methods=['GET', 'POST'])
 def patientresults():

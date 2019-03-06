@@ -145,5 +145,56 @@ class Doctorcontroller:
         print(query)
         cur = database.execute_query(query)
         data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["id"],row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+        print("HEEERRRE")
+        print (d)
         # returns a list of users
-        return data
+        return d
+
+    def find_a_doctor(self,permit_number):
+        '''
+                Finding the particular doctor according to the permit # from the find nurse page
+        '''
+        ids = []
+        first_names = []
+        last_names = []
+        passwords = []
+        access_ids = []
+        speciality = []
+        city = []
+        permit_number = []
+
+        get_query = "SELECT * FROM doctor WHERE access_id =" + "'" + permit_number + "'"
+        print(get_query)
+        table_creation_dict = {"doctors": get_query}
+        database = app.classes.database_container.DatabaseContainer.get_instance()
+
+        for table_name, table_sql in table_creation_dict.items():
+            database.execute_query(table_sql)
+
+        results = database.execute_query(get_query)
+
+        for row in database.execute_query(get_query):
+            ids.append(row["id"])
+            first_names.append(row["first_name"])
+            last_names.append(row["last_name"])
+            passwords.append(row["password"])
+            access_ids.append(row["access_id"])
+            speciality.appebnd(row["speciality"])
+            city.append(row["city"])
+            permit_number.append(row["permit_number"])
+
+        values_from_db = tuple(list(zip(ids, first_names, last_names, passwords, access_ids, speciality, city, permit_number)))
+
+        # if the values from the query work [id and password], then this should be validated
+        if values_from_db:
+            values_from_db = tuple(list(zip(ids, first_names, last_names, passwords, access_ids,speciality, city, permit_number)))
+            # print("VALID")
+        else:
+            return
+            # print("INVALID")
+
+        return values_from_db
+
