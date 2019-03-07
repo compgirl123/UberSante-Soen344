@@ -29,8 +29,10 @@ def doctorschedule():
 def findnurse():
     user_id = request.cookies.get('nurseid')
     password = request.cookies.get('password')
-
-    return render_template('nursepages/findnurse.html',name=user_id)
+    _obj = Nursecontroller()
+    _nurse_full_name = _obj.nurse_full_name(user_id)
+    print(_nurse_full_name)
+    return render_template('nursepages/findnurse.html',name=user_id, nurse_full_name = _nurse_full_name)
 
 @blueprint.route('/nursesearchctrlpermit', methods=['GET', 'POST'])
 def nursesearchctrlpermit():

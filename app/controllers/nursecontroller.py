@@ -5,7 +5,7 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.nursecontroller import *
-
+from app.classes.database_container import DatabaseContainer as db
 
 class Nursecontroller:
 
@@ -114,4 +114,24 @@ class Nursecontroller:
             print ("sorry please try again")
         con.commit()
         con.close()
+
+    def nurse_full_name(self,user_id):
+        '''
+            Finding the particular patient according to the healthcare # from the find nurse page
+        '''
+
+        database = db.get_instance()
+        query = "SELECT first_name, last_name FROM nurse WHERE access_id=" + "'" + user_id +"'"
+
+        print(query)
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+
+        for row in data:
+            d = tuple((row["first_name"], row["last_name"]))
+        print(d)
+        # returns a list of users
+        return d
         
