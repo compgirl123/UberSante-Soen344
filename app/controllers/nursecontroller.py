@@ -85,12 +85,6 @@ class Nursecontroller:
         return values_from_db
 
 
-    def find_a_patient(self,healthcare_number):
-        '''
-                Finding the particular patient according to the healthcare # from the find nurse page
-        '''
-        return 0
-
     def find_user(self, access_id, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
         #print("HELLOO")

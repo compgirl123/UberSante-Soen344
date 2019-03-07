@@ -151,3 +151,9 @@ class Patientcontroller:
         finally:
             return message
             database.close_connection()
+
+    def find_a_patient(self,healthcare_number):
+        '''
+                Finding the particular patient according to the healthcare # from the find nurse page
+        '''
+        return 0
