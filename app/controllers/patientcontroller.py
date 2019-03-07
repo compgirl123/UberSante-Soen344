@@ -6,6 +6,7 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.patientcontroller import *
+from app.classes.database_container import DatabaseContainer as db
 
 
 class Patientcontroller:
@@ -154,6 +155,25 @@ class Patientcontroller:
 
     def find_a_patient(self,healthcare_number):
         '''
-                Finding the particular patient according to the healthcare # from the find nurse page
+            Finding the particular patient according to the healthcare # from the find nurse page
         '''
-        return 0
+        print(healthcare_number)
+        database = db.get_instance()
+        query = ""
+        try:
+            query = "SELECT * FROM patient WHERE health_card=" + "'" + healthcare_number +"'"
+        except ValueError:
+            query = ""
+
+        print("QURY")
+        print(query)
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["id"], row["first_name"], row["last_name"], row["birthday"], row["gender"],
+                       row["phone_number"], row["email"],row["address"], row["age"],row["health_card"]))
+        print(d)
+        # returns a list of users
+        return d

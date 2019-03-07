@@ -2,11 +2,11 @@
 {% block title %}Find Doctor or Patient{% endblock %}
 {% block content %}
 
-
+{% if results == 1 %}
 <div class="container">
   <h2>Results</h2>
   <div class="panel panel-default">
-    <div class="panel-heading">1 Result found</div>
+    <div class="panel-heading">{{results}} Result(s) found</div>
     <table class="table table-dark">
   <thead>
     <tr class="success">
@@ -35,7 +35,14 @@
 
   </div>
 </div>
-
+{% else %}
+<div class="container">
+  <h2>Results</h2>
+  <div class="panel panel-default">
+    <div class="panel-heading">{{results}} Result(s) found</div>
+  </div>
+</div>
+{% endif%}
 
 
 

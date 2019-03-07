@@ -72,7 +72,13 @@ def patientresults():
     healthcare = request.cookies.get('healthcare')
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(healthcare)
-    return render_template('resultpages/patientresults.html',patient_found = _patient_found)
+    _results = 0
+    if not _patient_found:
+        _results = 0
+    else:
+        _results = 1
+
+    return render_template('resultpages/patientresults.html',patient_found = _patient_found, results = _results)
 
 '''
     End of Nurse Search Page routes

@@ -153,7 +153,6 @@ class Doctorcontroller:
         except ValueError:
             query = ""
 
-        #query = "SELECT * FROM doctor WHERE permit_number="+permit_number
         cur = database.execute_query(query)
         data = cur.fetchall()
         d = tuple()
