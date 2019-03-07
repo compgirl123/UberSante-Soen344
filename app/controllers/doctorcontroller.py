@@ -157,7 +157,7 @@ class Doctorcontroller:
         data = cur.fetchall()
         d = tuple()
         for row in data:
-            d = tuple((row["id"],row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
         # returns a list of users
         return d
 
