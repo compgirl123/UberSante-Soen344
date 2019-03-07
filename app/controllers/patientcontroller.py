@@ -141,7 +141,7 @@ class Patientcontroller:
 
     def patient_register(self, first_name, last_name,birthday,gender,phone_number,email,address,age,health_card):
         try:
-            database = app.classes.database_container.DatabaseContainer.get_instance()
+            database = db.get_instance()
             #cur = con.cursor()
             database.execute_query("insert into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES (?,?,?,?,?,?,?,?,?)", 
                 (first_name, last_name,birthday,gender,phone_number,email,address,age,health_card))
@@ -177,3 +177,4 @@ class Patientcontroller:
         print(d)
         # returns a list of users
         return d
+

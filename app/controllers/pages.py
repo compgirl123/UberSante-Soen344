@@ -208,6 +208,14 @@ def patient_register():
         age = int(request.form.get("age"))
         healthcard = request.form.get("healthcard")
         _obj = Patientcontroller()
+
+        users = _obj.find_patient_by_health_card(healthcard)
+        # checks if the returned list is not empty
+        if len(users) != 0:
+            message = "Registration failed!!! User already exists."
+            flash(message)
+            return redirect(url_for(".patient_login"))
+
         message = _obj.patient_register(first_name, last_name, birthday, gender, phone_number, email,address,age,healthcard)
         flash(message)
         return redirect(url_for(".patient_login"))
@@ -216,31 +224,33 @@ def patient_register():
 @blueprint.route('/patientaptbook', methods=['GET', 'POST'])
 def patientaptbook():
     user_id = request.cookies.get('healthcard')
-    password = request.cookies.get('phoneNumber')
+    password = request.cookies.get('phone_number')
+    time_slot_list = schedule_time_slots()
     print(user_id)
-    print(password)
-    return render_template('patientpages/patientdashboardapts.html', user = user_id )    
+    print(password)   
+    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list )    
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
 def patientdashboard():
     if request.method == "POST":
         _healthcard = request.form['healthcard'];
-        _phoneNumber = request.form['phoneNumber'];
+        _phone_number = request.form['phone_number'];
         _obj = Patientcontroller()
-        _user = _obj.user(_healthcard,_phoneNumber)
+        _user = _obj.user(_healthcard,_phone_number)
 
         print(type(_user))
         print(type(_user) == type(None))
         _user2 = 1
         _obj2 = _obj.patient_table(_healthcard)
         if type(_user) == type(None):
-            response = redirect(url_for("pages.error_patient_login"))
+            message = "Patient is not in the system."
+            flash(message)
+            response = redirect(url_for("pages.patient_login"))
         else:
             response = redirect(url_for("pages.patientaptbook"))
-
-        response.set_cookie('healthcard', _healthcard)
-        response.set_cookie('phoneNumber', _phoneNumber)
+            response.set_cookie('healthcard', _healthcard)
+            response.set_cookie('phone_number', _phone_number)
         print(request)
         return response
 
@@ -265,3 +275,30 @@ def register_doctor():
         flash(message)
         return redirect(url_for(".doctor_login"))
     return render_template('forms/register_doctor.html')
+
+
+#function to generate time slots
+def schedule_time_slots():
+    time_slot_list = []
+
+    a = datetime.time(8,0,0)
+    time_slot_list.append(a)
+    #print a          
+    for x in range(0,36):
+        b = addSecs(a, 1200)
+        timeStr = str(b)
+        splitTime = timeStr.split(':')
+        hours = int(splitTime[0])
+        mins = int(splitTime[1])
+        secs = int(splitTime[2])
+        a = datetime.time(hours,mins,secs)
+        #print b
+        time_slot_list.append(b)
+
+    return time_slot_list
+
+def addSecs(tm, secs):
+    fulldate = datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
+    fulldate = fulldate + datetime.timedelta(seconds=secs)
+    return fulldate.time()
+
