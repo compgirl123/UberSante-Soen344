@@ -16,17 +16,17 @@ def test_getappointment_type():
     specialAppointment = AppointmentController.getappointment_type("08:00:00", "12:00:00")
     assert specialAppointment == "Special"
 
-def test_find_doctor():
+def test_find_a_doctor():
     c = AppointmentController.connect_database()
-    result = AppointmentController.find_doctor(c, 'tester', '01-01-2020', '08:40:00', '09:00:00')
+    result = AppointmentController.find_a_doctor(c, 'tester', '01-01-2020', '08:40:00', '09:00:00')
     assert result == (1,)
-    result = AppointmentController.find_doctor(c, 'tester', '01-01-2020', '07:00:00', '07:20:00')
+    result = AppointmentController.find_a_doctor(c, 'tester', '01-01-2020', '07:00:00', '07:20:00')
     assert result == (1,)
-    result = AppointmentController.find_doctor(c, 'tester', '01-01-2020', '07:00:00', '08:20:00')
+    result = AppointmentController.find_a_doctor(c, 'tester', '01-01-2020', '07:00:00', '08:20:00')
     assert result == False
-    result = AppointmentController.find_doctor(c, 'tester', '01-01-2020', '08:00:00', '09:00:00')
+    result = AppointmentController.find_a_doctor(c, 'tester', '01-01-2020', '08:00:00', '09:00:00')
     assert result == False
-    result = AppointmentController.find_doctor(c, 'tester', '02-01-2020', '08:00:00', '08:20:00')
+    result = AppointmentController.find_a_doctor(c, 'tester', '02-01-2020', '08:00:00', '08:20:00')
     assert result == False
 
 def test_find_room():
@@ -51,6 +51,18 @@ def test_finalize_appointment():
     result =  AppointmentController.finalize_appointment(c, '1', 'Annual', 'Approved', '12-12-1990', '12:00:00', '13:00:00', 1, 1)
     assert result == True
     c.execute(query,('12-12-1990',1))
+
+def test_isAvailable():
+    with pytest.raises(Exception, match=r'.* doctor .*'):
+        AppointmentController.isAvailable('tester', '11-11-2000', '12:00:00', '12:20:00')
+    with pytest.raises(Exception, match=r'.* room .*'):
+        AppointmentController.isAvailable('tester', '01-02-2020', '08:00:00', '08:20:00')
+    result = AppointmentController.isAvailable('tester', '01-02-2020', '09:00:00', '09:20:00')
+    assert result == [(1,), (1,)]
+    
+def test_create_appointment():
+    return True
+
 
 
 
