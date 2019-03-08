@@ -98,8 +98,8 @@ class AppointmentController:
         try:
             query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id) VALUES (?,?,?,?,?,?,?,?)"
             item = (appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
-            c.execute(query, item)
-            return true
+            conn.execute(query, item)
+            return True
 
         except Error as e:
             print(e)

@@ -45,5 +45,14 @@ def test_find_appointment():
     result = AppointmentController.find_appointment(c, '1', '01-02-2020')
     assert result == []
 
+def test_finalize_appointment():
+    query='DELETE FROM appointment WHERE appointment_date=? AND doctor_id=?'
+    c = AppointmentController.connect_database()
+    result =  AppointmentController.finalize_appointment(c, '1', 'Annual', 'Approved', '12-12-1990', '12:00:00', '13:00:00', 1, 1)
+    assert result == True
+    c.execute(query,('12-12-1990',1))
+
+
+
 
 
