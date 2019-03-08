@@ -10,25 +10,27 @@ from app.controllers.nursecontroller import *
 class AppointmentController:
     def isAvailable(doctor_speciality, appointment_date, start_time, end_time):
         conn = connect_database()
+        doctorsAvailable = find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        availableRoom = find_room(conn, appointment_date, start_time, end_time)
         # If no doctor is available
-        if (find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)) == false:
-            return false
+        if doctorsAvailable == False:
+            raise Exception('No doctor is available!')
 
         # If no room is available
-        elif (find_room(conn, appointment_date, start_time, end_time) == false):
-            return false
+        elif availableRoom == False:
+            raise Exception('No room is available!')
         
         else:
-            return true
+            return [doctorsAvailable, availableRoom]
         
 
     def create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time):
         conn = connect_database()
         doctor_id = find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
-        if doctor_id == false:
+        if doctor_id == False:
             raise Exception('No doctor is available!')
         appointment_room = find_room(conn, appointment_date, start_time, end_time)
-        if appointment_room == false:
+        if appointment_room == False:
             raise Exception('No room is available!')
         appointment_status = "Approved"
         appointment_type = getappointment_type(start_time, end_time)
@@ -61,19 +63,26 @@ class AppointmentController:
         if availableRooms != []:
             return availableRooms[0]
         else:
-            return false
+            return False
 
     def find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time):
         query = "SELECT id FROM doctor WHERE speciality=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date=? AND start_time<=? AND end_time>=?"
-        conn.execute(query,(doctor_speciality))
+        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND start_time>=? AND end_time>? OR start_time<? AND end_time>=?"
+        conn.execute(query,(doctor_speciality,))
         specialists = conn.fetchall()
         conn.execute(query2,(appointment_date, start_time, end_time))
         availableDoctors = conn.fetchall()
+        
         for specialist in specialists:
             if specialist in availableDoctors:
-                return specialist
-        return false
+                idtuple = specialist[0]
+                id = int(idtuple)
+                conn.execute(query3, (id, start_time, start_time, end_time, end_time))
+                allAppointmentTimes = conn.fetchall()
+                if allAppointmentTimes == []:
+                    return specialist
+        return False
         
 
     def connect_database():
@@ -94,7 +103,11 @@ class AppointmentController:
 
         except Error as e:
             print(e)
-            return false
+            return False
 
-    def find_appointment(doctor_id, appointment_date):
-        get_query = "SELECT * FROM appointment WHERE doctor_id ='" + doctor_id + "' AND appointment_date='" + appointment_date + "'"
+    def find_appointment(conn, doctor_id, appointment_date):
+        conn = connect_database()
+        get_query = "SELECT * FROM appointment WHERE doctor_id =? AND appointment_date=?"
+        conn.execute(query,(doctor_id, appointment_date))
+        result = conn.fetchall()
+        return result

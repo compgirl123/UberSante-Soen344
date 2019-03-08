@@ -106,10 +106,10 @@ def initializeAndFillDatabase():
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                         name TEXT NOT NULL  
                                     );""",
-                                    
+
                            "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        appointment_room  TEXT NOT NULL,
+                                        appointment_room  INTEGER NOT NULL,
                                         appointment_type TEXT NOT NULL,
                                         appointment_status TEXT NOT NULL,
                                         appointment_date DATE NOT NULL,
