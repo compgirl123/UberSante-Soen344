@@ -61,7 +61,12 @@ def test_isAvailable():
     assert result == [(1,), (1,)]
     
 def test_create_appointment():
-    return True
+    query='DELETE FROM appointment WHERE appointment_date=? AND patient_id=?'
+    c = AppointmentController.connect_database()
+    result =  AppointmentController.create_appointment('tester', '1', '01-02-2020', '12:00:00', '13:00:00')
+    assert result == True
+    c.execute(query,('01-02-2020',1))
+    
 
 
 

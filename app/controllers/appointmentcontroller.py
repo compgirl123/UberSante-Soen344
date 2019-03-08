@@ -25,16 +25,17 @@ class AppointmentController:
         
 
     def create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time):
-        conn = connect_database()
-        doctor_id = find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        conn = AppointmentController.connect_database()
+        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
         if doctor_id == False:
             raise Exception('No doctor is available!')
-        appointment_room = find_room(conn, appointment_date, start_time, end_time)
+        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
         if appointment_room == False:
             raise Exception('No room is available!')
         appointment_status = "Approved"
-        appointment_type = getappointment_type(start_time, end_time)
-        finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        appointment_type = AppointmentController.getappointment_type(start_time, end_time)
+        AppointmentController.finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        return True
 
     def getappointment_type(start_time, end_time):
         def get_sec(time_str):
