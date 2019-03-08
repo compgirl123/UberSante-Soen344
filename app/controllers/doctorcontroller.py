@@ -140,10 +140,24 @@ class Doctorcontroller:
             database.close_connection()
 
     def find_doctor_by_permit_number(self, permit_number):
+        '''
+             Finding the particular doctor according to the permit # from the find nurse page
+        '''
         database = db.get_instance()
-        query = "SELECT * FROM doctor WHERE permit_number="+permit_number
-        print(query)
+        try:
+            val = int(permit_number)
+            if (val > 0):
+                query = "SELECT * FROM doctor WHERE permit_number=" + permit_number
+            else:
+                query = ""
+        except ValueError:
+            query = ""
+
         cur = database.execute_query(query)
         data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
         # returns a list of users
-        return data
+        return d
+

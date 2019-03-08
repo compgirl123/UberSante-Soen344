@@ -1,23 +1,30 @@
 {% extends 'layouts/main.html' %}
-{% block title %}About{% endblock %}
+{% block title %}Find Doctor or Patient{% endblock %}
 {% block content %}
 
-<div class="container">
-  <div class="jumbotron">
-    <!-- Search form -->
-        <p class="lead">Search for Doctor by Permit Number</p>
-         <label for="permit">Permit #:</label>
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="permit" name="permit">
-        <button type="submit" class="btn btn-success btn-lg" style="margin-top:20px;">Search</button>
-        <br/><br/>
-
-        <!-- Search form -->
-        <p class="lead">Search for Patient by Healthcare Number</p>
-         <label for="healthcare">Healthcare #:</label>
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="healthcare" name="healthcare">
+    <div class="container">
+        <h1>Welcome {{nurse_full_name[0]}} {{nurse_full_name[1]}}</h1>
+        <h2>Find Doctor or Patient</h2>
+          <div class="jumbotron">
+            <!-- Search form -->
+              <form method="post" class="form" action="{{ url_for('pages.nursesearchctrlpermit') }}">
+                <p class="lead">Search for Doctor by Permit Number</p>
+                 <label for="permit">Permit #:</label>
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="permit" name="permit">
                 <button type="submit" class="btn btn-success btn-lg" style="margin-top:20px;">Search</button>
-<br/><br/>
-  </div>
-</div>
+                <br/><br/>
+              </form>
+
+                <!-- Search form -->
+              <form method="post" class="form" action="{{ url_for('pages.nursesearchctrlhealthcare') }}">
+                <p class="lead">Search for Patient by Healthcare Number</p>
+                 <label for="healthcare">Healthcare #:</label>
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="healthcare" name="healthcare">
+                        <button type="submit" class="btn btn-success btn-lg" style="margin-top:20px;">Search</button>
+              </form>
+
+        <br/><br/>
+      </div>
+    </div>
 
 {% endblock %}

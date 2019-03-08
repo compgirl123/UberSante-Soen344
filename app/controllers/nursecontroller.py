@@ -5,14 +5,14 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.nursecontroller import *
-
+from app.classes.database_container import DatabaseContainer as db
 
 class Nursecontroller:
 
     def nurse_table(self, name):
 
         '''
-        Creating Arrays to Store the values of each column for the Nurse Table
+                Gets the entire database of nurses. Used as a reference point function
         '''
 
         ids = []
@@ -45,7 +45,7 @@ class Nursecontroller:
 
     def user(self,access_id,password):
         '''
-               Creating Arrays to Store the values of each column for the Nurse Table
+               Returns all the information of the nurse that is validated upon login
         '''
 
         ids = []
@@ -82,16 +82,14 @@ class Nursecontroller:
             return
             #print("INVALID")
 
-        #print(values_from_db)
         return values_from_db
-
 
 
     def find_user(self, access_id, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
         #print("HELLOO")
         #return 0
-        
+
         self.access_id = access_id
         self.password = password
 
@@ -103,7 +101,7 @@ class Nursecontroller:
             mycursor = con.cursor()
             mycursor.execute(a.access_id, loadaccess_id)
             access_idcheck = mycursor.fetchone()
-        
+
             loadpassword = ("select password from nurse where password = '%s'")
             mycursor2 = con.cursor()
             mycursor2.execute(a.password,loadpassword)
@@ -116,4 +114,24 @@ class Nursecontroller:
             print ("sorry please try again")
         con.commit()
         con.close()
+
+    def nurse_full_name(self,user_id):
+        '''
+            Finding the particular patient according to the healthcare # from the find nurse page
+        '''
+
+        database = db.get_instance()
+        query = "SELECT first_name, last_name FROM nurse WHERE access_id=" + "'" + user_id +"'"
+
+        print(query)
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+
+        for row in data:
+            d = tuple((row["first_name"], row["last_name"]))
+        print(d)
+        # returns a list of users
+        return d
         

@@ -153,12 +153,28 @@ class Patientcontroller:
             return message
             database.close_connection()
 
-    def find_patient_by_health_card(self, health_card):
+    def find_a_patient(self,healthcare_number):
+        '''
+            Finding the particular patient according to the healthcare # from the find nurse page
+        '''
+        print(healthcare_number)
         database = db.get_instance()
-        query = "SELECT * FROM patient WHERE health_card="+"'"+health_card+"'"
+        query = ""
+        try:
+            query = "SELECT * FROM patient WHERE health_card=" + "'" + healthcare_number +"'"
+        except ValueError:
+            query = ""
+
+        print("QURY")
         print(query)
+
         cur = database.execute_query(query)
         data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"], row["last_name"], row["birthday"], row["gender"],
+                       row["phone_number"], row["email"],row["address"], row["age"],row["health_card"]))
+        print(d)
         # returns a list of users
-        return data
+        return d
 
