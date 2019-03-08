@@ -51,9 +51,9 @@ class AppointmentController:
 
 
     def find_room(conn, appointment_date, start_time, end_time):
-        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND start_time<=? AND end_time>? OR start_time<? AND end_time>=?"
+        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND start_time<=? AND end_time>? OR start_time<? AND end_time>=? OR start_time<? AND end_time>?"
         query2 = "SELECT id FROM room"
-        conn.execute(query, (appointment_date, start_time, start_time, end_time, end_time))
+        conn.execute(query, (appointment_date, start_time, start_time, end_time, end_time, start_time, end_time))
         occupied = conn.fetchall()
         conn.execute(query2,())
         availableRooms = conn.fetchall()
@@ -68,7 +68,7 @@ class AppointmentController:
     def find_doctor(conn, doctor_speciality, appointment_date, start_time, end_time):
         query = "SELECT id FROM doctor WHERE speciality=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date=? AND start_time<=? AND end_time>=?"
-        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND start_time<=? AND end_time>? OR start_time<? AND end_time>=?"
+        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND start_time<=? AND end_time>? OR start_time<? AND end_time>=? OR start_time<? AND end_time>?"
         conn.execute(query,(doctor_speciality,))
         specialists = conn.fetchall()
         conn.execute(query2,(appointment_date, start_time, end_time))
@@ -78,7 +78,7 @@ class AppointmentController:
             if specialist in availableDoctors:
                 idtuple = specialist[0]
                 id = int(idtuple)
-                conn.execute(query3, (id, appointment_date, start_time, start_time, end_time, end_time))
+                conn.execute(query3, (id, appointment_date, start_time, start_time, end_time, end_time, start_time, end_time))
                 allAppointmentTimes = conn.fetchall()
                 if allAppointmentTimes == []:
                     return specialist
