@@ -12,6 +12,8 @@
     width:30px;
     height:30px;
     border-radius:20%;
+    margin-left:auto;margin-right:auto;
+    
   }
   .radio:checked{
     border:10px solid #4099ff;

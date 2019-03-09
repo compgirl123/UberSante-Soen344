@@ -3,6 +3,7 @@ from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
+import datetime
 
 blueprint = Blueprint('pages', __name__)
 
@@ -234,8 +235,8 @@ def patientaptbook():
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
 def patientdashboard():
     if request.method == "POST":
-        _healthcard = request.form['healthcard'];
-        _phone_number = request.form['phone_number'];
+        _healthcard = request.form['healthcard']
+        _phone_number = request.form['phone_number']
         _obj = Patientcontroller()
         _user = _obj.user(_healthcard,_phone_number)
 
