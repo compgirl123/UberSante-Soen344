@@ -2,7 +2,7 @@
 {% block title %}About{% endblock %}
 {% block content %}
 
-<div class="page-header">
+<div class="page-header" >
   <h1>Welcome {{ user }}</h1>
 </div>
 <div class="container">
@@ -29,13 +29,17 @@
                   <div style="background-color: #cdd0d6; padding-left: 20px">
                     <div class="radio_appt_type">
                       <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" name="appt_type" id="regular" value="Regular Appt" onclick="changeHourBlock()" 
+                        {{ regularCheck }}
+                        >
                         Regular
                       </label>
                     </div>
                     <div class="radio_appt_type">
                       <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        <input type="radio" name="appt_type" id="annual" value="Annual Appt" onclick="changeHourBlock()"
+                        {{ annualCheck }}
+                        >
                         Annual
                       </label>
                     </div>
@@ -49,22 +53,22 @@
             <thead class="thead-dark" style="background-color: grey;border-bottom: solid 2px grey">
               <tr>
                 <th scope="col" style="background-color: grey;" >Time slot</th>
-                <th scope="col">MON<span id="monDate"></span></th>
-                <th scope="col">TUE<span id="tueDate"></span></th>
-                <th scope="col">WED<span id="wedDate"></span></th>
-                <th scope="col">THU<span id="thuDate"></span></th>
-                <th scope="col">FRI<span id="friDate"></span></th>
+                <th scope="col" class="text-center">MON<br/><span id="monDate"></span></th>
+                <th scope="col" class="text-center">TUE<br/><span id="tueDate"></span></th>
+                <th scope="col" class="text-center">WED<br/><span id="wedDate"></span></th>
+                <th scope="col" class="text-center">THU<br/><span id="thuDate"></span></th>
+                <th scope="col" class="text-center">FRI<br/><span id="friDate"></span></th>
               </tr>
             </thead>
             <tbody>                          
                 {% for t in tlist %}
                 <tr>
                   <th scope="row" class="bg-info"  style="background-color: grey;width:10px" >{{ t }}</th>
-                  <td style="width:10px;" ><input type="radio" class="radio" name="test" id="i1" ></td> 
-                  <td style="width:10px" ><input type="radio" class="radio" name="test" id="i1" ></td>
-                  <td style="width:10px" ><input type="radio" class="radio" name="test" id="i1" ></td>
-                  <td style="width:10px" ><input type="radio" class="radio" name="test" id="i1" ></td>
-                  <td style="width:10px" ><input type="radio" class="radio" name="test" id="i1" ></td>
+                  <td><input type="radio" class="radio" name="test" id="monCheck" onclick="getSelDateTime()"></td> 
+                  <td><input type="radio" class="radio" name="test" id="tueCheck" onclick="getSelDateTime()" ></td>
+                  <td><input type="radio" class="radio" name="test" id="wedCheck" onclick="getSelDateTime()" ></td>
+                  <td><input type="radio" class="radio" name="test" id="thuCheck" onclick="getSelDateTime()" ></td>
+                  <td><input type="radio" class="radio" name="test" id="friCheck" onclick="getSelDateTime()" ></td>
                 </tr> 
                 {%endfor %}                        
             </tbody>
@@ -72,7 +76,44 @@
         </form>      
         
         <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
-        <br/>
+        <br/><br/>
 
 </div>
+
+<script>
+    function changeHourBlock() {
+      var chkRegular = document.getElementById("regular");
+      var chkAnnual = document.getElementById("annual");
+      
+      if(chkRegular.checked){
+        console.log("Regular checked");
+        document.getElementById("regular").checked = true;
+        document.getElementById("annual").checked = false;
+        window.location.href = "/patientaptbook?apttype=regular";
+        
+      }
+      else if(chkAnnual.checked){
+        console.log("Annual checked");
+        document.getElementById("regular").checked = false;
+        document.getElementById("annual").checked = true;
+        window.location.href = "/patientaptbook?apttype=annual";
+        
+      }
+    }
+
+
+    var getQueryString = function ( field, url ) {
+    var href = url ? url : window.location.href;
+    console.log(href);
+    var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+    var string = reg.exec(href);
+    return string ? string[1] : null;
+  };
+
+  function checkApptRadioButtons(){
+    alert("hello");
+    var thisOne = getQueryString('apttype');
+    console.log(thisOne);
+  }
+</script>
 {% endblock %}

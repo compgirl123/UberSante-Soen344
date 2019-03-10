@@ -226,10 +226,25 @@ def patient_register():
 def patientaptbook():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
-    time_slot_list = schedule_time_slots()
+    regularChecked = "checked"
+    annualChecked = ""
+    # check if annual or regular is selected and adjust the time slots accordingly
+    opt_param = request.args.get("apttype")
+    if opt_param is not None:
+        if opt_param == "regular":
+            time_slot_list = schedule_time_slots(1200, 36)
+            regularChecked = "checked"
+            annualChecked = ""
+        elif  opt_param == "annual":
+            time_slot_list = schedule_time_slots(3600, 12)
+            regularChecked = ""
+            annualChecked = "checked"
+    else:
+        time_slot_list = schedule_time_slots(1200, 36)
+
     print(user_id)
     print(password)   
-    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list )    
+    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list, regularCheck = regularChecked, annualCheck = annualChecked )    
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
@@ -279,14 +294,14 @@ def register_doctor():
 
 
 #function to generate time slots
-def schedule_time_slots():
+def schedule_time_slots(block_size = 1200, num_blocks = 36):
     time_slot_list = []
 
     a = datetime.time(8,0,0)
     time_slot_list.append(a)
     #print a          
-    for x in range(0,36):
-        b = addSecs(a, 1200)
+    for x in range(0,num_blocks):
+        b = addSecs(a, block_size)
         timeStr = str(b)
         splitTime = timeStr.split(':')
         hours = int(splitTime[0])
