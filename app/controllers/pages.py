@@ -243,8 +243,17 @@ def patientaptbook():
         time_slot_list = schedule_time_slots(1200, 36)
 
     print(user_id)
-    print(password)   
-    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list, regularCheck = regularChecked, annualCheck = annualChecked )    
+    print(password)
+    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list, regularCheck = regularChecked, annualCheck = annualChecked )
+
+# save selected appoitments booked for patients
+@blueprint.route('/savebookedapt', methods=['GET', 'POST'])
+def savebookedapt():
+    if 'test' in request.form:
+        print(request.form['test'])
+    else:
+        print("He")
+    return render_template('patientpages/patient_dashboard.html')
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])

@@ -9,7 +9,7 @@
   <!--<div class="jumbotron">
      Search form -->
         <p class="lead">Book an Appointment</p>
-        <form>
+
 
           
           <div class="row">              
@@ -60,7 +60,8 @@
                 <th scope="col" class="text-center" >FRI<br/><span id="friDate"></span></th>
               </tr>
             </thead>
-            <tbody>                          
+            <tbody>
+             <form method="post" class="form" action="{{ url_for('pages.savebookedapt') }}">
                 {% for t in tlist %}
                 <tr>
                   <th scope="row" style="background-color: grey;width:10px" >{{ t }}</th>
@@ -70,12 +71,13 @@
                   <td><input type="radio" class="radio" name="test" id="thuCheck{{ t }}" onclick="getSelDateTime(4,this.id)" value="{{ t }}"></td>
                   <td><input type="radio" class="radio" name="test" id="friCheck{{ t }}" onclick="getSelDateTime(5,this.id)" value="{{ t }}"></td>
                 </tr> 
-                {%endfor %}                        
+                {%endfor %}
+                 </form>
             </tbody>
           </table>
-        </form>      
 
-        <a type="button" class="btn btn-success btn-lg" href="#" >Book Appointment</a>
+
+        <a type="button" class="btn btn-success btn-lg" href="/savebookedapt" >Book Appointment</a>
         <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
 
         <br/><br/>
