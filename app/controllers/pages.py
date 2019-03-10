@@ -250,8 +250,8 @@ def patientaptbook():
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
     print(request.form)
-    if 'test' in request.form:
-        print(request.form['test'])
+    if 'time' in request.form:
+        print(request.form['time'])
     else:
         print("He")
     return render_template('patientpages/patient_dashboard.html')

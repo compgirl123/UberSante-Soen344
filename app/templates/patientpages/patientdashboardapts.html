@@ -63,20 +63,19 @@
                 {% for t in tlist %}
                 <tr>
                   <th scope="row" style="background-color: grey;width:10px" >{{ t }}</th>
-                  <td><input type="radio" class="radio" name="test" id="monCheck{{ t }}" onclick="getSelDateTime(1,this.id)" value="{{ t }}"></td> 
-                  <td><input type="radio" class="radio" name="test" id="tueCheck{{ t }}" onclick="getSelDateTime(2,this.id)" value="{{ t }}"></td>
-                  <td><input type="radio" class="radio" name="test" id="wedCheck{{ t }}" onclick="getSelDateTime(3,this.id)" value="{{ t }}"></td>
-                  <td><input type="radio" class="radio" name="test" id="thuCheck{{ t }}" onclick="getSelDateTime(4,this.id)" value="{{ t }}"></td>
-                  <td><input type="radio" class="radio" name="test" id="friCheck{{ t }}" onclick="getSelDateTime(5,this.id)" value="{{ t }}"></td>
-                </tr> 
+                  <td><input type="radio" class="radio" name="time" id="monCheck{{ t }}" onclick="getSelDateTime(1,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="time" id="tueCheck{{ t }}" onclick="getSelDateTime(2,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="time" id="wedCheck{{ t }}" onclick="getSelDateTime(3,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="time" id="thuCheck{{ t }}" onclick="getSelDateTime(4,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="time" id="friCheck{{ t }}" onclick="getSelDateTime(5,this.id)" value="{{ t }}"></td>
+                </tr>
                 {%endfor %}
-
             </tbody>
           </table>
 
 
-        <button type="submit" class="btn btn-success btn-lg">Book Appointment</button>
-        <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
+        <button type="submit" id = "apppointment_selected" name = "apppointment_selected" class="btn btn-success btn-lg" value="dd">Book Appointment</button>
+        <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout"  >Log Out</a>
 
        </form>
 
@@ -85,6 +84,7 @@
 </div>
 
 <script>
+
     function changeHourBlock() {
       var chkRegular = document.getElementById("regular");
       var chkAnnual = document.getElementById("annual");
@@ -109,22 +109,32 @@
       var selTime = document.getElementById(click_id).value;
       if(dayNum == 1){
         console.log("MON-" + document.getElementById('monDate').innerHTML + "-" + selTime);
+        var get_date = "MONDAY-" + document.getElementById('monDate').innerHTML
+        document.getElementById("apppointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 2){
         console.log("TUE-" + document.getElementById('tueDate').innerHTML + "-" + selTime);
+        var get_date = "TUESDAY-" + document.getElementById('tueDate').innerHTML
+        document.getElementById("apppointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 3){
         console.log("WED-" + document.getElementById('wedDate').innerHTML + "-" + selTime);
+        var get_date = "WEDNESDAY-" + document.getElementById('wedDate').innerHTML
+        document.getElementById("apppointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 4){
         console.log("THU-" + document.getElementById('thuDate').innerHTML + "-" + selTime);
+        var get_date = "THURSDAY-" + document.getElementById('thuDate').innerHTML
+        document.getElementById("apppointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 5){
         console.log("FRI-" + document.getElementById('friDate').innerHTML + "-" + selTime);
+        var get_date = "FRIDAY" + document.getElementById('friDate').innerHTML
+        document.getElementById("apppointment_selected").value = get_date;
         console.log();
       }
     }
