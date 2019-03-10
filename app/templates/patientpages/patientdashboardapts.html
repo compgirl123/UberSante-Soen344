@@ -74,7 +74,7 @@
           </table>
 
 
-        <button type="submit" id = "apppointment_selected" name = "apppointment_selected" class="btn btn-success btn-lg" value="dd">Book Appointment</button>
+        <button type="submit" id = "appointment_selected" name = "appointment_selected" class="btn btn-success btn-lg" value="dd">Book Appointment</button>
         <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout"  >Log Out</a>
 
        </form>
@@ -110,31 +110,31 @@
       if(dayNum == 1){
         console.log("MON-" + document.getElementById('monDate').innerHTML + "-" + selTime);
         var get_date = "MONDAY-" + document.getElementById('monDate').innerHTML
-        document.getElementById("apppointment_selected").value = get_date;
+        document.getElementById("appointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 2){
         console.log("TUE-" + document.getElementById('tueDate').innerHTML + "-" + selTime);
         var get_date = "TUESDAY-" + document.getElementById('tueDate').innerHTML
-        document.getElementById("apppointment_selected").value = get_date;
+        document.getElementById("appointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 3){
         console.log("WED-" + document.getElementById('wedDate').innerHTML + "-" + selTime);
         var get_date = "WEDNESDAY-" + document.getElementById('wedDate').innerHTML
-        document.getElementById("apppointment_selected").value = get_date;
+        document.getElementById("appointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 4){
         console.log("THU-" + document.getElementById('thuDate').innerHTML + "-" + selTime);
         var get_date = "THURSDAY-" + document.getElementById('thuDate').innerHTML
-        document.getElementById("apppointment_selected").value = get_date;
+        document.getElementById("appointment_selected").value = get_date;
         console.log();
       }
       else if(dayNum == 5){
         console.log("FRI-" + document.getElementById('friDate').innerHTML + "-" + selTime);
         var get_date = "FRIDAY" + document.getElementById('friDate').innerHTML
-        document.getElementById("apppointment_selected").value = get_date;
+        document.getElementById("appointment_selected").value = get_date;
         console.log();
       }
     }

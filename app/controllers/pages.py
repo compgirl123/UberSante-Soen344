@@ -246,15 +246,25 @@ def patientaptbook():
     print(password)
     return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list, regularCheck = regularChecked, annualCheck = annualChecked )
 
-# save selected appoitments booked for patients
+# save selected appointments booked for patients
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
-    print(request.form)
-    if 'time' in request.form:
-        print(request.form['time'])
-    else:
-        print("He")
-    return render_template('patientpages/patient_dashboard.html')
+    if request.method == "POST":
+        _time = request.form['time']
+        _appointment_selected = request.form['appointment_selected']
+        print(_appointment_selected)
+        response = redirect(url_for("pages.patient_apts_scheduled"))
+        response.set_cookie('time', _time)
+        response.set_cookie('appointment_selected', _appointment_selected)
+    return response
+
+# view upcoming appointments for the patient
+@blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
+def patient_apts_scheduled():
+    time = request.cookies.get('time')
+    appointment_selected = request.cookies.get('appointment_selected')
+    print(appointment_selected)
+    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected)
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
