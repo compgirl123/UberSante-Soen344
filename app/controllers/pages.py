@@ -130,7 +130,7 @@ def doctordashboard():
         print(type(_user))
         print(type(_user) == type(None))
         _user2 = 1
-        _obj2 = _obj.doctor_table(_name)
+        #_obj2 = _obj.doctor_table(_name)
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_doctor_login"))
         else:
@@ -228,6 +228,14 @@ def patientaptbook():
     password = request.cookies.get('phone_number')
     regularChecked = "checked"
     annualChecked = ""
+    _doctor_obj = Doctorcontroller()
+    _doctors_list = _doctor_obj.doctor_table()
+    doctorlist = []
+    for infos in _doctors_list:
+        doctorlist.append(infos[2]+ " "+ infos[1])
+        #print(infos[1])
+        #print(infos[2])
+    print(doctorlist[1])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
     if opt_param is not None:
@@ -241,10 +249,10 @@ def patientaptbook():
             annualChecked = "checked"
     else:
         time_slot_list = schedule_time_slots(1200, 36)
-
     print(user_id)
     print(password)
-    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list, regularCheck = regularChecked, annualCheck = annualChecked )
+    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list,
+                           regularCheck = regularChecked, annualCheck = annualChecked , doctorlist = doctorlist)
 
 # save selected appointments booked for patients
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])

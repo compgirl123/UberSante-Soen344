@@ -11,7 +11,7 @@ from app.classes.database_container import DatabaseContainer as db
 
 class Doctorcontroller:
 
-    def doctor_table(self, name):
+    def doctor_table(self):
 
         '''
         Creating Arrays to Store the values of each column for the Doctor Table
