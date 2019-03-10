@@ -22,14 +22,14 @@ $(document).ready(function() {
         var fmtDateWed = (dateWed.getMonth() + 1) + '/' + dateWed.getDate() + '/' +  dateWed.getFullYear();
         var fmtDateThu = (dateThu.getMonth() + 1) + '/' + dateThu.getDate() + '/' +  dateThu.getFullYear();
         var fmtDateFri = (dateFri.getMonth() + 1) + '/' + dateFri.getDate() + '/' +  dateFri.getFullYear();
-        console.log("The date chosen: " + e.format());
+        /* console.log("The date chosen: " + e.format());
         console.log("Resulting weekdays: " +
         "\n- Monday: " + fmtDateMon
         + "\n- Tuesday: " + fmtDateTue
         + "\n- Wednesday: " + fmtDateWed
         + "\n- Thursday: " + fmtDateThu
         + "\n- Friday: " + fmtDateFri
-        );
+        ); */
 
         // set the dates for each day in table header
         document.getElementById('monDate').innerHTML = fmtDateMon

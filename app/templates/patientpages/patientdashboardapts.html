@@ -52,23 +52,23 @@
           <table class="table table-striped" >
             <thead class="thead-dark" style="background-color: grey;border-bottom: solid 2px grey">
               <tr>
-                <th scope="col" style="background-color: grey;" >Time slot</th>
-                <th scope="col" class="text-center">MON<br/><span id="monDate"></span></th>
-                <th scope="col" class="text-center">TUE<br/><span id="tueDate"></span></th>
-                <th scope="col" class="text-center">WED<br/><span id="wedDate"></span></th>
-                <th scope="col" class="text-center">THU<br/><span id="thuDate"></span></th>
-                <th scope="col" class="text-center">FRI<br/><span id="friDate"></span></th>
+                <th scope="col" style="background-color: grey;" >Time Slot</th>
+                <th scope="col" class="text-center"  >MON<br/><span id="monDate"></span></th>
+                <th scope="col" class="text-center" >TUE<br/><span id="tueDate"></span></th>
+                <th scope="col" class="text-center" >WED<br/><span id="wedDate"></span></th>
+                <th scope="col" class="text-center" >THU<br/><span id="thuDate"></span></th>
+                <th scope="col" class="text-center" >FRI<br/><span id="friDate"></span></th>
               </tr>
             </thead>
             <tbody>                          
                 {% for t in tlist %}
                 <tr>
-                  <th scope="row" class="bg-info"  style="background-color: grey;width:10px" >{{ t }}</th>
-                  <td><input type="radio" class="radio" name="test" id="monCheck" onclick="getSelDateTime()"></td> 
-                  <td><input type="radio" class="radio" name="test" id="tueCheck" onclick="getSelDateTime()" ></td>
-                  <td><input type="radio" class="radio" name="test" id="wedCheck" onclick="getSelDateTime()" ></td>
-                  <td><input type="radio" class="radio" name="test" id="thuCheck" onclick="getSelDateTime()" ></td>
-                  <td><input type="radio" class="radio" name="test" id="friCheck" onclick="getSelDateTime()" ></td>
+                  <th scope="row" style="background-color: grey;width:10px" >{{ t }}</th>
+                  <td><input type="radio" class="radio" name="test" id="monCheck{{ t }}" onclick="getSelDateTime(1,this.id)" value="{{ t }}"></td> 
+                  <td><input type="radio" class="radio" name="test" id="tueCheck{{ t }}" onclick="getSelDateTime(2,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="test" id="wedCheck{{ t }}" onclick="getSelDateTime(3,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="test" id="thuCheck{{ t }}" onclick="getSelDateTime(4,this.id)" value="{{ t }}"></td>
+                  <td><input type="radio" class="radio" name="test" id="friCheck{{ t }}" onclick="getSelDateTime(5,this.id)" value="{{ t }}"></td>
                 </tr> 
                 {%endfor %}                        
             </tbody>
@@ -101,19 +101,28 @@
       }
     }
 
-
-    var getQueryString = function ( field, url ) {
-    var href = url ? url : window.location.href;
-    console.log(href);
-    var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
-    var string = reg.exec(href);
-    return string ? string[1] : null;
-  };
-
-  function checkApptRadioButtons(){
-    alert("hello");
-    var thisOne = getQueryString('apttype');
-    console.log(thisOne);
-  }
+    function getSelDateTime(dayNum, click_id) {
+      var selTime = document.getElementById(click_id).value;
+      if(dayNum == 1){
+        console.log("MON-" + document.getElementById('monDate').innerHTML + "-" + selTime);
+        console.log();
+      }
+      else if(dayNum == 2){
+        console.log("TUE-" + document.getElementById('tueDate').innerHTML + "-" + selTime);
+        console.log();
+      }
+      else if(dayNum == 3){
+        console.log("WED-" + document.getElementById('wedDate').innerHTML + "-" + selTime);
+        console.log();
+      }
+      else if(dayNum == 4){
+        console.log("THU-" + document.getElementById('thuDate').innerHTML + "-" + selTime);
+        console.log();
+      }
+      else if(dayNum == 5){
+        console.log("FRI-" + document.getElementById('friDate').innerHTML + "-" + selTime);
+        console.log();
+      }
+    } 
 </script>
 {% endblock %}
