@@ -2,59 +2,118 @@
 {% block title %}About{% endblock %}
 {% block content %}
 
-<div class="page-header">
+<div class="page-header" >
   <h1>Welcome {{ user }}</h1>
 </div>
-
-
 <div class="container">
   <!--<div class="jumbotron">
      Search form -->
         <p class="lead">Book an Appointment</p>
-        <table class="table table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Time slot</th>
-              <th scope="col">Monday</th>
-              <th scope="col">Tuesday</th>
-              <th scope="col">Wednesday</th>
-              <th scope="col">Thursday</th>
-              <th scope="col">Friday</th>
-            </tr>
-          </thead>
-          <tbody>                          
-              {% for t in tlist %}
+        <form>
+
+          
+          <div class="row">              
+              <div class="col-xs-6 col-md-6">
+                  <p><strong>Pick Appointment Date</strong></p>
+                  <div class="form-group" style="background-color: #cdd0d6">
+                      <div class="input-group date">                          
+                          <input type="text" class="form-control" id="datepicker1" name="date" />
+                          <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                      </div>              
+                    </div>
+              </div>
+              <div class="col-xs-6 col-md-6">
+                  <strong>Pick Appointment Type</strong>
+                  <div style="background-color: #cdd0d6; padding-left: 20px">
+                    <div class="radio_appt_type">
+                      <label>
+                        <input type="radio" name="appt_type" id="regular" value="Regular Appt" onclick="changeHourBlock()" 
+                        {{ regularCheck }}
+                        >
+                        Regular
+                      </label>
+                    </div>
+                    <div class="radio_appt_type">
+                      <label>
+                        <input type="radio" name="appt_type" id="annual" value="Annual Appt" onclick="changeHourBlock()"
+                        {{ annualCheck }}
+                        >
+                        Annual
+                      </label>
+                    </div>
+                  </div>         
+
+              </div>
+            </div>
+          
+
+          <table class="table table-striped" >
+            <thead class="thead-dark" style="background-color: grey;border-bottom: solid 2px grey">
               <tr>
-                <th scope="row" class="bg-info">{{ t }}</th>
-                <td><input type="radio" class="radio" name="test" id=i1 checked></td>
-                <td><input type="radio" class="radio" name="test" id=i1 ></td>
-                <td><input type="radio" class="radio" name="test" id=i1 ></td>
-                <td><input type="radio" class="radio" name="test" id=i1 ></td>
-                <td><input type="radio" class="radio" name="test" id=i1 ></td>
-               </tr> 
-              {%endfor %}                        
-          </tbody>
-        </table>
+                <th scope="col" style="background-color: grey;" >Time slot</th>
+                <th scope="col" class="text-center">MON<br/><span id="monDate"></span></th>
+                <th scope="col" class="text-center">TUE<br/><span id="tueDate"></span></th>
+                <th scope="col" class="text-center">WED<br/><span id="wedDate"></span></th>
+                <th scope="col" class="text-center">THU<br/><span id="thuDate"></span></th>
+                <th scope="col" class="text-center">FRI<br/><span id="friDate"></span></th>
+              </tr>
+            </thead>
+            <tbody>                          
+                {% for t in tlist %}
+                <tr>
+                  <th scope="row" class="bg-info"  style="background-color: grey;width:10px" >{{ t }}</th>
+                  <td><input type="radio" class="radio" name="test" id="monCheck" onclick="getSelDateTime()"></td> 
+                  <td><input type="radio" class="radio" name="test" id="tueCheck" onclick="getSelDateTime()" ></td>
+                  <td><input type="radio" class="radio" name="test" id="wedCheck" onclick="getSelDateTime()" ></td>
+                  <td><input type="radio" class="radio" name="test" id="thuCheck" onclick="getSelDateTime()" ></td>
+                  <td><input type="radio" class="radio" name="test" id="friCheck" onclick="getSelDateTime()" ></td>
+                </tr> 
+                {%endfor %}                        
+            </tbody>
+          </table>
+        </form>      
         
-
-         <!--<label for="permit">Permit #:</label>
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="permit" name="permit">
+        <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
         <br/><br/>
-
-        <p class="lead">Search by Healthcare Number</p>
-         <label for="healthcare">Healthcare #:</label>
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="healthcare" name="healthcare">
-        <br/><br/>
-        <button type="submit" class="btn btn-success btn-lg">Search</button>
-  </div>-->
-  <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
 
 </div>
 
-<!--<p class="lead">This is just a placeholder page which should be replaced with real content.</p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tellus ligula, imperdiet id lobortis sit amet, scelerisque non sapien. Duis quis dui quis mauris dapibus fringilla. Pellentesque nec tellus ac diam volutpat malesuada.</p>
-<p>In quam arcu, interdum vel arcu viverra, vulputate convallis massa. Sed hendrerit velit a arcu euismod, sit amet consequat lacus imperdiet. Nullam quis dui sapien. Vestibulum placerat, justo non fringilla laoreet, dui ipsum posuere nisi, nec vestibulum eros leo ut sapien.</p>
-<p>Vivamus eu felis sed magna scelerisque semper in et libero. Curabitur sed convallis odio, quis venenatis sapien. In convallis a velit ac commodo. Donec sapien ligula, vestibulum ut nisi accumsan, facilisis pretium est. Fusce varius semper orci, et egestas nulla cursus a. Phasellus aliquam, mi ac adipiscing lobortis, ipsum augue aliquam ligula, quis fermentum mi augue vel ligula.</p>
-<p>Integer elementum malesuada dolor in aliquet.</p>-->
+<script>
+    function changeHourBlock() {
+      var chkRegular = document.getElementById("regular");
+      var chkAnnual = document.getElementById("annual");
+      
+      if(chkRegular.checked){
+        console.log("Regular checked");
+        document.getElementById("regular").checked = true;
+        document.getElementById("annual").checked = false;
+        window.location.href = "/patientaptbook?apttype=regular";
+        
+      }
+      else if(chkAnnual.checked){
+        console.log("Annual checked");
+        document.getElementById("regular").checked = false;
+        document.getElementById("annual").checked = true;
+        window.location.href = "/patientaptbook?apttype=annual";
+        
+      }
+    }
 
+
+    var getQueryString = function ( field, url ) {
+    var href = url ? url : window.location.href;
+    console.log(href);
+    var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+    var string = reg.exec(href);
+    return string ? string[1] : null;
+  };
+
+  function checkApptRadioButtons(){
+    alert("hello");
+    var thisOne = getQueryString('apttype');
+    console.log(thisOne);
+  }
+</script>
 {% endblock %}
