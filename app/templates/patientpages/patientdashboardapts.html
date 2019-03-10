@@ -9,8 +9,6 @@
   <!--<div class="jumbotron">
      Search form -->
         <p class="lead">Book an Appointment</p>
-
-
           
           <div class="row">              
               <div class="col-xs-6 col-md-6">
@@ -72,13 +70,15 @@
                   <td><input type="radio" class="radio" name="test" id="friCheck{{ t }}" onclick="getSelDateTime(5,this.id)" value="{{ t }}"></td>
                 </tr> 
                 {%endfor %}
-                 </form>
+
             </tbody>
           </table>
 
 
-        <a type="button" class="btn btn-success btn-lg" href="/savebookedapt" >Book Appointment</a>
+        <button type="submit" class="btn btn-success btn-lg">Book Appointment</button>
         <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout" >Log Out</a>
+
+       </form>
 
         <br/><br/>
 
@@ -88,20 +88,20 @@
     function changeHourBlock() {
       var chkRegular = document.getElementById("regular");
       var chkAnnual = document.getElementById("annual");
-      
+
       if(chkRegular.checked){
         console.log("Regular checked");
         document.getElementById("regular").checked = true;
         document.getElementById("annual").checked = false;
         window.location.href = "/patientaptbook?apttype=regular";
-        
+
       }
       else if(chkAnnual.checked){
         console.log("Annual checked");
         document.getElementById("regular").checked = false;
         document.getElementById("annual").checked = true;
         window.location.href = "/patientaptbook?apttype=annual";
-        
+
       }
     }
 
@@ -127,6 +127,6 @@
         console.log("FRI-" + document.getElementById('friDate').innerHTML + "-" + selTime);
         console.log();
       }
-    } 
+    }
 </script>
 {% endblock %}

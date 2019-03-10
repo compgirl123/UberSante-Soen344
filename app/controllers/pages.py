@@ -249,6 +249,7 @@ def patientaptbook():
 # save selected appoitments booked for patients
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
+    print(request.form)
     if 'test' in request.form:
         print(request.form['test'])
     else:
