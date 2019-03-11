@@ -285,6 +285,8 @@ def patient_apts_scheduled():
 
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    _doc_speciality = _doc_query[2]
+    print(_doc_query[2])
 
     _time_split = time.split(":")
     _time_end = time.split(":")
@@ -302,17 +304,15 @@ def patient_apts_scheduled():
 
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
-    print(appointment_selected)
-    print(type(_doc_query[2]))
-    _appointment_obj.create_appointment("Family", 1235, "03/11/2019", "09:40:00", "10:00:00")
-    #_appointment_obj.create_appointment(_doc_query[2],1235,date,time,_time_end)
-    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
+    print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
+    _appointment_obj.create_appointment(_doc_query[2],12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
+    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
     _user_full_name = _get_user[0]+" "+_get_user[1]
-    #user(self, health_card, phone_number)
 
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
@@ -328,7 +328,7 @@ def patientdashboard():
 
         print(type(_user))
         print(type(_user) == type(None))
-        _user2 = 1
+
         _obj2 = _obj.patient_table(_healthcard)
         if type(_user) == type(None):
             message = "Patient is not in the system."
