@@ -11,7 +11,7 @@ from app.classes.database_container import DatabaseContainer as db
 
 class Doctorcontroller:
 
-    def doctor_table(self, name):
+    def doctor_table(self):
 
         '''
         Creating Arrays to Store the values of each column for the Doctor Table
@@ -96,7 +96,6 @@ class Doctorcontroller:
         return values_from_db
 
 
-
     def find_user(self, permit_number, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
         #print("HELLOO")
@@ -152,6 +151,22 @@ class Doctorcontroller:
                 query = ""
         except ValueError:
             query = ""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+        # returns a list of users
+        return d
+
+    def find_doctor_by_full_name(self, first_name, last_name):
+        '''
+             Finding the particular doctor according to their first and last name
+        '''
+        database = db.get_instance()
+        query = "SELECT * FROM doctor WHERE first_name= ""'" + first_name + "'"" AND last_name= ""'" + last_name + "'"""
+        print(query)
 
         cur = database.execute_query(query)
         data = cur.fetchall()

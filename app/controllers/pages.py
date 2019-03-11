@@ -3,6 +3,7 @@ from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
+from app.controllers.appointmentcontroller import *
 import datetime
 
 blueprint = Blueprint('pages', __name__)
@@ -134,7 +135,7 @@ def doctordashboard():
         print(type(_user))
         print(type(_user) == type(None))
         _user2 = 1
-        _obj2 = _obj.doctor_table(_name)
+        #_obj2 = _obj.doctor_table(_name)
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_doctor_login"))
         else:
@@ -232,6 +233,13 @@ def patientaptbook():
     password = request.cookies.get('phone_number')
     regularChecked = "checked"
     annualChecked = ""
+    _doctor_obj = Doctorcontroller()
+    _doctors_list = _doctor_obj.doctor_table()
+    print(_doctors_list)
+    doctorlist = []
+    print(_doctors_list)
+    for infos in _doctors_list:
+        doctorlist.append(infos[2]+ " "+ infos[1])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
     if opt_param is not None:
@@ -245,21 +253,23 @@ def patientaptbook():
             annualChecked = "checked"
     else:
         time_slot_list = schedule_time_slots(1200, 36)
-
     print(user_id)
     print(password)
-    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list, regularCheck = regularChecked, annualCheck = annualChecked )
+    return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list,
+                           regularCheck = regularChecked, annualCheck = annualChecked , doctorlist = doctorlist)
 
 # save selected appointments booked for patients
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
     if request.method == "POST":
+        print(request.form)
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
-        print(_appointment_selected)
+        _doctor_picked = request.form['doctor_picked']
         response = redirect(url_for("pages.patient_apts_scheduled"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
+        response.set_cookie('doctor_picked',_doctor_picked)
     return response
 
 # view upcoming appointments for the patient
@@ -267,8 +277,39 @@ def savebookedapt():
 def patient_apts_scheduled():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    first_last_name_arr = doctor_selected.split(" ")
+    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    #print(_doc_query)
+
+    _time_split = time.split(":")
+    _time_end = time.split(":")
+
+    if(_time_split[1] == "00"):
+        _time_end[1] = "20"
+    elif(_time_split[1] == "20"):
+        _time_end[1] = "40"
+    elif(_time_split[1] == "40"):
+        numb = int(_time_end[0])
+        next_hour = numb+1
+        _time_end[0] = str(next_hour)
+        _time_end[1] = "00"
+    print(_time_end)
+
+    date = appointment_selected.split("-")[1]
+    print(appointment_selected.split("-")[1])
     print(appointment_selected)
-    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected)
+    print(type(_doc_query[2]))
+    _appointment_obj.create_appointment("Family", 1235, "03/11/2019", "09:40:00", "10:00:00")
+    #_appointment_obj.create_appointment(_doc_query[2],1235,date,time,_time_end)
+    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
+
+    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
+                           doctor_picked = doctor_selected )
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
