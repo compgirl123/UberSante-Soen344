@@ -1,0 +1,24 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1>UberSante - Appointments for {{user_name}}</h1><br>
+</div>
+<p class="lead">Appointments with {{doctor_picked}}</p>
+
+<div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+  <div class="container">
+    <p>Appointment successfully added to the cart</p>
+    <p>{{appointment_selected}}</p>
+    <p>{{time}}</p>
+  </div>
+
+  <a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
+
+</div>
+
+<button type="submit" id = "update" name = "update" class="btn btn-success btn-lg" value="s"> Update</button>
+<button type="submit" id = "delete" name = "delete" class="btn btn-success btn-lg" value="s"> Delete</button>
+
+{% endblock %}
