@@ -107,12 +107,14 @@ class AppointmentController:
             
     def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
         try:
+
             query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id) VALUES (?,?,?,?,?,?,?,?)"
             item = (appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
             conn.execute(query, item)
             return True
 
         except Error as e:
+            print("ERROR HERE")
             print(e)
             return False
 

@@ -278,13 +278,13 @@ def patient_apts_scheduled():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
     doctor_selected = request.cookies.get('doctor_picked')
+    health_care = request.cookies.get('healthcard')
 
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
 
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
-    #print(_doc_query)
 
     _time_split = time.split(":")
     _time_end = time.split(":")
@@ -308,8 +308,14 @@ def patient_apts_scheduled():
     #_appointment_obj.create_appointment(_doc_query[2],1235,date,time,_time_end)
     # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
 
+    _obj_user = Patientcontroller()
+    _patient_obj = Patientcontroller()
+    _get_user = _patient_obj.find_a_patient(health_care)
+    _user_full_name = _get_user[0]+" "+_get_user[1]
+    #user(self, health_card, phone_number)
+
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
-                           doctor_picked = doctor_selected )
+                           doctor_picked = doctor_selected , user_name = _user_full_name)
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
