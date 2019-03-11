@@ -24,6 +24,10 @@ def about():
 def doctorschedule():
     return render_template('doctorpages/doctorschedule.html')
 
+@blueprint.route('/payment')
+def payment():
+    return render_template('patientpages/payment.html')
+
 '''
     Nurse Search Page routes
 '''
