@@ -28,6 +28,10 @@ def doctorschedule():
 def payment():
     return render_template('patientpages/payment.html')
 
+@blueprint.route('/thank_you')
+def thank_you():
+    return render_template('patientpages/thank_you.html')
+
 '''
     Nurse Search Page routes
 '''
