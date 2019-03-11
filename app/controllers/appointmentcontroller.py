@@ -27,7 +27,7 @@ class AppointmentController:
         
 
     def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
-        conn = AppointmentController.connect_database()
+        conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
         if doctor_id == False:
             raise Exception('No doctor is available!')
@@ -58,8 +58,11 @@ class AppointmentController:
         query2 = "SELECT id FROM room"
         conn.execute(query, (appointment_date, start_time, start_time, end_time, end_time))
         occupied = conn.fetchall()
-        conn.execute(query2,())
+        conn.execute(query2, ())
+
         availableRooms = conn.fetchall()
+        #print("ROOM")
+        #print(availableRooms[0][0])
         for room in availableRooms:
             if room in occupied:
                 availableRooms.remove(room)
@@ -80,6 +83,7 @@ class AppointmentController:
         #query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
         # conn.execute(query)
         # conn.execute(query)
+
         conn.execute(query,(doctor_speciality,))
         specialists = conn.fetchall()
         conn.execute(query2,(appointment_date, start_time, end_time))
@@ -98,7 +102,7 @@ class AppointmentController:
         return False
 
 
-    def connect_database():
+    def connect_database(self):
         try:
             conn = sqlite3.connect('./app/database/SOEN344_DATABASE.db')
             c = conn.cursor()
@@ -109,12 +113,28 @@ class AppointmentController:
             
     def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
         try:
-            query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id) VALUES (?,?,?,?,?,?,?,?)"
-            item = (appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
-            conn.execute(query, item)
+
+            query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
+                    " appointment_date, start_time, end_time, patient_id, doctor_id)" \
+                    "VALUES (?,?,?,?,?,?,?,?)"
+                    #"("+str(appointment_room)+")
+
+            print(query)
+            '''
+                appointment_room = int(appointment_room[0])
+                doctor_id = int(doctor_id[0])
+            '''
+
+            item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time), str(end_time),str(patient_id),str(doctor_id[0]))
+            print(item)
+            conn.execute(query,item)
+            result = conn.fetchall()
+            print(result)
             return True
 
         except Error as e:
+            #print("START")
+            #print(item)
             print(e)
             return False
 
