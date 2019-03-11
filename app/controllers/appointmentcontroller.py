@@ -5,8 +5,7 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.nursecontroller import *
-from mysql.connector import MySQLConnection
-from python_mysql_dbconfig import read_db_config
+
 
 
 class AppointmentController:
