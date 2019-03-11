@@ -3,6 +3,7 @@ from app.forms import *
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
+from app.controllers.appointmentcontroller import *
 import datetime
 
 blueprint = Blueprint('pages', __name__)
@@ -233,8 +234,6 @@ def patientaptbook():
     doctorlist = []
     for infos in _doctors_list:
         doctorlist.append(infos[2]+ " "+ infos[1])
-        #print(infos[1])
-        #print(infos[2])
     print(doctorlist[1])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
@@ -258,12 +257,14 @@ def patientaptbook():
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
     if request.method == "POST":
+        print(request.form)
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
-        print(_appointment_selected)
+        _doctor_picked = request.form['doctor_picked']
         response = redirect(url_for("pages.patient_apts_scheduled"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
+        response.set_cookie('doctor_picked',_doctor_picked)
     return response
 
 # view upcoming appointments for the patient
@@ -271,8 +272,39 @@ def savebookedapt():
 def patient_apts_scheduled():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    first_last_name_arr = doctor_selected.split(" ")
+    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    #print(_doc_query)
+
+    _time_split = time.split(":")
+    _time_end = time.split(":")
+
+    if(_time_split[1] == "00"):
+        _time_end[1] = "20"
+    elif(_time_split[1] == "20"):
+        _time_end[1] = "40"
+    elif(_time_split[1] == "40"):
+        numb = int(_time_end[0])
+        next_hour = numb+1
+        _time_end[0] = str(next_hour)
+        _time_end[1] = "00"
+    print(_time_end)
+
+    date = appointment_selected.split("-")[1]
+    print(appointment_selected.split("-")[1])
     print(appointment_selected)
-    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected)
+    print(type(_doc_query[2]))
+
+    #_appointment_obj.create_appointment(_doc_query[2],1235,date,time,_time_end)
+    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
+
+    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
+                           doctor_picked = doctor_selected )
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])

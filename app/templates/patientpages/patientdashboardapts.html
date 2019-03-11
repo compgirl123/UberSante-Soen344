@@ -45,25 +45,18 @@
 
               </div>
             </div>
-
+         <form method="post" class="form" action="{{ url_for('pages.savebookedapt') }}">
           <div class="row">
               <div class="col-xs-6 col-md-6">
-                  <p><strong>Pick Doctor</strong></p>
                   <!-- Add a dropdown here -->
-                  <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown">Select Doctor <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                          <!-- Pick from a list of doctors -->
-                          {% for dr in doctorlist %}
-                          <li><a href="#">{{dr}}</a></li>
-                          {%endfor %}
-                      </ul>
-                    </li>
-                  </ul>
+                  <p><strong>Pick Doctor</strong></p>
+                  <select id = "doctor_picked" name = "doctor_picked">
+                      {% for dr in doctorlist %}
+                        <option value="{{dr}}">{{dr}}</option>
+                      {%endfor %}
+                  </select>
               </div>
             </div>
-          
 
           <table class="table table-striped" >
             <thead class="thead-dark" style="background-color: grey;border-bottom: solid 2px grey">
@@ -77,7 +70,7 @@
               </tr>
             </thead>
             <tbody>
-             <form method="post" class="form" action="{{ url_for('pages.savebookedapt') }}">
+
                 {% for t in tlist %}
                 <tr>
                   <th scope="row" style="background-color: grey;width:10px" >{{ t }}</th>

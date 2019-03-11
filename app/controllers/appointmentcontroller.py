@@ -24,7 +24,7 @@ class AppointmentController:
             return [doctorsAvailable, availableRoom]
         
 
-    def create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time):
+    def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
         conn = AppointmentController.connect_database()
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
         if doctor_id == False:
