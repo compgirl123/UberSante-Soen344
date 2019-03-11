@@ -5,6 +5,8 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.nursecontroller import *
+from mysql.connector import MySQLConnection
+from python_mysql_dbconfig import read_db_config
 
 
 class AppointmentController:
@@ -122,3 +124,31 @@ class AppointmentController:
         conn.execute(query,(doctor_id, appointment_date))
         result = conn.fetchall()
         return result
+
+
+    def appointmentupdate(self, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+        start_time = str(start_time) 
+        end_time = str(end_time)
+        #start_time = str(start_time_hour) + ':' + str(start_time_minute)     
+        #end_time = str(end_time_hour) + ':' + str(end_time_minute)     
+        database = db.get_instance()
+
+        query2 = "UPDATE doctoravailability SET date_day =?, start_time = ?, end_time = ?, doctor_id = ?)"
+        patient_id = int(patient_id)
+        database.execute_query(query2, (appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id ))
+        database.commit_db()
+        message = "hello"
+        return message
+
+
+    def getallappointments(self, patient_id):
+        database = db.get_instance()
+        query = "SELECT * FROM appointment WHERE patient_id=" + patient_id
+        queryexecute = database.execute_query(query)
+        data2 = queryexecute.fetchall()
+        return data2
+
+    def deleteappointment(self):
+        return 0
+
+
