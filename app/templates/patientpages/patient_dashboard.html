@@ -3,17 +3,19 @@
 {% block content %}
 
 <div class="page-header">
-  <h1>UberSante - Appointments for Jane Doe</h1>
+  <h1>UberSante - Appointments for Jane Doe</h1><br>
 </div>
 <p class="lead">Appointments with {{doctor_picked}}</p>
 
 <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
   <div class="container">
+    <p>Appointment successfully added to the cart</p>
     <p>{{appointment_selected}}</p>
     <p>{{time}}</p>
   </div>
 
-  <button type="submit" id = "cart" name = "cart" class="btn btn-success btn-lg" value="s"> Add to cart</button>
+  <!--<button type="submit" id = "cart" name = "cart" class="btn btn-success btn-lg" value="s"> Make a Payment</button>-->
+  <a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
 
 </div>
 
