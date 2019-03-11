@@ -235,10 +235,11 @@ def patientaptbook():
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
     _doctors_list = _doctor_obj.doctor_table()
+    print(_doctors_list)
     doctorlist = []
+    print(_doctors_list)
     for infos in _doctors_list:
         doctorlist.append(infos[2]+ " "+ infos[1])
-    print(doctorlist[1])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
     if opt_param is not None:
@@ -303,7 +304,7 @@ def patient_apts_scheduled():
     print(appointment_selected.split("-")[1])
     print(appointment_selected)
     print(type(_doc_query[2]))
-
+    _appointment_obj.create_appointment("Family", 1235, "03/11/2019", "09:40:00", "10:00:00")
     #_appointment_obj.create_appointment(_doc_query[2],1235,date,time,_time_end)
     # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
 
