@@ -19,9 +19,54 @@ def home():
 def about():
     return render_template('pages/placeholder.about.html')
 
-@blueprint.route('/doctorschedule')
+@blueprint.route('/doctorschedule', methods=['GET', 'POST'])
 def doctorschedule():
-    return render_template('doctorpages/doctorschedule.html')
+    permit = request.cookies.get('permitnumber')
+    password = request.cookies.get('password')
+    obj = Doctorcontroller()
+    doctor_info = obj.find_doctor_by_permit_number(permit)
+    
+    return render_template('doctorpages/doctorschedule.html', doctor_info = doctor_info)
+
+@blueprint.route('/subject', methods=['GET', 'POST'])
+def doctorapptbook():
+    date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    permit = request.cookies.get('permitnumber')
+    obj = Doctorcontroller()
+    doctor_info = obj.find_doctor_by_permit_number(permit)
+    doctor_id = obj.find_doctor_id(permit)
+    #pick time
+    if request.method == 'POST':
+        if request.form['submit'] == 'submit':
+            sels = []
+            sels.append(request.form.get("sel1"))
+            sels.append(request.form.get("sel2"))
+            sels.append(request.form.get("sel3"))
+            sels.append(request.form.get("sel4"))       
+            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            flash(message)
+        #doesn't work yet
+        elif request.form['submit'] == 'delete':
+            dels = []
+            dels.append((request.form.get("del1")))
+            dels.append((request.form.get("del1")))
+            print(dels)
+        #print(sel[0])
+        #print(sel[1])
+        #print(sel[2])
+        #print(sel[3])
+    #book appointment
+
+    #return all data from database
+    #sel_list = [sels[0] for sels in sel]
+    #print(sel)
+    #sel_length = len(sel[0])
+    #print(sel_length)
+    sel = obj.doctorgetallappointments(doctor_id)
+
+
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+
 
 '''
     Nurse Search Page routes
@@ -81,7 +126,7 @@ def patientresults():
     else:
         _results = 1
 
-    return render_template('resultpages/patientresults.html',patient_found = _patient_found, results = _results)
+    return render_template('resultpages/patientresults.html', patient_found = _patient_found, results = _results)
 
 '''
     End of Nurse Search Page routes
@@ -108,15 +153,6 @@ def nursedashboard():
         response.set_cookie('password', _password)
         print(request)
         return response
-
-
-@blueprint.route('/doctorschedule', methods=['GET', 'POST'])
-def doctoraptbook():
-    user_id = request.cookies.get('permitnumber')
-    password = request.cookies.get('password')
-    print(user_id)
-    print(password)
-    return render_template('doctorpages/doctorschedule.html', user = user_id )
 
 #doctor login controller
 @blueprint.route('/doctordashboard', methods=['GET', 'POST'])

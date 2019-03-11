@@ -161,3 +161,41 @@ class Doctorcontroller:
         # returns a list of users
         return d
 
+    def find_doctor_id(self,permit_number):
+        database = db.get_instance()
+        query = "SELECT id FROM doctor WHERE permit_number=" + permit_number
+        queryexecute = database.execute_query(query)
+        data = queryexecute.fetchall()
+
+        return str(data[0][0])
+
+    def doctorappointmentbook(self, day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, doctor_id):
+
+        start_time = str(start_time_hour) + ':' + str(start_time_minute)     
+        end_time = str(end_time_hour) + ':' + str(end_time_minute)     
+        database = db.get_instance()
+
+        #d= tuple()
+        #for row in data:
+            #d = tuple((row["id"],row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+        #print(data)
+        query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
+        doctor_id = int(doctor_id)
+        database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+        database.commit_db()
+        message = "hello"
+        return message
+
+
+    def doctorgetallappointments(self, doctor_id):
+        database = db.get_instance()
+        query = "SELECT * FROM doctoravailability WHERE doctor_id=" + doctor_id
+        queryexecute = database.execute_query(query)
+        data2 = queryexecute.fetchall()
+    
+        return data2
+
+    def deleteappointment(self):
+
+        return 0;
+

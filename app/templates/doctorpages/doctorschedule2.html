@@ -17,31 +17,33 @@
     <h3>Welcome Dr.{{doctor_info[0]}} {{doctor_info[1]}}</h3>
   </div>
 
-<div class="container" style="margin-top: 40px;" >
+<div class="container" style="margin-top: 40px; border-color:black" >
     <table class="table">
         <tbody>
             <tr>
-              <td>Monday</td>
-              <td>
-                <ul class="list-group" >
-                <li class="list-group-item" style="border: none"> hello
+              <form class="infobro" action="/subject" method="post">
+
+              <td style="border-color:black">{{date_days[0]}}</td>
+              <td style="border-color:black">
+                <ul class="list-group">
+                {% for i in sel %}
+                <li class="list-group-item" style="border: none"> <span name = "del1" >{{i[2]}}</span> - <span name = "del">{{i[3]}}</span>
                   <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
                   <span class="glyphicon glyphicon-pencil"></span>
                   </button>
 
-                  <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;">
+                  <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                   <span class="glyphicon glyphicon-trash"></span>
-                  </button>               
-                
+                  </button>                               
                 </li>
+                {% endfor %}
+
               </ul>
               <div class="collapse" id="demo" >
                   
                 <p style="padding-left:20px;"><b>Add a session</b></p>
-                <p style="padding-left:20px;">Office hours are from 9:00 to 17:00</p>
+                <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                 
-                <form class="infobro" action="/subject" method="post">
-
                 <label for="appt-time" style="padding-left:20px;"> From: </label>
                     <select class="hours" id="sel1" name="sel1">
                       <option  value = "9" selected>9</option>
@@ -83,19 +85,20 @@
                     <option value = "40" selected>40</option>
                     </select>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="submit" class="btn btn-success" data-toggle="collapse" data-target="#demo" value ="submit" name ="submit" >
+                    <button type="submit" class="btn btn-success" data-toggle="collapse" data-target="#demo" value ="submit" name="submit" >
                     SUBMIT
                     </button>
                 </form>
             </div>
-            </td>
-              <td style="text-align:center;">
+            </td style="border-color:black">
+              <td style="text-align:center; border-color:black">
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">
                   <span class="glyphicon glyphicon-plus-sign"></span> ADD
                 </button>
               </td>
             </tr>
             <tr>
+
               <td>Tuesday</td>
               <td>
                 <div class="collapse" id="demo1" >
