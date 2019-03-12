@@ -173,12 +173,35 @@ class AppointmentController:
         data = queryexecute.fetchall()
         return data
 
-    def deleteappointment(self, ppointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
-        database = db.get_instance()
-        query = "DELETE FROM appointment WHERE appointment_date ="+ appointment_date + "start_time = " + start_time +" end_time = " + end_time + "doctor_id = " + doctor_id+ "patient_id = " + patient_id
-        database.execute_query(query)
-        database.commit_db()
-        message = "Appointment Deleted"
-        return message
+    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
+        conn = AppointmentController.connect_database(self)
+        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        if doctor_id == False:
+            raise Exception('No doctor is available!')
+        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+        if appointment_room == False:
+            raise Exception('No room is available!')
+        appointment_status = "Approved"
+        appointment_type = AppointmentController.getappointment_type(start_time, end_time)
+        AppointmentController.update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        return True
+
+    def delete_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+        try:
+            database = db.get_instance()
+            item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
+                                       str(start_time),
+                                       str(end_time), str(patient_id), str(doctor_id[0]))
+
+            database.execute_query("DELETE FROM appointment WHERE appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ?, id = (SELECT MAX(id);",
+                                 (
+                                       str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
+                                       str(start_time),
+                                       str(end_time), str(patient_id), str(doctor_id[0])))
+
+            database.commit_db()
+        except Error as e:
+            print(e)
+            return False
 
 
