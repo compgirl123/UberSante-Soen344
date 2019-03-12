@@ -205,6 +205,11 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
+@blueprint.route('/availablecheck')
+def buttonStatus(first_name, last_name, appointment_date, start_time, end_time):
+    return AppointmentController.available(first_name, last_name, appointment_date, start_time, end_time)
+
+
 @blueprint.route('/patient_register',  methods=['GET', 'POST'])
 def patient_register():
     if request.method == 'POST':

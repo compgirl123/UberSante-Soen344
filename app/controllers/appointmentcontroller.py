@@ -8,6 +8,21 @@ from app.controllers.nursecontroller import *
 
 
 class AppointmentController:
+    def isAvailable(first_name, last_name, appointment_date, start_time, end_time):
+        conn = AppointmentController.connect_database()
+        doctorsAvailable = AppointmentController.find_a_doctor_by_name(conn, first_name, last_name, appointment_date, start_time, end_time)
+        availableRoom = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+        # If no doctor is available
+        if doctorsAvailable == False:
+            raise Exception('No doctor is available!')
+
+        # If no room is available
+        elif availableRoom == False:
+            raise Exception('No room is available!')
+        
+        else:
+            return True
+
     def isAvailable(doctor_speciality, appointment_date, start_time, end_time):
         conn = AppointmentController.connect_database()
         doctorsAvailable = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
@@ -21,7 +36,7 @@ class AppointmentController:
             raise Exception('No room is available!')
         
         else:
-            return [doctorsAvailable, availableRoom]
+            return True
         
 
     def create_appointment_with_doctor_name(doctor_first_name, doctor_last_name, patient_id, appointment_date, start_time, end_time):
@@ -65,7 +80,7 @@ class AppointmentController:
 
 
     def find_room(conn, appointment_date, start_time, end_time):
-        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
         query2 = "SELECT id FROM room"
         conn.execute(query, (appointment_date, start_time, start_time, end_time, end_time))
         occupied = conn.fetchall()
@@ -86,7 +101,7 @@ class AppointmentController:
     def find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time):
         query = "SELECT id FROM doctor WHERE speciality=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=? AND start_time<=? AND end_time>=?"
-        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
 
         # query = "SELECT id FROM doctor WHERE speciality=""'"+doctor_speciality+"'"""
         #query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=""'"+appointment_date+"'"""+" AND start_time<=""'"+start_time+"'"""\
@@ -115,7 +130,7 @@ class AppointmentController:
     def find_a_doctor_by_name(conn, first_name, last_name, appointment_date, start_time, end_time):
         query = "SELECT id FROM doctor WHERE first_name=? AND last_name=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=? AND start_time<=? AND end_time>=?"
-        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
 
         conn.execute(query,(first_name, last_name))
         specialists = conn.fetchall()

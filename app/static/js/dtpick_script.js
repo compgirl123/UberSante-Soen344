@@ -38,15 +38,47 @@ $(document).ready(function() {
         document.getElementById('thuDate').innerHTML = fmtDateThu
         document.getElementById('friDate').innerHTML = fmtDateFri
 
+        var doctor_picked = str.split($('#doctor_picked').value);
+        var first_name = doctor_picked[0];
+        var last_name = doctor_picked[1];
+        
+        for (i = 0; i < cars.length; i++) { 
+          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, monCheck, idSuffix);
+          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, tueCheck, idSuffix);
+          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, wedCheck, idSuffix);
+          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, thuCheck, idSuffix);
+          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, friCheck, idSuffix);
+        }
+
     });
+    
     
     var n=document.getElementById('datepicker1').value;
     if (n.length < 1){
         // set the default date to today
         $("#datepicker1").datepicker("setDate", new Date());
     }
-  
+   
   });
+
+  function checkAvailability(first_name, last_name, appointment_date, start_time, end_time, idPrefix, idSuffix) {
+    $.ajax({
+      type: "GET",
+      url: "/availablecheck",
+      data: {first_name: first_name, last_name: last_name, appointment_date: appointment_date,
+        start_time: start_time, end_time: end_time
+      },
+      success: function(data) {
+        print(data);
+        if (data == true){
+          $('#'+idPrefix+idSuffix).attr('disabled', true);
+        }
+        else {
+          $('#'+idPrefix+idSuffix).attr('disabled', false);
+        }
+      }
+    });
+  }
 
   // functions for the different days
   function getMonday(d) {
