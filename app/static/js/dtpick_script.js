@@ -16,7 +16,7 @@ $(document).ready(function() {
         var dateWed = getWednesday(e.format())
         var dateThu = getThursday(e.format())
         var dateFri = getFriday(e.format())
-
+        console.log('hi');
         var fmtDateMon = (dateMon.getMonth() + 1) + '/' + dateMon.getDate() + '/' +  dateMon.getFullYear();
         var fmtDateTue = (dateTue.getMonth() + 1) + '/' + dateTue.getDate() + '/' +  dateTue.getFullYear();
         var fmtDateWed = (dateWed.getMonth() + 1) + '/' + dateWed.getDate() + '/' +  dateWed.getFullYear();
@@ -30,7 +30,7 @@ $(document).ready(function() {
         + "\n- Thursday: " + fmtDateThu
         + "\n- Friday: " + fmtDateFri
         ); */
-
+        console.log('hi');
         // set the dates for each day in table header
         document.getElementById('monDate').innerHTML = fmtDateMon
         document.getElementById('tueDate').innerHTML = fmtDateTue
@@ -39,16 +39,18 @@ $(document).ready(function() {
         document.getElementById('friDate').innerHTML = fmtDateFri
 
         var doctor_picked = str.split($('#doctor_picked').value);
-        var first_name = doctor_picked[0];
-        var last_name = doctor_picked[1];
-        
-        for (i = 0; i < cars.length; i++) { 
-          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, monCheck, idSuffix);
-          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, tueCheck, idSuffix);
-          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, wedCheck, idSuffix);
-          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, thuCheck, idSuffix);
-          checkAvailability(first_name, last_name, appointment_date, start_time, end_time, friCheck, idSuffix);
-        }
+        var timeLabels = $('.timeLabel');
+        console.log('timeLabels');
+        console.log('hi');
+        timeLabels.forEach( label => { 
+          console.log('heya');
+          checkAvailability(doctor_picked[0], doctor_picked[1], fmtDateMon, label.value, end_time, monCheck, label.value);
+          checkAvailability(doctor_picked[0], doctor_picked[1], fmtDateTue, label.value, end_time, tueCheck, label.value);
+          checkAvailability(doctor_picked[0], doctor_picked[1], fmtDateWed, label.value, end_time, wedCheck, label.value);
+          checkAvailability(doctor_picked[0], doctor_picked[1], fmtDateThu, label.value, end_time, thuCheck, label.value);
+          checkAvailability(doctor_picked[0], doctor_picked[1], fmtDateFri, label.value, end_time, friCheck, label.value);
+          console.log("done");
+        });
 
     });
     
@@ -62,6 +64,7 @@ $(document).ready(function() {
   });
 
   function checkAvailability(first_name, last_name, appointment_date, start_time, end_time, idPrefix, idSuffix) {
+    console.log(1);
     $.ajax({
       type: "GET",
       url: "/availablecheck",
@@ -71,13 +74,14 @@ $(document).ready(function() {
       success: function(data) {
         print(data);
         if (data == true){
-          $('#'+idPrefix+idSuffix).attr('disabled', true);
+          $('#'+idPrefix+idSuffix).attr('disabled', false);
         }
         else {
-          $('#'+idPrefix+idSuffix).attr('disabled', false);
+          $('#'+idPrefix+idSuffix).attr('disabled', true);
         }
       }
     });
+    console.log(2);
   }
 
   // functions for the different days

@@ -73,8 +73,8 @@
 
                 {% for t in tlist %}
                 <tr>
-                  <th scope="row" style="background-color: grey;width:10px" >{{ t }}</th>
-                  <td> <a href="/availablecheck"  ><input type="radio" class="radio" name="time" id="monCheck{{ t }}" onclick="getSelDateTime(1,this.id)" value="{{ t }}"></a></td>
+                  <th scope="row" class="timeLabel" style="background-color: grey;width:10px" >{{ t }}</th>
+                  <td> <input type="radio" class="radio" name="time" id="monCheck{{ t }}" onclick="getSelDateTime(1,this.id)" value="{{ t }}"></td>
                   <td><input type="radio" class="radio" name="time" id="tueCheck{{ t }}" onclick="getSelDateTime(2,this.id)" value="{{ t }}"></td>
                   <td><input type="radio" class="radio" name="time" id="wedCheck{{ t }}" onclick="getSelDateTime(3,this.id)" value="{{ t }}"></td>
                   <td><input type="radio" class="radio" name="time" id="thuCheck{{ t }}" onclick="getSelDateTime(4,this.id)" value="{{ t }}"></td>
