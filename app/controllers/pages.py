@@ -219,7 +219,7 @@ def patient_register():
         healthcard = request.form.get("healthcard")
         _obj = Patientcontroller()
 
-        users = _obj.find_patient_by_health_card(healthcard)
+        users = _obj.find_a_patient(healthcard)
         # checks if the returned list is not empty
         if len(users) != 0:
             message = "Registration failed!!! User already exists."
