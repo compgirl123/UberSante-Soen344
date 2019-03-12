@@ -24,6 +24,10 @@ def about():
 def doctorschedule():
     return render_template('doctorpages/doctorschedule.html')
 
+@blueprint.route('/Delete_confirmation')
+def doctorschedule():
+    return render_template('patientpages/Delete_confirmation.html')
+
 @blueprint.route('/payment')
 def payment():
     return render_template('patientpages/payment.html')
