@@ -17,10 +17,15 @@
   <a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
 
 </div>
-  <form method="post" class="form" action="{{ url_for('pages.updateapt') }}">
-    <button type="submit" id = "update" name = "update" class="btn btn-success btn-lg" value="update"> Update</button>
-    <button type="submit" id = "delete" name = "delete" class="btn btn-success btn-lg" value="s"> Delete</button>
-  </form>
-
+<h3>Action : </h3>
+    <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patientaptbook') }}">
+      <button type="submit" id = "add" name = "add" class="btn btn-primary btn-lg" value="add"> Add</button>
+    </form>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
+      <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="update"> Update</button>
+    </form>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
+      <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="delete"> Delete</button>
+    </form>
 
 {% endblock %}
