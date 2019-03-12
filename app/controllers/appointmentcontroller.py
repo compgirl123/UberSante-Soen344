@@ -113,30 +113,36 @@ class AppointmentController:
             
     def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
         try:
-
-            query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
+            database = db.get_instance()
+            item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
+                    str(end_time), str(patient_id), str(doctor_id[0]))
+            '''query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
                     " appointment_date, start_time, end_time, patient_id, doctor_id)" \
-                    "VALUES (?,?,?,?,?,?,?,?)"
+                    "VALUES (?,?,?,?,?,?,?,?)",(str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
+                    str(end_time), str(patient_id), str(doctor_id[0]))
                     #"("+str(appointment_room)+")
 
-            print(query)
+            print(query)'''
             '''
                 appointment_room = int(appointment_room[0])
                 doctor_id = int(doctor_id[0])
             '''
-
-            item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time), str(end_time),str(patient_id),str(doctor_id[0]))
+            database.execute_query("INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
+                    " appointment_date, start_time, end_time, patient_id, doctor_id)" \
+                    "VALUES (?,?,?,?,?,?,?,?)",(str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
+                    str(end_time), str(patient_id), str(doctor_id[0])))
             print(item)
-            conn.execute(query,item)
-            result = conn.fetchall()
-            print(result)
-            return True
+            database.commit_db()
+            #conn.execute(query,item)
+            #result = conn.fetchall()
+            #print(result)
+
+            #return True
 
         except Error as e:
-            #print("START")
-            #print(item)
             print(e)
-            return False
+            #return False
+
 
     def find_appointment(conn, doctor_id, appointment_date):
         conn = AppointmentController.connect_database()
