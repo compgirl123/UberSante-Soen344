@@ -17,8 +17,10 @@
   <a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
 
 </div>
+  <form method="post" class="form" action="{{ url_for('pages.updateapt') }}">
+    <button type="submit" id = "update" name = "update" class="btn btn-success btn-lg" value="update"> Update</button>
+    <button type="submit" id = "delete" name = "delete" class="btn btn-success btn-lg" value="s"> Delete</button>
+  </form>
 
-<button type="submit" id = "update" name = "update" class="btn btn-success btn-lg" value="s"> Update</button>
-<button type="submit" id = "delete" name = "delete" class="btn btn-success btn-lg" value="s"> Delete</button>
 
 {% endblock %}

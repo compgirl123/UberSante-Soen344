@@ -5,9 +5,6 @@ from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
 from app.controllers.nursecontroller import *
-from mysql.connector import MySQLConnection
-from python_mysql_dbconfig import read_db_config
-
 
 class AppointmentController:
     def isAvailable(self, doctor_speciality, appointment_date, start_time, end_time):
@@ -75,7 +72,10 @@ class AppointmentController:
     def find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time):
         query = "SELECT id FROM doctor WHERE speciality=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=? AND start_time<=? AND end_time>=?"
-        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
+        print(appointment_date)
+        print(start_time)
+        print(end_time)
 
         # query = "SELECT id FROM doctor WHERE speciality=""'"+doctor_speciality+"'"""
         #query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=""'"+appointment_date+"'"""+" AND start_time<=""'"+start_time+"'"""\
@@ -146,20 +146,35 @@ class AppointmentController:
         return result
 
 
-    def appointmentupdate(self, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
-        start_time = str(start_time) 
-        end_time = str(end_time)
-        #start_time = str(start_time_hour) + ':' + str(start_time_minute)     
-        #end_time = str(end_time_hour) + ':' + str(end_time_minute)     
-        database = db.get_instance()
+    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
+        conn = AppointmentController.connect_database(self)
+        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        if doctor_id == False:
+            raise Exception('No doctor is available!')
+        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+        if appointment_room == False:
+            raise Exception('No room is available!')
+        appointment_status = "Approved"
+        appointment_type = AppointmentController.getappointment_type(start_time, end_time)
+        AppointmentController.update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        return True
 
-        query2 = "UPDATE doctoravailability SET date_day =?, start_time = ?, end_time = ?, doctor_id = ?)"
-        patient_id = int(patient_id)
-        database.execute_query(query2, (appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id ))
-        database.commit_db()
-        message = "hello"
-        return message
+    def update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+        try:
+            query = "UPDATE doctoravailability SET date_day =?, start_time = ?, end_time = ?, doctor_id = ?)"
+            print(query)
+            item = (str(appointment_date), str(start_time), str(end_time),str(patient_id),str(doctor_id[0]))
+            print(item)
+            conn.execute(query,item)
+            result = conn.fetchall()
+            print(result)
+            return True
 
+        except Error as e:
+            #print("START")
+            #print(item)
+            print(e)
+            return False
 
     def getallappointments(self, patient_id):
         database = db.get_instance()
