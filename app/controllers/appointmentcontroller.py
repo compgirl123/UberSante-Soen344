@@ -186,10 +186,15 @@ class AppointmentController:
         database = db.get_instance()
         query = "SELECT * FROM appointment WHERE patient_id=" + patient_id
         queryexecute = database.execute_query(query)
-        data2 = queryexecute.fetchall()
-        return data2
+        data = queryexecute.fetchall()
+        return data
 
-    def deleteappointment(self):
-        return 0
+    def deleteappointment(self, ppointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+        database = db.get_instance()
+        query = "DELETE FROM appointment WHERE appointment_date ="+ appointment_date + "start_time = " + start_time +" end_time = " + end_time + "doctor_id = " + doctor_id+ "patient_id = " + patient_id
+        database.execute_query(query)
+        database.commit_db()
+        message = "Appointment Deleted"
+        return message
 
 
