@@ -24,6 +24,10 @@ def about():
 def doctorschedule():
     return render_template('doctorpages/doctorschedule.html')
 
+@blueprint.route('/Delete_confirmation')
+def Delete_confirmation():
+    return render_template('patientpages/Delete_confirmation.html')
+
 @blueprint.route('/payment')
 def payment():
     return render_template('patientpages/payment.html')
@@ -362,13 +366,14 @@ def patient_apts_scheduled():
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
     _doc_speciality = _doc_query[2]
-    print(_doc_query[2])
+    # print(_doc_query[2])
 
     _time_end = get_time_end()
-
+    print(appointment_selected+' _______________________________________')
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+
 
     _appointment_obj = AppointmentController()
 
@@ -377,6 +382,7 @@ def patient_apts_scheduled():
     _patient_found = _obj.find_a_patient(health_care)
 
     _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
