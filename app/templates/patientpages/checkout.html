@@ -1,0 +1,45 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h1>Checkout</h1>
+  </div>
+  
+  <p class="lead">Please review your informations:</p>
+  
+  <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+    <div class="container">
+
+        <label for="fname"><i class="fa fa-user"></i> Full Name:</label>
+        <div name="fname">{{fname}}</div> <br>
+
+        <label for="email"><i class="fa fa-user"></i> Email:</label>
+        <div name="email">{{email}}</div> <br>
+
+        <label for="address"><i class="fa fa-user"></i> Address:</label>
+        <div name="email">{{address}}</div> <br>
+
+        <label for="city"><i class="fa fa-user"></i> City:</label>
+        <div name="city">{{city}}</div> <br>
+
+        <label for="cardname"><i class="fa fa-user"></i> Cardholder's Name:</label>
+        <div name="cardname">{{cardname}}</div> <br>
+
+        <label for="expdate"><i class="fa fa-user"></i> Expiration Date:</label>
+        <div name="expdate">{{expdate}}</div> <br>
+
+        <label for="cvv"><i class="fa fa-user"></i> CVV:</label>
+        <div name="cvv">{{cvv}}</div> <br>
+
+        <label for="sameadr"><i class="fa fa-user"></i>  Choosing the same Address:</label>
+        <div name="sameadr">{{sameadr}}</div><br>
+
+        <a type="button" class="btn btn-success btn-lg" href="/thank_you">Finalize</a>
+
+
+    
+    </div>
+</div>
+
+{% endblock %}

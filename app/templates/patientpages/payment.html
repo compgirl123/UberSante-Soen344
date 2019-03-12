@@ -3,16 +3,16 @@
 {% block content %}
 
 <div class="page-header">
-    <h1>Payment</h1>
-  </div>
+  <h1>Payment</h1>
+</div>
   
-  <p class="lead">Billing Address</p>
-  
+<p class="lead">Billing Address</p>
+<form method="post" class="form" action="{{ url_for('pages.savepatientinfo') }}"> 
   <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
     <div class="container">
 
     <label for="fname"><i class="fa fa-user"></i> Full Name</label>
-    <input type="text" id="fname" name="firstname" placeholder="John M. Doe"> <br>
+    <input type="text" id="fname" name="fname" placeholder="John M. Doe"> <br>
     <label for="email"><i class="fa fa-envelope"></i> Email</label>
     <input type="text" id="email" name="email" placeholder="john@example.com"><br>
     <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
@@ -20,10 +20,10 @@
     <label for="city"><i class="fa fa-institution"></i> City</label>
     <input type="text" id="city" name="city" placeholder="Montreal">
     </div>
-</div>
+  </div>
 
-<p class="lead">Payment Information <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png"> </p>
-  
+  <p class="lead">Payment Information <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png"> </p>
+    
   <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
     <div class="container">
             <label for="cname">Name on Card</label>
@@ -39,8 +39,9 @@
             <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
             </label><br>
         </div>
-
-        <a type="button" class="btn btn-success btn-lg" href="/thank_you">Submit</a>
+        <button type="submit" id = "appointment_selected" name = "appointment_selected" class="btn btn-success btn-lg" value="dd">Submit</button>
+        <!-- <a type="button" class="btn btn-success btn-lg" href="/checkout">Submit</a> -->
 
     </div>
+  </form>
 {% endblock %}

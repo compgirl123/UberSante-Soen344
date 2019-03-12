@@ -67,6 +67,10 @@ def payment():
 def payment():
     return render_template('patientpages/thank_you.html')
 
+@app.route('/checkout')
+def checkout():
+    return render_template('patientpages/checkout.html')
+
 @app.route('/login')
 def login():
     form = LoginForm(request.form)

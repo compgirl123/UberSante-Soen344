@@ -276,6 +276,53 @@ def savebookedapt():
         response.set_cookie('doctor_picked',_doctor_picked)
     return response
 
+# save personal information for patients
+@blueprint.route('/savepatientinfo', methods=['GET', 'POST'])
+def savepatientinfo():
+    print("Goes into 1")
+    if request.method == "POST":
+        print("Goes into 1 if")
+        # print(request.form)
+        _fname = request.form['fname']
+        _email = request.form['email']
+        _address = request.form['address']
+        _city = request.form['city']
+        _cardname= request.form['cardname']
+        _cardnumber = request.form['cardnumber']
+        _expdate = request.form['expdate']
+        _cvv = request.form['cvv']
+        _sameadr = request.form['sameadr']
+
+        response = redirect(url_for("pages.checkout"))
+        response.set_cookie('fname', _fname)
+        response.set_cookie('email', _email)
+        response.set_cookie('address', _address)
+        response.set_cookie('city', _city)
+        response.set_cookie('cardname', _cardname)
+        response.set_cookie('cardnumber', _cardnumber)
+        response.set_cookie('expdate', _expdate)
+        response.set_cookie('cvv', _cvv)
+        response.set_cookie('sameadr', _sameadr)
+        print("ends 1 if")
+    print(response)
+
+    return response
+
+# view finalization
+@blueprint.route('/checkout')
+def checkout():
+    fname = request.cookies.get('fname')
+    email = request.cookies.get('email')
+    address = request.cookies.get('address')
+    city = request.cookies.get('city')
+
+    cardname = request.cookies.get('cardname')
+    cardnumber = request.cookies.get('cardnumber')
+    expdate = request.cookies.get('expdate')
+    cvv = request.cookies.get('cvv')
+    sameadr = request.cookies.get('sameadr')
+    return render_template('patientpages/checkout.html', fname = fname, email = email, address = address, city = city, cardname = cardname, cardnumber = cardnumber, expdate = expdate, cvv = cvv, sameadr = sameadr)
+
 # view upcoming appointments for the patient
 @blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
 def patient_apts_scheduled():
@@ -313,7 +360,6 @@ def patient_apts_scheduled():
     _appointment_obj.create_appointment(_doc_query[2],12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
     #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
     # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
-    _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
     _user_full_name = _get_user[0]+" "+_get_user[1]
