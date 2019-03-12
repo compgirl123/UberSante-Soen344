@@ -331,7 +331,28 @@ def savebookedapt():
         response.set_cookie('doctor_picked',_doctor_picked)
     return response
 
-# view upcoming appointments for the patient
+# view all upcoming appointments scheduled for the patient
+@blueprint.route('/patient_apts_scheduled_complete', methods=['GET', 'POST'])
+def patient_apts_scheduled_complete():
+    time = request.cookies.get('time')
+    appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+    health_care = request.cookies.get('healthcard')
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    #_get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+    print("THE PATIENT")
+    print(_patient_found[0])
+
+    _apts = _appointment_obj.getallappointments(_patient_found[0])
+
+    return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts)
+
+# view latest appointment scheduled for the patient
 @blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
 def patient_apts_scheduled():
     time = request.cookies.get('time')
@@ -353,13 +374,19 @@ def patient_apts_scheduled():
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.create_appointment(_doc_query[2], 12345, str(date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
-    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
-    #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
+
+    _appointment_obj = AppointmentController()
+
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
-    _user_full_name = _get_user[0]+" "+_get_user[1]
+    _user_full_name = _get_user[1]+" "+_get_user[2]
 
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
@@ -386,7 +413,11 @@ def patient_apts_scheduled_update():
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.appointmentupdate(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)

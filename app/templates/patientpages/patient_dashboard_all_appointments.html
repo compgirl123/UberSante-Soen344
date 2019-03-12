@@ -8,12 +8,58 @@
 <p class="lead">Appointment successfully added to the cart</p>
 <p class="lead">Latest Appointment Added with Dr. {{doctor_picked}}</p>
 
+{% for apt in apts %}
 <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
   <div class="container">
-    <p>{{appointment_selected}}</p>
-    <p>{{time}}</p>
-  </div>
+      <table class="table">
+  <thead>
+    <tr>
+        <th scope="col">Id #:</th>
+      <th scope="col">Room #:</th>
+      <th scope="col">Appointment Type:</th>
+      <th scope="col">Appointment Status:</th>
+      <th scope="col">Appointment Date:</th>
+        <th scope="col">Start Time:</th>
+        <th scope="col">End Time:</th>
+        <th scope="col">Patient Id:</th>
+        <th scope="col">Doctor Id:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>{{apt["id"]}}</td>
+      <td>{{apt["appointment_room"]}}</td>
+        <td>{{apt["appointment_type"]}}</td>
+      <td>{{apt["appointment_status"]}}</td>
+      <td>{{apt["appointment_date"]}}</td>
+      <td>{{apt["start_time"]}}</td>
+        <td>{{apt["end_time"]}}</td>
+         <td>{{apt["patient_id"]}}</td>
+        <td>{{apt["doctor_id"]}}</td>
+    </tr>
+  </tbody>
+</table>
 
+      <!-- Other View Style for Appointments -->
+    <!--<p>{{appointment_selected}}</p>
+    <p>{{time}}</p>
+       <h3>Room: </h3>
+      <p>{{apt["appointment_room"]}}</p>
+       <h3>Appointment Type: </h3>
+      <p>{{apt["appointment_type"]}}</p>
+      <h3>Appointment Status: </h3>
+      <p>{{apt["appointment_status"]}}</p>
+       <h3>Appointment Date: </h3>
+      <p>{{apt["appointment_date"]}}</p>
+      <h3>Start Time: </h3>
+      <p>{{apt["start_time"]}}</p>
+       <h3>End Time: </h3>
+      <p>{{apt["end_time"]}}</p>
+      <h3>Patient Id: </h3>
+      <p>{{apt["patient_id"]}}</p>
+       <h3>Doctor Id: </h3>
+      <p>{{apt["doctor_id"]}}</p>-->
+  </div>
     <h3>Action : </h3>
     <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
       <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="update"> Update</button>
@@ -21,8 +67,8 @@
     <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
       <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="delete"> Delete</button>
     </form>
-
 </div>
+{%endfor %}
 
  <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
       <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add"> View Cart</button>

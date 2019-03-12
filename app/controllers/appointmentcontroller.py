@@ -168,7 +168,8 @@ class AppointmentController:
 
     def getallappointments(self, patient_id):
         database = db.get_instance()
-        query = "SELECT * FROM appointment WHERE patient_id=" + patient_id
+        query = "SELECT * FROM appointment WHERE patient_id=" + str(patient_id)
+        print(query)
         queryexecute = database.execute_query(query)
         data = queryexecute.fetchall()
         return data
@@ -203,5 +204,10 @@ class AppointmentController:
         except Error as e:
             print(e)
             return False
+
+    '''def get_upcoming_appointmnents_patient(self):
+        database = db.get_instance()
+
+        return 0'''
 
 
