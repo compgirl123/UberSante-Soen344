@@ -50,10 +50,8 @@ def doctorapptbook():
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id")))
-            dels.append((request.form.get("del1")))
-            dels.append((request.form.get("del2")))
             print(dels)
-            obj.deleteappointment(dels[0],dels[1],dels[2])
+            obj.deleteappointment(dels[0])
         
     sel = obj.doctorgetallappointments(doctor_id)
 

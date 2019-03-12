@@ -191,7 +191,7 @@ class Doctorcontroller:
     
         return data
 
-    def deleteappointment(self, doctor_id, start_time, end_time):
+    def deleteappointment(self, doctor_id):
         database = db.get_instance()
         query = "DELETE FROM doctoravailability WHERE id =" + doctor_id
         database.execute_query(query)
