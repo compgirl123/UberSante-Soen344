@@ -116,17 +116,7 @@ class AppointmentController:
             database = db.get_instance()
             item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
                     str(end_time), str(patient_id), str(doctor_id[0]))
-            '''query = "INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
-                    " appointment_date, start_time, end_time, patient_id, doctor_id)" \
-                    "VALUES (?,?,?,?,?,?,?,?)",(str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
-                    str(end_time), str(patient_id), str(doctor_id[0]))
-                    #"("+str(appointment_room)+")
 
-            print(query)'''
-            '''
-                appointment_room = int(appointment_room[0])
-                doctor_id = int(doctor_id[0])
-            '''
             database.execute_query("INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
                     " appointment_date, start_time, end_time, patient_id, doctor_id)" \
                     "VALUES (?,?,?,?,?,?,?,?)",(str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
@@ -167,18 +157,24 @@ class AppointmentController:
 
     def update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
         try:
-            query = "UPDATE doctoravailability SET date_day =?, start_time = ?, end_time = ?, doctor_id = ?)"
-            print(query)
-            item = (str(appointment_date), str(start_time), str(end_time),str(patient_id),str(doctor_id[0]))
+            database = db.get_instance()
+            item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
+                                       str(start_time),
+                                       str(end_time), str(patient_id), str(doctor_id[0]))
+
+            database.execute_query("UPDATE appointment SET appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ? WHERE id = (SELECT MAX(id) FROM appointment);",
+                                 (
+                                       str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
+                                       str(start_time),
+                                       str(end_time), str(patient_id), str(doctor_id[0])))
+
             print(item)
-            conn.execute(query,item)
-            result = conn.fetchall()
-            print(result)
-            return True
+            database.commit_db()
 
         except Error as e:
             #print("START")
             #print(item)
+            print("HERE")
             print(e)
             return False
 

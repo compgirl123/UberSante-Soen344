@@ -502,7 +502,7 @@ def get_time_end():
     elif (_time_split[1] == "40"):
         numb = int(_time_end[0])
         next_hour = numb + 1
-        if(str(next_hour)<10):
+        if(next_hour<10):
             _time_end[0] = "0" + str(next_hour)
         else:
             _time_end[0] = str(next_hour)
