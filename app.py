@@ -63,7 +63,7 @@ def payment():
     return render_template('patientpages/payment.html')
 
 @app.route('/Delete_confirmation')
-def payment():
+def Delete_confirmation():
     return render_template('patientpages/Delete_confirmation.html')
 
 @app.route('/thank_you')

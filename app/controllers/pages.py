@@ -25,7 +25,7 @@ def doctorschedule():
     return render_template('doctorpages/doctorschedule.html')
 
 @blueprint.route('/Delete_confirmation')
-def doctorschedule():
+def Delete_confirmation():
     return render_template('patientpages/Delete_confirmation.html')
 
 @blueprint.route('/payment')
