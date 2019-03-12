@@ -62,9 +62,9 @@ def findnurse():
 def payment():
     return render_template('patientpages/payment.html')
 
-@app.route('/Deleted_confirmation')
+@app.route('/Delete_confirmation')
 def payment():
-    return render_template('patientpages/Deleted_confirmation.html')
+    return render_template('patientpages/Delete_confirmation.html')
 
 @app.route('/thank_you')
 def payment():
