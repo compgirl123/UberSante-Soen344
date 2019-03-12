@@ -21,15 +21,6 @@ def about():
 
 @blueprint.route('/doctorschedule', methods=['GET', 'POST'])
 def doctorschedule():
-    permit = request.cookies.get('permitnumber')
-    password = request.cookies.get('password')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    
-    return render_template('doctorpages/doctorschedule.html', doctor_info = doctor_info)
-
-@blueprint.route('/subject', methods=['GET', 'POST'])
-def doctorapptbook():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
@@ -44,13 +35,11 @@ def doctorapptbook():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
-            flash(message)
+            obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id")))
-            print(dels)
             obj.deleteappointment(dels[0])
         
     sel = obj.doctorgetallappointments(doctor_id)
