@@ -43,7 +43,6 @@ class Doctorcontroller:
             permit_numbers.append(row["permit_number"])
 
         values_from_db = tuple(list(zip(ids,last_names,first_names,specialties,cities,passwords,passwords,permit_numbers)))
-        #print(values_from_db)
         return values_from_db
 
     def validatedornot(self, validation):
@@ -64,7 +63,6 @@ class Doctorcontroller:
 
         get_query = "SELECT * FROM doctor WHERE permit_number =" + "'" + permit_number + "'" + " AND password=" + "'" + password+ "'"
         get_everything = "SELECT id,last_name,first_name,speciality,city,password,permit_number FROM doctor;"
-        print(get_query)
         table_creation_dict = {"doctor":  get_query}
         database = app.classes.database_container.DatabaseContainer.get_instance()
 
@@ -91,15 +89,11 @@ class Doctorcontroller:
         else:
             return
             #print("INVALID")
-
-        #print(values_from_db)
         return values_from_db
 
 
     def find_user(self, permit_number, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
-        #print("HELLOO")
-        #return 0
         
         self.permit_number = permit_number
         self.password = password
@@ -108,7 +102,6 @@ class Doctorcontroller:
         with mysql.connect("app/database/SOEN344_DATABASE.db") as con:
 
             loadpermit_number = ("select permit_number from doctor where permit_number = '' "+permit_number+" '' ")
-            print(loadpermit_number)
             mycursor = con.cursor()
             mycursor.execute(a.permit_number, loadpermit_number)
             permit_numbercheck = mycursor.fetchone()
@@ -166,7 +159,6 @@ class Doctorcontroller:
         '''
         database = db.get_instance()
         query = "SELECT * FROM doctor WHERE first_name= ""'" + first_name + "'"" AND last_name= ""'" + last_name + "'"""
-        print(query)
 
         cur = database.execute_query(query)
         data = cur.fetchall()

@@ -344,15 +344,15 @@ def patient_apts_scheduled():
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
     _doc_speciality = _doc_query[2]
-    print(_doc_query[2])
+    # print(_doc_query[2])
 
     _time_end = get_time_end()
-
+    print(appointment_selected+' _______________________________________')
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.create_appointment(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    _appointment_obj.create_appointment(_doc_query[2], 12345, str(date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
     # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
     #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
     _obj_user = Patientcontroller()
