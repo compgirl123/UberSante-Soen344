@@ -280,9 +280,8 @@ def patientaptbook():
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
     _doctors_list = _doctor_obj.doctor_table()
-    #print(_doctors_list)
     doctorlist = []
-    #print(_doctors_list)
+
     for infos in _doctors_list:
         doctorlist.append(infos[2]+ " "+ infos[1])
     # check if annual or regular is selected and adjust the time slots accordingly
@@ -298,8 +297,6 @@ def patientaptbook():
             annualChecked = "checked"
     else:
         time_slot_list = schedule_time_slots(1200, 36)
-    #print(user_id)
-    #print(password)
 
     return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list,
                            regularCheck = regularChecked, annualCheck = annualChecked , doctorlist = doctorlist)
@@ -348,15 +345,15 @@ def patient_apts_scheduled():
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
     _doc_speciality = _doc_query[2]
-    print(_doc_query[2])
+    # print(_doc_query[2])
 
     _time_end = get_time_end()
-
+    print(appointment_selected+' _______________________________________')
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.create_appointment(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    _appointment_obj.create_appointment(_doc_query[2], 12345, str(date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
     # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
     #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
     _obj_user = Patientcontroller()
@@ -390,10 +387,6 @@ def patient_apts_scheduled_update():
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
     _appointment_obj.appointmentupdate(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
-    #_appointment_obj.appointmentupdate("Gyne", 12345, "03/11/2019", "08:00:00", "08:20:00")
-       # create_appointment(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
-    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
-    #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
