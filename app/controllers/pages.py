@@ -337,9 +337,14 @@ def patient_apts_scheduled_complete():
 
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
-    _apts = _appointment_obj.getallappointments(12345)
 
-    print(_apts)
+    #_get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+    print("THE PATIENT")
+    print(_patient_found[0])
+
+    _apts = _appointment_obj.getallappointments(_patient_found[0])
 
     return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts)
 
@@ -365,11 +370,17 @@ def patient_apts_scheduled():
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.create_appointment(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    _appointment_obj = AppointmentController()
+
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
-    _user_full_name = _get_user[0]+" "+_get_user[1]
+    _user_full_name = _get_user[1]+" "+_get_user[2]
 
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
@@ -396,7 +407,11 @@ def patient_apts_scheduled_update():
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.appointmentupdate(_doc_query[2], 12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)

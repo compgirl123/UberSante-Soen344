@@ -172,7 +172,7 @@ class Patientcontroller:
         data = cur.fetchall()
         d = tuple()
         for row in data:
-            d = tuple((row["first_name"], row["last_name"], row["birthday"], row["gender"],
+            d = tuple((row["id"],row["first_name"], row["last_name"], row["birthday"], row["gender"],
                        row["phone_number"], row["email"],row["address"], row["age"],row["health_card"]))
         print(d)
         # returns a list of users
