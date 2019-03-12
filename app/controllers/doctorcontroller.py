@@ -175,15 +175,11 @@ class Doctorcontroller:
         end_time = str(end_time_hour) + ':' + str(end_time_minute)     
         database = db.get_instance()
 
-        #d= tuple()
-        #for row in data:
-            #d = tuple((row["id"],row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
-        #print(data)
         query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
         doctor_id = int(doctor_id)
         database.execute_query(query2, (day, start_time, end_time,doctor_id ))
         database.commit_db()
-        message = "hello"
+        message = "Availability Added"
         return message
 
 
@@ -191,11 +187,15 @@ class Doctorcontroller:
         database = db.get_instance()
         query = "SELECT * FROM doctoravailability WHERE doctor_id=" + doctor_id
         queryexecute = database.execute_query(query)
-        data2 = queryexecute.fetchall()
+        data = queryexecute.fetchall()
     
-        return data2
+        return data
 
-    def deleteappointment(self):
-
-        return 0;
+    def deleteappointment(self, doctor_id, start_time, end_time):
+        database = db.get_instance()
+        query = "DELETE FROM doctoravailability WHERE id =" + doctor_id
+        database.execute_query(query)
+        database.commit_db()
+        message = "Availability Deleted"
+        return message
 

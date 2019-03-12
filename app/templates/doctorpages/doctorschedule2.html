@@ -27,7 +27,8 @@
               <td style="border-color:black">
                 <ul class="list-group">
                 {% for i in sel %}
-                <li class="list-group-item" style="border: none"> <span name = "del1" >{{i[2]}}</span> - <span name = "del">{{i[3]}}</span>
+                <input name="id" type="hidden" value="{{i[0]}}">
+                <li class="list-group-item" style="border: none"> <span name = "del1" >{{i[2]}}</span> - <span name = "del2">{{i[3]}}</span>
                   <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
                   <span class="glyphicon glyphicon-pencil"></span>
                   </button>
