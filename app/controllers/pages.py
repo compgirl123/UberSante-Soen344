@@ -327,7 +327,23 @@ def savebookedapt():
         response.set_cookie('doctor_picked',_doctor_picked)
     return response
 
-# view upcoming appointments for the patient
+# view all upcoming appointments scheduled for the patient
+@blueprint.route('/patient_apts_scheduled_complete', methods=['GET', 'POST'])
+def patient_apts_scheduled_complete():
+    time = request.cookies.get('time')
+    appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+    health_care = request.cookies.get('healthcard')
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+    _apts = _appointment_obj.getallappointments(12345)
+
+    print(_apts)
+
+    return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts)
+
+# view latest appointment scheduled for the patient
 @blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
 def patient_apts_scheduled():
     time = request.cookies.get('time')
