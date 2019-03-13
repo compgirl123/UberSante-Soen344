@@ -153,6 +153,11 @@ def initializeAndFillDatabase():
 
     # Don't commit until the end
     app.classes.database_container.DatabaseContainer.commit_lock = True
+    # hardcoded  data insert inside database
+    database.execute_query( "insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike"))
+    database.execute_query("insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",
+                           ("fake", "nurse", "123123", "fakenurse"))
+    database.commit_db()
 
     print("- Finished filling database -")
 
