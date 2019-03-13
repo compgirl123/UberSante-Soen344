@@ -239,10 +239,13 @@ def patient_register():
         return redirect(url_for(".patient_login"))
     return render_template('forms/patient_register.html')
 
+
+
 @blueprint.route('/updateapt', methods=['GET', 'POST'])
 def updateapt():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
+    _update_id = request.cookies.get('update')
     regularChecked = "checked"
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
@@ -391,13 +394,29 @@ def patient_apts_scheduled():
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
 
-# view upcoming appointments for the patient
+@blueprint.route('/setcookiesupdate', methods=['GET', 'POST'])
+def setcookiesupdate():
+    _update = request.form['update']
+    response = redirect(url_for("pages.updateapt"))
+    #response.set_cookie('update', expires=0)
+    response.set_cookie('update', _update)
+    return response
+
+@blueprint.route('/setcookiesdelete', methods=['GET', 'POST'])
+def setcookiesdelete():
+    _delete = request.form['delete']
+    response = redirect(url_for("pages.patient_apts_scheduled_update"))
+    response.set_cookie('delete', _delete)
+    return response
+
+# update upcoming appointments for the patient
 @blueprint.route('/patient_apts_scheduled_update', methods=['GET', 'POST'])
 def patient_apts_scheduled_update():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
     doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
+    _update_id = request.cookies.get('update')
 
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
@@ -417,13 +436,14 @@ def patient_apts_scheduled_update():
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
 
-    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_update_id)
+    print(_update_id)
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
-    _user_full_name = _get_user[0]+" "+_get_user[1]
+    _user_full_name = _get_user[1]+" "+_get_user[2]
 
-    return render_template('patientpages/aptupdated.html', time = time, appointment_selected = appointment_selected ,
+    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
 #patient update controller
 '''@blueprint.route('/patientdashboardupdate', methods=['GET', 'POST'])

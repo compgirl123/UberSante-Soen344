@@ -134,7 +134,7 @@ class AppointmentController:
         return result
 
 
-    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
+    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
         if doctor_id == False:
@@ -144,21 +144,25 @@ class AppointmentController:
             raise Exception('No room is available!')
         appointment_status = "Approved"
         appointment_type = AppointmentController.getappointment_type(start_time, end_time)
-        AppointmentController.update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        AppointmentController.update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,id )
         return True
 
-    def update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+    def update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,id):
         try:
             database = db.get_instance()
             item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
                                        str(start_time),
                                        str(end_time), str(patient_id), str(doctor_id[0]))
 
-            database.execute_query("UPDATE appointment SET appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ? WHERE id = (SELECT MAX(id) FROM appointment);",
+            database.execute_query("UPDATE appointment SET appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ? WHERE id = ?;",
                                  (
                                        str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
                                        str(start_time),
-                                       str(end_time), str(patient_id), str(doctor_id[0])))
+                                       str(end_time), str(patient_id), str(doctor_id[0]),id))
+
+            print(str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
+                                       str(start_time),
+                                       str(end_time), str(patient_id), str(doctor_id[0]),id)
 
             database.commit_db()
 
@@ -169,7 +173,7 @@ class AppointmentController:
     def getallappointments(self, patient_id):
         database = db.get_instance()
         query = "SELECT * FROM appointment WHERE patient_id=" + str(patient_id)
-        print(query)
+        print(query )
         queryexecute = database.execute_query(query)
         data = queryexecute.fetchall()
         return data
@@ -194,11 +198,11 @@ class AppointmentController:
                                        str(start_time),
                                        str(end_time), str(patient_id), str(doctor_id[0]))
 
-            database.execute_query("DELETE FROM appointment WHERE appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ?, id = (SELECT MAX(id);",
+            database.execute_query("DELETE FROM appointment WHERE appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ?, id = ?;",
                                  (
                                        str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
                                        str(start_time),
-                                       str(end_time), str(patient_id), str(doctor_id[0])))
+                                       str(end_time), str(patient_id), str(doctor_id[0]),))
 
             database.commit_db()
         except Error as e:

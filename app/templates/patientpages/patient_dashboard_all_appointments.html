@@ -11,10 +11,11 @@
 {% for apt in apts %}
 <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
   <div class="container">
+       <h3>Id #:</h3>
+      <p class="id1" id="{{apt['id']}}">{{apt['id']}}</p>
       <table class="table">
   <thead>
     <tr>
-        <th scope="col">Id #:</th>
       <th scope="col">Room #:</th>
       <th scope="col">Appointment Type:</th>
       <th scope="col">Appointment Status:</th>
@@ -27,7 +28,6 @@
   </thead>
   <tbody>
     <tr>
-        <td>{{apt["id"]}}</td>
       <td>{{apt["appointment_room"]}}</td>
         <td>{{apt["appointment_type"]}}</td>
       <td>{{apt["appointment_status"]}}</td>
@@ -61,13 +61,28 @@
       <p>{{apt["doctor_id"]}}</p>-->
   </div>
     <h3>Action : </h3>
-    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
-      <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="update"> Update</button>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.setcookiesupdate') }}">
+      <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="{{apt['id']}}" onclick="changeHourBlock()"> Update</button>
     </form>
     <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
-      <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="delete"> Delete</button>
+      <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="{{apt['id']}}"> Delete</button>
     </form>
 </div>
+<script>
+function changeHourBlock() {
+var test = {{apt['id']}};
+    //alert(test);
+      var id_number1 = document.getElementById(test).value;
+      console.log(id_number1);
+      //var id_number = document.getElementsByClassName("btn btn-warning btn-lg")[0].name;
+      //var id_number3 = document.getElementsByTagName("p");
+        //console.log(id_number);
+        //console.log("Regular checked");
+        window.location.href = "/updateapt?id="+test+"";
+    }
+
+
+</script>
 {%endfor %}
 
  <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
@@ -78,4 +93,7 @@
     </form>
 <a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
 
+
+
 {% endblock %}
+
