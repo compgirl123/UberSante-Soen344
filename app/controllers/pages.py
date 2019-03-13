@@ -24,9 +24,17 @@ def about():
 def doctorschedule():
     return render_template('doctorpages/doctorschedule.html')
 
+@blueprint.route('/Delete_confirmation')
+def Delete_confirmation():
+    return render_template('patientpages/Delete_confirmation.html')
+
 @blueprint.route('/payment')
 def payment():
     return render_template('patientpages/payment.html')
+
+@blueprint.route('/update_apt')
+def update_apt():
+    return render_template('patientpages/update_info_page.html')
 
 @blueprint.route('/thank_you')
 def thank_you():
@@ -231,10 +239,13 @@ def patient_register():
         return redirect(url_for(".patient_login"))
     return render_template('forms/patient_register.html')
 
-@blueprint.route('/patientaptbook', methods=['GET', 'POST'])
-def patientaptbook():
+
+
+@blueprint.route('/updateapt', methods=['GET', 'POST'])
+def updateapt():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
+    _update_id = request.cookies.get('update')
     regularChecked = "checked"
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
@@ -242,6 +253,38 @@ def patientaptbook():
     print(_doctors_list)
     doctorlist = []
     print(_doctors_list)
+    for infos in _doctors_list:
+        doctorlist.append(infos[2] + " " + infos[1])
+    # check if annual or regular is selected and adjust the time slots accordingly
+    opt_param = request.args.get("apttype")
+    if opt_param is not None:
+        if opt_param == "regular":
+            time_slot_list = schedule_time_slots(1200, 36)
+            regularChecked = "checked"
+            annualChecked = ""
+        elif opt_param == "annual":
+            time_slot_list = schedule_time_slots(3600, 12)
+            regularChecked = ""
+            annualChecked = "checked"
+    else:
+        time_slot_list = schedule_time_slots(1200, 36)
+    print(user_id)
+    print(password)
+    return render_template('patientpages/patientdashboardaptsupdate.html', user=user_id, tlist=time_slot_list,
+                           regularCheck=regularChecked, annualCheck=annualChecked, doctorlist=doctorlist)
+
+
+@blueprint.route('/patientaptbook', methods=['GET', 'POST'])
+def patientaptbook():
+    user_id = request.cookies.get('healthcard')
+    password = request.cookies.get('phone_number')
+
+    regularChecked = "checked"
+    annualChecked = ""
+    _doctor_obj = Doctorcontroller()
+    _doctors_list = _doctor_obj.doctor_table()
+    doctorlist = []
+
     for infos in _doctors_list:
         doctorlist.append(infos[2]+ " "+ infos[1])
     # check if annual or regular is selected and adjust the time slots accordingly
@@ -257,14 +300,29 @@ def patientaptbook():
             annualChecked = "checked"
     else:
         time_slot_list = schedule_time_slots(1200, 36)
-    print(user_id)
-    print(password)
+
     return render_template('patientpages/patientdashboardapts.html', user = user_id, tlist = time_slot_list,
                            regularCheck = regularChecked, annualCheck = annualChecked , doctorlist = doctorlist)
+
+@blueprint.route('/savebookedaptupdate', methods=['GET', 'POST'])
+def savebookedaptupdate():
+
+    if request.method == "POST":
+        print(request.form)
+        _time = request.form['time']
+        _appointment_selected = request.form['appointment_selected']
+        _doctor_picked = request.form['doctor_picked']
+        response = redirect(url_for("pages.patient_apts_scheduled_update"))
+        response.set_cookie('time', _time)
+        response.set_cookie('appointment_selected', _appointment_selected)
+        response.set_cookie('doctor_picked',_doctor_picked)
+    return response
+
 
 # save selected appointments booked for patients
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
+
     if request.method == "POST":
         print(request.form)
         _time = request.form['time']
@@ -276,7 +334,28 @@ def savebookedapt():
         response.set_cookie('doctor_picked',_doctor_picked)
     return response
 
-# view upcoming appointments for the patient
+# view all upcoming appointments scheduled for the patient
+@blueprint.route('/patient_apts_scheduled_complete', methods=['GET', 'POST'])
+def patient_apts_scheduled_complete():
+    time = request.cookies.get('time')
+    appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+    health_care = request.cookies.get('healthcard')
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    #_get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+    print("THE PATIENT")
+    print(_patient_found[0])
+
+    _apts = _appointment_obj.getallappointments(_patient_found[0])
+
+    return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts)
+
+# view latest appointment scheduled for the patient
 @blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
 def patient_apts_scheduled():
     time = request.cookies.get('time')
@@ -290,40 +369,103 @@ def patient_apts_scheduled():
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
     _doc_speciality = _doc_query[2]
+    # print(_doc_query[2])
+
+    _time_end = get_time_end()
+    print(appointment_selected+' _______________________________________')
+    date = appointment_selected.split("-")[1]
+    print(appointment_selected.split("-")[1])
+    print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+
+
+    _appointment_obj = AppointmentController()
+
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+
+    _obj_user = Patientcontroller()
+    _patient_obj = Patientcontroller()
+    _get_user = _patient_obj.find_a_patient(health_care)
+    _user_full_name = _get_user[1]+" "+_get_user[2]
+
+    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
+                           doctor_picked = doctor_selected , user_name = _user_full_name)
+
+@blueprint.route('/setcookiesupdate', methods=['GET', 'POST'])
+def setcookiesupdate():
+    _update = request.form['update']
+    response = redirect(url_for("pages.updateapt"))
+    #response.set_cookie('update', expires=0)
+    response.set_cookie('update', _update)
+    return response
+
+@blueprint.route('/setcookiesdelete', methods=['GET', 'POST'])
+def setcookiesdelete():
+    _delete = request.form['delete']
+    response = redirect(url_for("pages.patient_apts_scheduled_update"))
+    response.set_cookie('delete', _delete)
+    return response
+
+# update upcoming appointments for the patient
+@blueprint.route('/patient_apts_scheduled_update', methods=['GET', 'POST'])
+def patient_apts_scheduled_update():
+    time = request.cookies.get('time')
+    appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+    health_care = request.cookies.get('healthcard')
+    _update_id = request.cookies.get('update')
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    first_last_name_arr = doctor_selected.split(" ")
+    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    _doc_speciality = _doc_query[2]
     print(_doc_query[2])
 
-    _time_split = time.split(":")
-    _time_end = time.split(":")
-
-    if(_time_split[1] == "00"):
-        _time_end[1] = "20"
-    elif(_time_split[1] == "20"):
-        _time_end[1] = "40"
-    elif(_time_split[1] == "40"):
-        numb = int(_time_end[0])
-        next_hour = numb+1
-        _time_end[0] = str(next_hour)
-        _time_end[1] = "00"
-    print(_time_end)
+    _time_end = get_time_end()
 
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
-    _appointment_obj.create_appointment(_doc_query[2],12345, str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
-    #_appointment_obj.create_appointment("Family", 12345, "03/11/2019", "09:40:00", "10:00:00")
-    # create_appointment(doctor_speciality, patient_id, appointment_date, start_time, end_time)
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_update_id)
+    print(_update_id)
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
     _get_user = _patient_obj.find_a_patient(health_care)
-    _user_full_name = _get_user[0]+" "+_get_user[1]
+    _user_full_name = _get_user[1]+" "+_get_user[2]
 
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
+#patient update controller
+'''@blueprint.route('/patientdashboardupdate', methods=['GET', 'POST'])
+def patientdashboardupdate():
+    if request.method == "POST":
+        print("HELLO")
+        print(request.form)
+        _update = request.form['update']
+        if request.form['update']:
+            print(request.form['update'])
+            response = redirect(url_for("pages.patientaptbook"))
+            response.set_cookie('update', _update)
+        else:
+            response = redirect(url_for("pages.patientaptbook"))
+            print('Structure is empty.')
+    return response
+    '''
 
 #patient login controller
 @blueprint.route('/patientdashboard', methods=['GET', 'POST'])
 def patientdashboard():
+    print(request.method)
     if request.method == "POST":
         _healthcard = request.form['healthcard']
         _phone_number = request.form['phone_number']
@@ -338,10 +480,12 @@ def patientdashboard():
             message = "Patient is not in the system."
             flash(message)
             response = redirect(url_for("pages.patient_login"))
+
         else:
             response = redirect(url_for("pages.patientaptbook"))
             response.set_cookie('healthcard', _healthcard)
             response.set_cookie('phone_number', _phone_number)
+
         print(request)
         return response
 
@@ -393,3 +537,23 @@ def addSecs(tm, secs):
     fulldate = fulldate + datetime.timedelta(seconds=secs)
     return fulldate.time()
 
+# function to add 20 minute appointments and get ending time
+def get_time_end():
+    time = request.cookies.get('time')
+    _time_split = time.split(":")
+    _time_end = time.split(":")
+
+    if (_time_split[1] == "00"):
+        _time_end[1] = "20"
+    elif (_time_split[1] == "20"):
+        _time_end[1] = "40"
+    elif (_time_split[1] == "40"):
+        numb = int(_time_end[0])
+        next_hour = numb + 1
+        if(next_hour<10):
+            _time_end[0] = "0" + str(next_hour)
+        else:
+            _time_end[0] = str(next_hour)
+        _time_end[1] = "00"
+    print(_time_end)
+    return _time_end

@@ -49,7 +49,6 @@ class Patientcontroller:
             health_cards.append(row["health_card"])
 
         values_from_db = tuple(list(zip(ids,last_names,first_names,birthdays,genders,phone_numbers,emails,ages,addresses,health_cards)))
-        #print(values_from_db)
         return values_from_db
 
     def validatedornot(self, validation):
@@ -73,7 +72,6 @@ class Patientcontroller:
 
         get_query = "SELECT * FROM patient WHERE health_card =" + "'" + health_card + "'" + " AND phone_number=" + "'" + phone_number+ "'"
         get_everything = "SELECT id,last_name,first_name,birthday,gender,phone_number,email,address,age,health_card FROM patient;"
-        print(get_query)
         table_creation_dict = {"patient":  get_query}
         database = app.classes.database_container.DatabaseContainer.get_instance()
 
@@ -104,15 +102,12 @@ class Patientcontroller:
             return
             #print("INVALID")
 
-        #print(values_from_db)
         return values_from_db
 
 
 
     def find_user(self, health_card, phone_number):
         # Make an sql  query to search for the name and pasword instead of seleting all
-        #print("HELLOO")
-        #return 0
         
         self.health_card = health_card
         self.phone_number = phone_number
@@ -121,7 +116,6 @@ class Patientcontroller:
         with mysql.connect("app/database/SOEN344_DATABASE.db") as con:
 
             loadhealth_card = ("select health_card from patient where health_card = '' "+health_card+" '' ")
-            print(loadhealth_card)
             mycursor = con.cursor()
             mycursor.execute(a.health_card, loadhealth_card)
             health_cardcheck = mycursor.fetchone()
@@ -157,7 +151,6 @@ class Patientcontroller:
         '''
             Finding the particular patient according to the healthcare # from the find nurse page
         '''
-        print(healthcare_number)
         database = db.get_instance()
         query = ""
         try:
@@ -165,14 +158,11 @@ class Patientcontroller:
         except ValueError:
             query = ""
 
-        print("QURY")
-        print(query)
-
         cur = database.execute_query(query)
         data = cur.fetchall()
         d = tuple()
         for row in data:
-            d = tuple((row["first_name"], row["last_name"], row["birthday"], row["gender"],
+            d = tuple((row["id"],row["first_name"], row["last_name"], row["birthday"], row["gender"],
                        row["phone_number"], row["email"],row["address"], row["age"],row["health_card"]))
         print(d)
         # returns a list of users

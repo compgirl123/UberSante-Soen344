@@ -37,7 +37,6 @@ class Nursecontroller:
             access_ids.append(row["access_id"])
 
         values_from_db = tuple(list(zip(ids,first_names, last_names,passwords,access_ids)))
-        #print(values_from_db)
         return values_from_db
 
     def validatedornot(self, validation):
@@ -56,7 +55,6 @@ class Nursecontroller:
 
         get_query = "SELECT * FROM nurse WHERE access_id =" + "'" + access_id + "'" + " AND password=" + "'" + password+ "'"
         get_everything = "SELECT id,last_name,first_name,password,access_id FROM nurse"
-        print(get_query)
         table_creation_dict = {"nurses":  get_query}
         database = app.classes.database_container.DatabaseContainer.get_instance()
 
@@ -87,8 +85,6 @@ class Nursecontroller:
 
     def find_user(self, access_id, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
-        #print("HELLOO")
-        #return 0
 
         self.access_id = access_id
         self.password = password
@@ -97,7 +93,6 @@ class Nursecontroller:
         with mysql.connect("app/database/SOEN344_DATABASE.db") as con:
 
             loadaccess_id = ("select access_id from nurse where access_id = '' "+access_id+" '' ")
-            print(loadaccess_id)
             mycursor = con.cursor()
             mycursor.execute(a.access_id, loadaccess_id)
             access_idcheck = mycursor.fetchone()
@@ -122,8 +117,6 @@ class Nursecontroller:
 
         database = db.get_instance()
         query = "SELECT first_name, last_name FROM nurse WHERE access_id=" + "'" + user_id +"'"
-
-        print(query)
 
         cur = database.execute_query(query)
         data = cur.fetchall()

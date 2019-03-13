@@ -5,20 +5,31 @@
 <div class="page-header">
   <h1>UberSante - Appointments for {{user_name}}</h1><br>
 </div>
-<p class="lead">Appointments with {{doctor_picked}}</p>
+<p class="lead">Appointment successfully added to the cart</p>
+<p class="lead">Latest Appointment Added with Dr. {{doctor_picked}}</p>
 
 <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
   <div class="container">
-    <p>Appointment successfully added to the cart</p>
     <p>{{appointment_selected}}</p>
     <p>{{time}}</p>
   </div>
 
-  <a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
+    <h3>Action : </h3>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
+      <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="update"> Update</button>
+    </form>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
+      <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="delete"> Delete</button>
+    </form>
 
 </div>
 
-<button type="submit" id = "update" name = "update" class="btn btn-success btn-lg" value="s"> Update</button>
-<button type="submit" id = "delete" name = "delete" class="btn btn-success btn-lg" value="s"> Delete</button>
+ <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
+      <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add"> View Cart</button>
+ </form>
+<form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patientaptbook') }}">
+      <button type="submit" id = "add" name = "add" class="btn btn-primary btn-lg" value="add"> Add new Appointment</button>
+    </form>
+<a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
 
 {% endblock %}
