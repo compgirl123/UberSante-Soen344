@@ -344,10 +344,12 @@ def savebookedaptupdate():
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
         _doctor_picked = request.form['doctor_picked']
+        _apt1 = request.form['appt_type']
         response = redirect(url_for("pages.patient_apts_scheduled_update"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
         response.set_cookie('doctor_picked',_doctor_picked)
+        response.set_cookie('appt2',_apt1)
     return response
 
 @blueprint.route('/savebookedaptdelete', methods=['GET', 'POST'])
@@ -368,10 +370,13 @@ def savebookedapt():
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
         _doctor_picked = request.form['doctor_picked']
+        _appointment = request.form['appt_type']
+        #print( _appointment)
         response = redirect(url_for("pages.patient_apts_scheduled"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
         response.set_cookie('doctor_picked',_doctor_picked)
+        response.set_cookie('appt1', _appointment)
     return response
 
 # view all upcoming appointments scheduled for the patient
@@ -403,6 +408,7 @@ def patient_apts_scheduled():
     appointment_selected = request.cookies.get('appointment_selected')
     doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
+    apt = request.cookies.get('appt1')
 
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
@@ -412,7 +418,13 @@ def patient_apts_scheduled():
     _doc_speciality = _doc_query[2]
     # print(_doc_query[2])
 
-    _time_end = get_time_end()
+    #_time_end = get_time_end()
+    if apt == "Regular Appt":
+        _time_end = get_time_end()
+    elif apt == "Annual Appt":
+        _time_end = get_time_end_sixty()
+
+    print(apt)
     print(appointment_selected+' _______________________________________')
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
@@ -424,7 +436,6 @@ def patient_apts_scheduled():
     # _get_patient
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
-    print("DD")
     print(_doc_query[2])
     print(str("0"+date))
 
@@ -462,6 +473,7 @@ def patient_apts_scheduled_update():
     doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
     _update_id = request.cookies.get('update')
+    apt = request.cookies.get('appt2')
 
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
@@ -469,9 +481,13 @@ def patient_apts_scheduled_update():
     first_last_name_arr = doctor_selected.split(" ")
     _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
     _doc_speciality = _doc_query[2]
-    print(_doc_query[2])
 
-    _time_end = get_time_end()
+    if apt == "Regular Appt":
+        _time_end = get_time_end()
+    elif apt == "Annual Appt":
+        _time_end = get_time_end_sixty()
+
+    #_time_end = get_time_end()
 
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
@@ -499,6 +515,7 @@ def patient_apts_scheduled_delete():
     doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
     _delete_id = request.cookies.get('delete')
+    apt = request.cookies.get('appt1')
     print("HEEERRE")
     print(_delete_id)
 
