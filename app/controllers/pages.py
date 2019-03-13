@@ -268,7 +268,7 @@ def deleteapt():
         time_slot_list = schedule_time_slots(1200, 36)
     print(user_id)
     print(password)
-    return render_template('patientpages/patientdashboardaptsupdate.html', user=user_id, tlist=time_slot_list,
+    return render_template('patientpages/patientdashboardaptsdelete.html', user=user_id, tlist=time_slot_list,
                            regularCheck=regularChecked, annualCheck=annualChecked, doctorlist=doctorlist)
 
 @blueprint.route('/updateapt', methods=['GET', 'POST'])
@@ -346,6 +346,14 @@ def savebookedaptupdate():
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
         response.set_cookie('doctor_picked',_doctor_picked)
+    return response
+
+@blueprint.route('/savebookedaptdelete', methods=['GET', 'POST'])
+def savebookedaptdelete():
+
+    if request.method == "POST":
+        print(request.form)
+        response = redirect(url_for("pages.patient_apts_scheduled_delete"))
     return response
 
 
@@ -435,7 +443,7 @@ def setcookiesupdate():
 @blueprint.route('/setcookiesdelete', methods=['GET', 'POST'])
 def setcookiesdelete():
     _delete = request.form['delete']
-    response = redirect(url_for("pages.patient_apts_scheduled_update"))
+    response = redirect(url_for("pages.deleteapt"))
     # response.set_cookie('delete', expires=0)
     response.set_cookie('delete', _delete)
     return response
@@ -476,6 +484,46 @@ def patient_apts_scheduled_update():
 
     return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
                            doctor_picked = doctor_selected , user_name = _user_full_name)
+
+# delete upcoming appointments for the patient
+@blueprint.route('/patient_apts_scheduled_delete', methods=['GET', 'POST'])
+def patient_apts_scheduled_delete():
+    time = request.cookies.get('time')
+    appointment_selected = request.cookies.get('appointment_selected')
+    doctor_selected = request.cookies.get('doctor_picked')
+    health_care = request.cookies.get('healthcard')
+    _delete_id = request.cookies.get('delete')
+    print("HEEERRE")
+    print(_delete_id)
+
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    first_last_name_arr = doctor_selected.split(" ")
+    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    _doc_speciality = _doc_query[2]
+    print(_doc_query[2])
+
+    _time_end = get_time_end()
+
+    date = appointment_selected.split("-")[1]
+    print(appointment_selected.split("-")[1])
+    print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+
+    # _get_patient
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(health_care)
+
+    _appointment_obj.appointmentdelete(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_delete_id)
+
+    _obj_user = Patientcontroller()
+    _patient_obj = Patientcontroller()
+    _get_user = _patient_obj.find_a_patient(health_care)
+    _user_full_name = _get_user[1]+" "+_get_user[2]
+
+    return render_template('patientpages/patient_dashboard.html', time = time, appointment_selected = appointment_selected ,
+                           doctor_picked = doctor_selected , user_name = _user_full_name)
+
 #patient update controller
 '''@blueprint.route('/patientdashboardupdate', methods=['GET', 'POST'])
 def patientdashboardupdate():
