@@ -180,11 +180,11 @@ class AppointmentController:
     def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
-        if doctor_id == False:
-            raise Exception('No doctor is available!')
+        '''if doctor_id == False:
+            raise Exception('No doctor is available!')'''
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
-        if appointment_room == False:
-            raise Exception('No room is available!')
+        '''if appointment_room == False:
+            raise Exception('No room is available!')'''
         appointment_status = "Approved"
         appointment_type = AppointmentController.getappointment_type(start_time, end_time)
         AppointmentController.delete_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,id)

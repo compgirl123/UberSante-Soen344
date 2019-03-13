@@ -69,6 +69,8 @@ def nursesearchctrlhealthcare():
 
     if request.method == "POST":
         _healthcare = request.form['healthcare']  # stores the name that was entered to the next page
+        print("HEALTHCARE")
+        print(_healthcare)
         _obj = Patientcontroller()
         _patient_found = _obj.find_a_patient(_healthcare)
         response = redirect(url_for("pages.patientresults"))
@@ -386,6 +388,7 @@ def patient_apts_scheduled_complete():
     #_get_patient
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
+    print()
     print("THE PATIENT")
     print(_patient_found[0])
 
@@ -421,6 +424,9 @@ def patient_apts_scheduled():
     # _get_patient
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
+    print("DD")
+    print(_doc_query[2])
+    print(str("0"+date))
 
     _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
 
@@ -635,4 +641,14 @@ def get_time_end():
             _time_end[0] = str(next_hour)
         _time_end[1] = "00"
     print(_time_end)
+    return _time_end
+
+# function to add 60 minute appointments and get ending time
+def get_time_end_sixty():
+    time = request.cookies.get('time')
+    _time_split = time.split(":")
+    _time_end = time.split(":")
+    numb = int(_time_end[0])
+    next_hour = numb + 1
+    _time_end[0] = str(next_hour)
     return _time_end
