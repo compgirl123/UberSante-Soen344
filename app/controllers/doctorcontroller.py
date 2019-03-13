@@ -173,29 +173,27 @@ class Doctorcontroller:
     def doctorappointmentbook(self, day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, doctor_id):
         message = "Availabilities loaded"
         database = db.get_instance()
-        start_time_hour = int(start_time_hour)
-        start_time_minute = int(start_time_minute)
+        _start_time_hour = int(start_time_hour)
+        _start_time_minute = int(start_time_minute)
 
-        end_time_hour = int(end_time_hour)
-        end_time_minute = int(end_time_minute)
+        _end_time_hour = int(end_time_hour)
+        _end_time_minute = int(end_time_minute)
         start_time = str(start_time_hour) + ':' + str(start_time_minute)     
         end_time = str(end_time_hour) + ':' + str(end_time_minute) 
         doctor_id = str(doctor_id)
 
 
-        if (start_time_hour <= end_time_hour and start_time_minute < end_time_minute) or (start_time_hour < end_time_hour and start_time_minute <= end_time_minute):
+        if (_start_time_hour <= _end_time_hour and _start_time_minute < _end_time_minute) or (_start_time_hour < _end_time_hour and _start_time_minute <= _end_time_minute):
             start_time = str(start_time_hour) + ':' + str(start_time_minute)     
             end_time = str(end_time_hour) + ':' + str(end_time_minute) 
             query3 = "SELECT COUNT(*) FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
             cur = database.execute_query(query3)
             data1 = cur.fetchall()
-            print(data1[0][0])
-            print(data1[0][0])
-            print(data1[0][0])
-            print(data1[0][0])
             data1 = int(data1[0][0])
             if data1 == 0:
                 doctor_id = int(doctor_id)
+                start_time = start_time + ":00"
+                end_time = end_time + ":00"
                 query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
                 database.execute_query(query2, (day, start_time, end_time,doctor_id ))
                 database.commit_db()
@@ -208,7 +206,15 @@ class Doctorcontroller:
                 for row in data:
                     start = row[2]
                     end = row[3]
-                    if (start_time_hour > int(start[0:2]) and start_time_hour > int(end[0:2])) or (start_time_hour < int(start[0:2]) and start_time_hour < int(end[0:2])) or (start_time_hour < int(start[0:2]) and start_time_hour <= int(end[0:2]) and end_time_minute <= int(start[3:])) or (start_time_hour > int(start[0:2]) and start_time_hour >= int(end[0:2]) and start_time_minute >= int(end[3:])):
+                    if int(start[0:1]) == 8 or int(start[0:1]) == 9: 
+                        start = '0' + start
+                    if int(end[0:1]) == 8 or int(end[0:1]) == 9 :
+                        end = '0' + end
+                    print(start)
+                    print(end)
+                    if (_start_time_hour > int(start[0:2]) and _end_time_hour > int(end[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour < int(end[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _end_time_minute <= int(start[3:5])) or (_start_time_hour >= int(end[0:2]) and _end_time_hour > int(end[0:2]) and _start_time_minute >= int(end[3:5])):
+                        start_time = start_time + ":00"
+                        end_time = end_time + ":00"
                         query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
                         database.execute_query(query2, (day, start_time, end_time,doctor_id ))
                         database.commit_db()
@@ -232,6 +238,7 @@ class Doctorcontroller:
     def deleteappointment(self, doctor_id):
         database = db.get_instance()
         print(doctor_id)
+        doctor_id = str(doctor_id)
         query = "DELETE FROM doctoravailability WHERE id =" + doctor_id
         database.execute_query(query)
         database.commit_db()

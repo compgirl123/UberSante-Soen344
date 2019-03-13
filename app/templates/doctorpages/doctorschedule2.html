@@ -24,14 +24,13 @@
                 <ul class="list-group">
                 {% for i in sel %}
                 {% if date_days[0] == i[1]%}
-                <input name="id" type="hidden" value="{{i[0]}}">
+                <input name="idd" type="hidden" value="{{i[0]}}">
                 <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                  <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                  <span class="glyphicon glyphicon-pencil"></span>
-                  </button>
-                  <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
+                  <!--<form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.doctoralsotry')}}">-->
+                  <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit"  value="delete">
                   <span class="glyphicon glyphicon-trash"></span>
-                  </button>                               
+                  </button>    
+                  <!--</form>-->                           
                 </li>
                 {% endif %}
                 {% endfor %}
@@ -42,6 +41,7 @@
                 <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                 <label for="appt-time" style="padding-left:20px;"> From: </label>
                     <select class="hours" id="sel1" name="sel1">
+                      <option  value = "08" selected>08</option>
                       <option  value = "09" selected>09</option>
                       <option  value = "10" selected>10</option>
                       <option  value = "11" selected>11</option>
@@ -62,6 +62,7 @@
                       </select>
                 <label for="appt-time"> To: </label>
                 <select class="hours" id="sel3" name = "sel3">
+                    <option  value = "08" selected>08</option>
                     <option  value = "09" selected>09</option>
                       <option  value = "10" selected>10</option>
                       <option  value = "11" selected>11</option>
@@ -101,13 +102,9 @@
                     <ul class="list-group">
                     {% for i in sel %}
                     {% if date_days[1] == i[1]%}
-                    <p>{{i[0]}}</p>
                     <input name="id1" type="hidden" value="{{i[0]}}">
                     <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                      <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                      <span class="glyphicon glyphicon-pencil"></span>
-                      </button>
-    
+                      
                       <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                       <span class="glyphicon glyphicon-trash"></span>
                       </button>                               
@@ -123,6 +120,7 @@
   
                   <label for="appt-time" style="padding-left:20px;"> From: </label>
                     <select class="hours" id="sel1" name="sel1">
+                      <option  value = "08" selected>08</option>
                       <option  value = "09" selected>09</option>
                       <option  value = "10" selected>10</option>
                       <option  value = "11" selected>11</option>
@@ -143,6 +141,7 @@
                       </select>
                 <label for="appt-time"> To: </label>
                 <select class="hours" id="sel3" name = "sel3">
+                    <option  value = "08" selected>08</option>
                     <option  value = "09" selected>09</option>
                       <option  value = "10" selected>10</option>
                       <option  value = "11" selected>11</option>
@@ -184,9 +183,6 @@
                     {% if date_days[2] == i[1]%}
                     <input name="id2" type="hidden" value="{{i[0]}}">
                     <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                      <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                      <span class="glyphicon glyphicon-pencil"></span>
-                      </button>
     
                       <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                       <span class="glyphicon glyphicon-trash"></span>
@@ -202,7 +198,8 @@
                     <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                     <label for="appt-time" style="padding-left:20px;"> From: </label>
                         <select class="hours" id="sel1" name="sel1">
-                          <option  value = "09" selected>09</option>
+                            <option  value = "08" selected>08</option>
+                            <option  value = "09" selected>09</option>
                           <option  value = "10" selected>10</option>
                           <option  value = "11" selected>11</option>
                           <option  value = "12" selected >12</option>
@@ -222,6 +219,7 @@
                           </select>
                     <label for="appt-time"> To: </label>
                     <select class="hours" id="sel3" name = "sel3">
+                        <option  value = "08" selected>08</option>
                         <option  value = "09" selected>09</option>
                           <option  value = "10" selected>10</option>
                           <option  value = "11" selected>11</option>
@@ -262,10 +260,7 @@
                     {% if date_days[3] == i[1]%}
                     <input name="id3" type="hidden" value="{{i[0]}}">
                     <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                      <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                      <span class="glyphicon glyphicon-pencil"></span>
-                      </button>
-    
+
                       <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                       <span class="glyphicon glyphicon-trash"></span>
                       </button>                               
@@ -280,7 +275,8 @@
                     <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                     <label for="appt-time" style="padding-left:20px;"> From: </label>
                         <select class="hours" id="sel1" name="sel1">
-                          <option  value = "09" selected>09</option>
+                            <option  value = "08" selected>08</option>
+                            <option  value = "09" selected>09</option>
                           <option  value = "10" selected>10</option>
                           <option  value = "11" selected>11</option>
                           <option  value = "12" selected >12</option>
@@ -300,6 +296,7 @@
                           </select>
                     <label for="appt-time"> To: </label>
                     <select class="hours" id="sel3" name = "sel3">
+                        <option  value = "08" selected>08</option>
                         <option  value = "09" selected>09</option>
                           <option  value = "10" selected>10</option>
                           <option  value = "11" selected>11</option>
@@ -340,9 +337,6 @@
                     {% if date_days[4] == i[1]%}
                     <input name="id4" type="hidden" value="{{i[0]}}">
                     <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                      <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                      <span class="glyphicon glyphicon-pencil"></span>
-                      </button>
     
                       <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                       <span class="glyphicon glyphicon-trash"></span>
@@ -358,7 +352,8 @@
                     <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                     <label for="appt-time" style="padding-left:20px;"> From: </label>
                         <select class="hours" id="sel1" name="sel1">
-                          <option  value = "09" selected>09</option>
+                            <option  value = "08" selected>08</option>
+                            <option  value = "09" selected>09</option>
                           <option  value = "10" selected>10</option>
                           <option  value = "11" selected>11</option>
                           <option  value = "12" selected >12</option>
@@ -378,6 +373,7 @@
                           </select>
                     <label for="appt-time"> To: </label>
                     <select class="hours" id="sel3" name = "sel3">
+                        <option  value = "08" selected>08</option>
                         <option  value = "09" selected>09</option>
                           <option  value = "10" selected>10</option>
                           <option  value = "11" selected>11</option>
@@ -418,9 +414,6 @@
                       {% if date_days[5] == i[1]%}
                       <input name="id5" type="hidden" value="{{i[0]}}">
                       <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                        <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                        <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
       
                         <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                         <span class="glyphicon glyphicon-trash"></span>
@@ -436,7 +429,8 @@
                       <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                       <label for="appt-time" style="padding-left:20px;"> From: </label>
                           <select class="hours" id="sel1" name="sel1">
-                            <option  value = "09" selected>09</option>
+                              <option  value = "08" selected>08</option>
+                              <option  value = "09" selected>09</option>
                             <option  value = "10" selected>10</option>
                             <option  value = "11" selected>11</option>
                             <option  value = "12" selected >12</option>
@@ -456,6 +450,7 @@
                             </select>
                       <label for="appt-time"> To: </label>
                       <select class="hours" id="sel3" name = "sel3">
+                          <option  value = "08" selected>08</option>
                           <option  value = "09" selected>09</option>
                             <option  value = "10" selected>10</option>
                             <option  value = "11" selected>11</option>
@@ -496,10 +491,7 @@
                       {% if date_days[6] == i[1]%}
                       <input name="id6" type="hidden" value="{{i[0]}}">
                       <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                        <button type="button" class="btn btn-default btn-sm" style="float: right; border: none;"> 
-                        <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
-      
+
                         <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
                         <span class="glyphicon glyphicon-trash"></span>
                         </button>                               
@@ -514,7 +506,8 @@
                       <p style="padding-left:20px;">Office hours are from 8:00 to 20:00</p>
                       <label for="appt-time" style="padding-left:20px;"> From: </label>
                           <select class="hours" id="sel1" name="sel1">
-                            <option  value = "09" selected>09</option>
+                              <option  value = "08" selected>08</option>
+                              <option  value = "09" selected>09</option>
                             <option  value = "10" selected>10</option>
                             <option  value = "11" selected>11</option>
                             <option  value = "12" selected >12</option>
@@ -535,7 +528,8 @@
                       <label for="appt-time"> To: </label>
                       <select class="hours" id="sel3" name = "sel3">
                           <option  value = "09" selected>09</option>
-                            <option  value = "10" selected>10</option>
+                          <option  value = "08" selected>08</option>
+                          <option  value = "10" selected>10</option>
                             <option  value = "11" selected>11</option>
                             <option  value = "12" selected >12</option>
                             <option  value = "13" selected >13</option>
