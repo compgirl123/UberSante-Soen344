@@ -2,6 +2,7 @@ import sqlite3
 import sqlite3 as mysql
 import sqlite3 as sql
 import sys
+import shutil
 from sqlite3 import Error
 import app.classes.database_container
 from app.common_definitions.common_paths import PATH_TO_DATABASE
@@ -170,32 +171,69 @@ class Doctorcontroller:
         return str(data[0][0])
 
     def doctorappointmentbook(self, day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, doctor_id):
-
-        start_time = str(start_time_hour) + ':' + str(start_time_minute)     
-        end_time = str(end_time_hour) + ':' + str(end_time_minute)     
+        message = "Availabilities loaded"
         database = db.get_instance()
+        start_time_hour = int(start_time_hour)
+        start_time_minute = int(start_time_minute)
 
-        query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
-        doctor_id = int(doctor_id)
-        database.execute_query(query2, (day, start_time, end_time,doctor_id ))
-        database.commit_db()
-        message = "Availability Added"
+        end_time_hour = int(end_time_hour)
+        end_time_minute = int(end_time_minute)
+        start_time = str(start_time_hour) + ':' + str(start_time_minute)     
+        end_time = str(end_time_hour) + ':' + str(end_time_minute) 
+        doctor_id = str(doctor_id)
+
+
+        if (start_time_hour <= end_time_hour and start_time_minute < end_time_minute) or (start_time_hour < end_time_hour and start_time_minute <= end_time_minute):
+            start_time = str(start_time_hour) + ':' + str(start_time_minute)     
+            end_time = str(end_time_hour) + ':' + str(end_time_minute) 
+            query3 = "SELECT COUNT(*) FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
+            cur = database.execute_query(query3)
+            data1 = cur.fetchall()
+            print(data1[0][0])
+            print(data1[0][0])
+            print(data1[0][0])
+            print(data1[0][0])
+            data1 = int(data1[0][0])
+            if data1 == 0:
+                doctor_id = int(doctor_id)
+                query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
+                database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+                database.commit_db()
+                print("hello")
+                return "Availability Added"
+            else:
+                query = "SELECT * FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
+                cur = database.execute_query(query)
+                data = cur.fetchall()
+                for row in data:
+                    start = row[2]
+                    end = row[3]
+                    if (start_time_hour > int(start[0:2]) and start_time_hour > int(end[0:2])) or (start_time_hour < int(start[0:2]) and start_time_hour < int(end[0:2])) or (start_time_hour < int(start[0:2]) and start_time_hour <= int(end[0:2]) and end_time_minute <= int(start[3:])) or (start_time_hour > int(start[0:2]) and start_time_hour >= int(end[0:2]) and start_time_minute >= int(end[3:])):
+                        query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
+                        database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+                        database.commit_db()
+                        message = "Availability Added"
+                        return message
+                return "Enter proper values"
+        else:
+            message = "Enter proper values" 
+        #query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
+        #database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+        #database.commit_db()
         return message
-
 
     def doctorgetallappointments(self, doctor_id):
         database = db.get_instance()
         query = "SELECT * FROM doctoravailability WHERE doctor_id=" + doctor_id
         queryexecute = database.execute_query(query)
         data = queryexecute.fetchall()
-    
         return data
 
     def deleteappointment(self, doctor_id):
         database = db.get_instance()
+        print(doctor_id)
         query = "DELETE FROM doctoravailability WHERE id =" + doctor_id
         database.execute_query(query)
         database.commit_db()
         message = "Availability Deleted"
         return message
-
