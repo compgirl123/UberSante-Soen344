@@ -399,7 +399,16 @@ def patient_apts_scheduled_complete():
 
     _apts = _appointment_obj.getallappointments(_patient_found[0])
 
-    return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts)
+    '''_doc_id = _apts['doctor_id']
+    _get_doc_name = _doc_obj.get_doctor_by_id(_doc_id)'''
+    _full_name = []
+    print(len(_apts))
+    for result in _apts:
+        _id_doc = result['doctor_id']
+        _get_doc_name = _doc_obj.get_doctor_by_id(_id_doc)
+        #_get_doc_name[0] + " "+_get_doc_name[1]
+
+    return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts )
 
 # view latest appointment scheduled for the patient
 @blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
