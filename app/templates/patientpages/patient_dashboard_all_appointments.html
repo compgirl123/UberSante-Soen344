@@ -64,7 +64,7 @@
     <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.setcookiesupdate') }}">
       <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="{{apt['id']}}" onclick="changeHourBlock()"> Update</button>
     </form>
-    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.updateapt') }}">
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.setcookiesdelete') }}">
       <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="{{apt['id']}}"> Delete</button>
     </form>
 </div>
@@ -85,9 +85,6 @@ var test = {{apt['id']}};
 </script>
 {%endfor %}
 
- <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
-      <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add"> View Cart</button>
- </form>
 <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patientaptbook') }}">
       <button type="submit" id = "add" name = "add" class="btn btn-primary btn-lg" value="add"> Add new Appointment</button>
     </form>

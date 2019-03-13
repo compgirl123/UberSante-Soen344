@@ -239,7 +239,37 @@ def patient_register():
         return redirect(url_for(".patient_login"))
     return render_template('forms/patient_register.html')
 
-
+@blueprint.route('/deleteapt', methods=['GET', 'POST'])
+def deleteapt():
+    user_id = request.cookies.get('healthcard')
+    password = request.cookies.get('phone_number')
+    _update_id = request.cookies.get('update')
+    regularChecked = "checked"
+    annualChecked = ""
+    _doctor_obj = Doctorcontroller()
+    _doctors_list = _doctor_obj.doctor_table()
+    print(_doctors_list)
+    doctorlist = []
+    print(_doctors_list)
+    for infos in _doctors_list:
+        doctorlist.append(infos[2] + " " + infos[1])
+    # check if annual or regular is selected and adjust the time slots accordingly
+    opt_param = request.args.get("apttype")
+    if opt_param is not None:
+        if opt_param == "regular":
+            time_slot_list = schedule_time_slots(1200, 36)
+            regularChecked = "checked"
+            annualChecked = ""
+        elif opt_param == "annual":
+            time_slot_list = schedule_time_slots(3600, 12)
+            regularChecked = ""
+            annualChecked = "checked"
+    else:
+        time_slot_list = schedule_time_slots(1200, 36)
+    print(user_id)
+    print(password)
+    return render_template('patientpages/patientdashboardaptsupdate.html', user=user_id, tlist=time_slot_list,
+                           regularCheck=regularChecked, annualCheck=annualChecked, doctorlist=doctorlist)
 
 @blueprint.route('/updateapt', methods=['GET', 'POST'])
 def updateapt():
@@ -406,6 +436,7 @@ def setcookiesupdate():
 def setcookiesdelete():
     _delete = request.form['delete']
     response = redirect(url_for("pages.patient_apts_scheduled_update"))
+    # response.set_cookie('delete', expires=0)
     response.set_cookie('delete', _delete)
     return response
 

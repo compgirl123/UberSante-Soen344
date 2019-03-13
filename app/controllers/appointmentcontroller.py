@@ -133,7 +133,6 @@ class AppointmentController:
         result = conn.fetchall()
         return result
 
-
     def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
