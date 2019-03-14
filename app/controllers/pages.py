@@ -403,12 +403,11 @@ def doctordashboard():
 @blueprint.route('/doctorlogin')
 def doctor_login():
     form = LoginForm(request.form)
-    return render_template('forms/doctor_login.html', form=form)
-    #if 'permitnumber' in request.cookies:
-        #response = redirect(url_for("pages.doctorschedule"))
-        #return response
-    #else:
-
+    if 'permitnumber' in request.cookies:
+        response = redirect(url_for("pages.doctorschedule"))
+        return response
+    else:
+        return render_template('forms/doctor_login.html', form=form)
 
 @blueprint.route('/nurselogin')
 def nurse_login():
