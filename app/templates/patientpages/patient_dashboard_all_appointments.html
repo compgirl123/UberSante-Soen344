@@ -1,0 +1,90 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1>UberSante - Appointment Cart</h1><br>
+</div>
+
+{% for apt in apts %}
+<div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+  <div class="container">
+       <h3>Id #:</h3>
+      <p class="id1" id="{{apt['id']}}">{{apt['id']}}</p>
+      <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Room #:</th>
+      <th scope="col">Appointment Type:</th>
+      <th scope="col">Appointment Status:</th>
+      <th scope="col">Appointment Date:</th>
+        <th scope="col">Start Time:</th>
+        <th scope="col">End Time:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{apt["appointment_room"]}}</td>
+        <td>{{apt["appointment_type"]}}</td>
+      <td>{{apt["appointment_status"]}}</td>
+      <td>{{apt["appointment_date"]}}</td>
+      <td>{{apt["start_time"]}}</td>
+        <td>{{apt["end_time"]}}</td>
+    </tr>
+  </tbody>
+</table>
+
+      <!-- Other View Style for Appointments -->
+    <!--<p>{{appointment_selected}}</p>
+    <p>{{time}}</p>
+       <h3>Room: </h3>
+      <p>{{apt["appointment_room"]}}</p>
+       <h3>Appointment Type: </h3>
+      <p>{{apt["appointment_type"]}}</p>
+      <h3>Appointment Status: </h3>
+      <p>{{apt["appointment_status"]}}</p>
+       <h3>Appointment Date: </h3>
+      <p>{{apt["appointment_date"]}}</p>
+      <h3>Start Time: </h3>
+      <p>{{apt["start_time"]}}</p>
+       <h3>End Time: </h3>
+      <p>{{apt["end_time"]}}</p>
+      <h3>Patient Id: </h3>
+      <p>{{apt["patient_id"]}}</p>
+       <h3>Doctor Id: </h3>
+      <p>{{apt["doctor_id"]}}</p>-->
+  </div>
+    <h3>Action : </h3>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.setcookiesupdate') }}">
+      <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="{{apt['id']}}" onclick="changeHourBlock()"> Update</button>
+    </form>
+    <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.setcookiesdelete') }}">
+      <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="{{apt['id']}}"> Delete</button>
+    </form>
+</div>
+<script>
+function changeHourBlock() {
+var test = {{apt['id']}};
+    //alert(test);
+      var id_number1 = document.getElementById(test).value;
+      console.log(id_number1);
+      //var id_number = document.getElementsByClassName("btn btn-warning btn-lg")[0].name;
+      //var id_number3 = document.getElementsByTagName("p");
+        //console.log(id_number);
+        //console.log("Regular checked");
+        window.location.href = "/updateapt?id="+test+"";
+    }
+
+
+</script>
+{%endfor %}
+
+<form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patientaptbook') }}">
+      <button type="submit" id = "add" name = "add" class="btn btn-primary btn-lg" value="add"> Add new Appointment</button>
+    </form>
+<a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
+
+
+
+{% endblock %}
+
