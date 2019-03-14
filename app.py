@@ -58,11 +58,22 @@ def doctorschedule():
 def findnurse():
     return render_template('nursepages/findnurse.html')
 
+@app.route('/payment')
+def payment():
+    return render_template('patientpages/payment.html')
+
+@app.route('/Delete_confirmation')
+def Delete_confirmation():
+    return render_template('patientpages/Delete_confirmation.html')
+
+@app.route('/thank_you')
+def payment():
+    return render_template('patientpages/thank_you.html')
+
 @app.route('/login')
 def login():
     form = LoginForm(request.form)
     return render_template('forms/login.html', form=form)
-
 
 @app.route('/forgot')
 def forgot():

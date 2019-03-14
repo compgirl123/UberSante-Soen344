@@ -26,7 +26,7 @@ def create_connection(database_file_path):
 def create_in_memory_connection():
     """
     Function creates SQLite database in memory
-    if you wish to use a temporary database, use this function but if you wish to empty previous database, 
+    if you wish to use a temporary database, use this function but if you wish to empty previous database,
     simply delete the db file containing the database you wish to empty.
     """
     try:
@@ -40,8 +40,8 @@ def create_in_memory_connection():
 
 def create_table(database, sql_create_x_table):
     """
-    Function takes database connection object 'conb' and sql statement to create table 'sql_create_x_table'.  
-    creates table inside database. 
+    Function takes database connection object 'conb' and sql statement to create table 'sql_create_x_table'.
+    creates table inside database.
     """
     try:
         c = database.connection.cursor()
@@ -85,10 +85,10 @@ def initializeAndFillDatabase():
                                                             gender    TEXT NOT NULL,
                                                             phone_number TEXT NOT NULL,
                                                             email  TEXT  NOT NULL ,
-                                                            address TEXT NOT NULL , 
+                                                            address TEXT NOT NULL ,
                                                             age  INTEGER NOT NULL,
                                                             health_card TEXT NOT NULL
-                                                            
+
                                                         );""",
 
                            "doctor_table": """CREATE TABLE IF NOT EXISTS doctor (
@@ -98,13 +98,13 @@ def initializeAndFillDatabase():
                                         speciality  TEXT NOT NULL,
                                         city TEXT NOT NULL,
                                         password TEXT NOT NULL,
-                                        permit_number integer NOT NULL 
-                                        
+                                        permit_number integer NOT NULL
+
                                     );""",
 
                            "room_table": """CREATE TABLE IF NOT EXISTS room (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        name TEXT NOT NULL  
+                                        name TEXT NOT NULL
                                     );""",
 
                            "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
@@ -117,10 +117,10 @@ def initializeAndFillDatabase():
                                         end_time TIME NOT NULL ,
                                         patient_id INTEGER NOT NULL,
                                         doctor_id INTEGER NOT NULL,
-                                        
+
                                         FOREIGN KEY(appointment_room) REFERENCES room(id),
                                         FOREIGN KEY(patient_id) REFERENCES patient(id),
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)  
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
                                     );""",
                            "doctoravailablility_table": """CREATE TABLE IF NOT EXISTS doctoravailability  (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -134,12 +134,11 @@ def initializeAndFillDatabase():
                                             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                             last_name TEXT NOT NULL,
                                             first_name TEXT NOT NULL,
-                                            password TEXT NOT NULL, 
+                                            password TEXT NOT NULL,
                                             access_id TEXT NOT NULL
-                                            
-                                            
-                                        );""",
 
+
+                                        );""",
 
                            }
 
@@ -154,6 +153,11 @@ def initializeAndFillDatabase():
 
     # Don't commit until the end
     app.classes.database_container.DatabaseContainer.commit_lock = True
+    # hardcoded  data insert inside database
+    database.execute_query( "insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike"))
+    database.execute_query("insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",
+                           ("fake", "nurse", "123123", "fakenurse"))
+    database.commit_db()
 
     print("- Finished filling database -")
 

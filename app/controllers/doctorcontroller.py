@@ -12,7 +12,7 @@ from app.classes.database_container import DatabaseContainer as db
 
 class Doctorcontroller:
 
-    def doctor_table(self, name):
+    def doctor_table(self):
 
         '''
         Creating Arrays to Store the values of each column for the Doctor Table
@@ -44,7 +44,6 @@ class Doctorcontroller:
             permit_numbers.append(row["permit_number"])
 
         values_from_db = tuple(list(zip(ids,last_names,first_names,specialties,cities,passwords,passwords,permit_numbers)))
-        #print(values_from_db)
         return values_from_db
 
     def validatedornot(self, validation):
@@ -65,7 +64,6 @@ class Doctorcontroller:
 
         get_query = "SELECT * FROM doctor WHERE permit_number =" + "'" + permit_number + "'" + " AND password=" + "'" + password+ "'"
         get_everything = "SELECT id,last_name,first_name,speciality,city,password,permit_number FROM doctor;"
-        print(get_query)
         table_creation_dict = {"doctor":  get_query}
         database = app.classes.database_container.DatabaseContainer.get_instance()
 
@@ -92,16 +90,11 @@ class Doctorcontroller:
         else:
             return
             #print("INVALID")
-
-        #print(values_from_db)
         return values_from_db
-
 
 
     def find_user(self, permit_number, password):
         # Make an sql  query to search for the name and pasword instead of seleting all
-        #print("HELLOO")
-        #return 0
         
         self.permit_number = permit_number
         self.password = password
@@ -110,7 +103,6 @@ class Doctorcontroller:
         with mysql.connect("app/database/SOEN344_DATABASE.db") as con:
 
             loadpermit_number = ("select permit_number from doctor where permit_number = '' "+permit_number+" '' ")
-            print(loadpermit_number)
             mycursor = con.cursor()
             mycursor.execute(a.permit_number, loadpermit_number)
             permit_numbercheck = mycursor.fetchone()
@@ -244,3 +236,33 @@ class Doctorcontroller:
         database.commit_db()
         message = "Availability Deleted"
         return message
+      
+    def find_doctor_by_full_name(self, first_name, last_name):
+        '''
+             Finding the particular doctor according to their first and last name
+        '''
+        database = db.get_instance()
+        query = "SELECT * FROM doctor WHERE first_name= ""'" + first_name + "'"" AND last_name= ""'" + last_name + "'"""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+        # returns a list of users
+        return d
+
+    def get_doctor_by_id(self,doctor_id):
+
+        database = db.get_instance()
+        query = "SELECT * FROM doctor WHERE id= ""'" + str(doctor_id) + "'"""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"], row["last_name"], row["speciality"], row["city"], row["permit_number"],
+                       row["password"]))
+        # returns a list of users
+        return d
+

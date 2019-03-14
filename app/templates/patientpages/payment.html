@@ -1,0 +1,72 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h1>Payment</h1>
+  </div>
+
+
+
+<div class="payment-form" style="background-color:#ccffcc;">
+        <div class="container">
+        <form action="/thank_you">
+
+            <h3>Billing Address</h3>
+        
+            <div class="form-group">
+                <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                <input class="form-control item" type="text" name="fullname" maxlength="40" minlength="1" id="fullname" placeholder="John M. Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                <input class="form-control item" type="email" name="password" minlength="1" id="email" placeholder="john@example.com" required>
+            </div>
+                
+            <div class="form-group">
+                <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                <input class="form-control item" type="adr" name="adr" id="adr" placeholder="542 W. 15th Street" required>
+            </div>
+                
+            <div class="form-group">
+                <label for="city"><i class="fa fa-institution"></i> City</label>
+                <input class="form-control item" type="city" name="city" id="city" placeholder="Montreal" required>
+            </div>
+    
+            <h3>Payment Information <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png"></h3>
+                
+            <div class="form-group">
+                <label for="cname">Name on Card</label>
+                <input class="form-control item" type="cname" name="cname" id="cname" placeholder="John More Doe" required>
+            </div>
+                
+            <div class="form-group">
+                <label for="ccnum">Credit card number</label>
+                <input class="form-control item" type="ccnum" name="ccnum"  maxlength="16" minlength="16" id="ccnum" placeholder="1111222233334444" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="exp">Exp Date</label>
+                <input class="form-control item" type="exp" name="exp" maxlength="7" minlength="7"id="exp" placeholder="01/2019" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="ccv">CVV</label>
+                <input class="form-control item" type="ccv" name="ccv" id="ccv" placeholder="234" required>
+            </div>
+    
+            <label>
+                <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+            </label>
+
+            <div class="form-group">
+                <button class="btn btn-primary btn-block create-account" type="submit" href="/thank_you">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+    </div>
+
+{% endblock %}
