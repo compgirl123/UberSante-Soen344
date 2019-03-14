@@ -11,6 +11,7 @@ class AppointmentController:
         conn = AppointmentController.connect_database()
         doctorsAvailable = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
         availableRoom = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+
         # If no doctor is available
         if doctorsAvailable == False:
             raise Exception('No doctor is available!')
@@ -25,6 +26,21 @@ class AppointmentController:
 
     def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time, day_of_week):
         conn = AppointmentController.connect_database(self)
+        database = db.get_instance()
+        queryexecute = database.execute_query("SELECT id FROM room WHERE id = 2")
+        print(conn.rowcount)
+        database.commit_db()
+        if conn.rowcount == -1:
+            data = ''
+        else:
+            data = database.fetchall()
+            database.execute_query("INSERT INTO room(id,name)" \
+                                   "VALUES (?,?)", (2, "test"))
+        print(data)
+
+        #print(data[0]['id'])
+
+        database.commit_db()
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time , day_of_week)
         if doctor_id == False:
             raise Exception('No doctor is available!')

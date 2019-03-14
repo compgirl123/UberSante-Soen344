@@ -75,10 +75,6 @@ def doctorschedule():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
-    if not permit:
-        permit = ""
-    else:
-        permit = request.cookies.get('permitnumber')
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
     
