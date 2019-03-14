@@ -17,7 +17,7 @@
     <table class="table">
         <tbody>
             <tr>
-              <form class="infobro" action="/doctorschedule" method="post">
+              <!--<form class="infobro" action="/doctorschedule" method="post">-->
 
               <td style="border-color:black">Monday</td>
               <td style="border-color:black">
@@ -25,16 +25,20 @@
                 {% for i in sel %}
                 {% if date_days[0] == i[1]%}
                 <input name="idd" type="hidden" value="{{i[0]}}">
+                <p>{{i[0]}}</p>
                 <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                  <!--<form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.doctoralsotry')}}">-->
-                  <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit"  value="delete">
+                  <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.doctoralsotry')}}">
+                  <input name="idd" type="hidden" value="{{i[0]}}">
+                  <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" id="delete" name="delete"  value="yoyoyo">
                   <span class="glyphicon glyphicon-trash"></span>
                   </button>    
-                  <!--</form>-->                           
+                  </form>                           
                 </li>
                 {% endif %}
                 {% endfor %}
               </ul>
+              <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.doctortry')}}">
+
               <div class="collapse" id="demo" >
                   
                 <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -82,7 +86,7 @@
                     <option value = "40" selected>40</option>
                     </select>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="submit" class="btn btn-success" data-toggle="collapse" data-target="#demo" value ="submit" name="submit">
+                    <button type="submit" class="btn btn-success" data-toggle="collapse" data-target="#demo" id="submit" name="submit">
                     SUBMIT
                     </button>
                   </form>

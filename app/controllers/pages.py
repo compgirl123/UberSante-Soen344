@@ -45,24 +45,17 @@ def doctortry():
 @blueprint.route('/doctoralsotry', methods=['GET', 'POST'])
 def doctoralsotry():
     delete_value = request.cookies.get('delete')
+    idd_value = request.cookies.get('idd')
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
+    print(delete_value)
+    print(idd_value)
     obj.deleteappointment(delete_value) #fix method
     sel = obj.doctorgetallappointments(doctor_id)
-
-    if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
-        sels = []
-        print("oh no")
-        sels.append(request.form.get("sel1"))
-        sels.append(request.form.get("sel2"))
-        sels.append(request.form.get("sel3"))
-        sels.append(request.form.get("sel4"))       
-        message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
-        flash(message)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -90,10 +83,12 @@ def doctorschedule():
             print(message.center(columns))
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
-
+            
             dels = []
             print(id)
             dels.append(request.form.get("idd"))
+            
+
             #dels.append((request.form.get("id")))
             obj.deleteappointment(dels[0])
 
