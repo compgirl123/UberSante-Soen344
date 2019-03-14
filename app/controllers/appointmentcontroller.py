@@ -23,9 +23,9 @@ class AppointmentController:
             return [doctorsAvailable, availableRoom]
         
 
-    def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
+    def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time, day_of_week):
         conn = AppointmentController.connect_database(self)
-        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time , day_of_week)
         if doctor_id == False:
             raise Exception('No doctor is available!')
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
@@ -67,7 +67,7 @@ class AppointmentController:
             return False
 
 
-    def find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time):
+    def find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time , day_of_week):
         query = "SELECT id FROM doctor WHERE speciality=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=? AND start_time<=? AND end_time>=?"
         query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
@@ -81,8 +81,12 @@ class AppointmentController:
 
         conn.execute(query,(doctor_speciality,))
         specialists = conn.fetchall()
-        conn.execute(query2,(appointment_date, start_time, end_time))
+        conn.execute(query2,(day_of_week, start_time, end_time))
         availableDoctors = conn.fetchall()
+
+        print(day_of_week)
+        print(start_time)
+        print(end_time)
 
         for specialist in specialists:
             if specialist in availableDoctors:
@@ -133,9 +137,9 @@ class AppointmentController:
         result = conn.fetchall()
         return result
 
-    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
+    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week):
         conn = AppointmentController.connect_database(self)
-        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time,day_of_week)
         if doctor_id == False:
             raise Exception('No doctor is available!')
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
@@ -177,9 +181,9 @@ class AppointmentController:
         data = queryexecute.fetchall()
         return data
 
-    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
+    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week):
         conn = AppointmentController.connect_database(self)
-        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
+        doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time,day_of_week)
         '''if doctor_id == False:
             raise Exception('No doctor is available!')'''
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)

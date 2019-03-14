@@ -6,6 +6,8 @@ from app.controllers.patientcontroller import *
 from app.controllers.appointmentcontroller import *
 import datetime
 import shutil
+from datetime import date
+import calendar
 
 blueprint = Blueprint('pages', __name__)
 
@@ -673,10 +675,11 @@ def patient_apts_scheduled():
 
     print(apt)
     print(appointment_selected+' _______________________________________')
+    day_of_week = appointment_selected.split("-")[0].capitalize()
+    print(day_of_week)
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
-
 
     _appointment_obj = AppointmentController()
 
@@ -686,7 +689,7 @@ def patient_apts_scheduled():
     print(_doc_query[2])
     print(str("0"+date))
 
-    _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
+    _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),day_of_week)
 
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
@@ -735,6 +738,8 @@ def patient_apts_scheduled_update():
         _time_end = get_time_end_sixty()
 
     #_time_end = get_time_end()
+    print(appointment_selected + ' _______________________________________')
+    day_of_week = appointment_selected.split("-")[0].capitalize()
 
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
@@ -744,7 +749,7 @@ def patient_apts_scheduled_update():
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
 
-    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_update_id)
+    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_update_id,day_of_week)
     print(_update_id)
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
@@ -776,6 +781,8 @@ def patient_apts_scheduled_delete():
 
     _time_end = get_time_end()
 
+    print(appointment_selected + ' _______________________________________')
+    day_of_week = appointment_selected.split("-")[0].capitalize()
     date = appointment_selected.split("-")[1]
     print(appointment_selected.split("-")[1])
     print(str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]))
@@ -784,7 +791,7 @@ def patient_apts_scheduled_delete():
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
 
-    _appointment_obj.appointmentdelete(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_delete_id)
+    _appointment_obj.appointmentdelete(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_delete_id,day_of_week)
 
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
@@ -916,3 +923,15 @@ def get_time_end_sixty():
     next_hour = numb + 1
     _time_end[0] = str(next_hour)
     return _time_end
+
+def convert_date_to_day_of_week():
+    my_date = date.today()
+    appointment_selected = request.cookies.get('appointment_selected')
+    print(appointment_selected)
+    _today = calendar.day_name[appointment_selected.weekday()]  # 'Wednesday'
+    return _today
+
+@blueprint.route('/test',  methods=['GET', 'POST'])
+def test():
+    _res = convert_date_to_day_of_week()
+    return _res
