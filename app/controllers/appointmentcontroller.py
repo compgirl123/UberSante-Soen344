@@ -133,7 +133,6 @@ class AppointmentController:
         result = conn.fetchall()
         return result
 
-
     def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
@@ -178,31 +177,27 @@ class AppointmentController:
         data = queryexecute.fetchall()
         return data
 
-    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time):
+    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time)
-        if doctor_id == False:
-            raise Exception('No doctor is available!')
+        '''if doctor_id == False:
+            raise Exception('No doctor is available!')'''
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
-        if appointment_room == False:
-            raise Exception('No room is available!')
+        '''if appointment_room == False:
+            raise Exception('No room is available!')'''
         appointment_status = "Approved"
         appointment_type = AppointmentController.getappointment_type(start_time, end_time)
-        AppointmentController.update_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        AppointmentController.delete_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,id)
         return True
 
-    def delete_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+    def delete_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,id):
         try:
             database = db.get_instance()
-            item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
-                                       str(start_time),
-                                       str(end_time), str(patient_id), str(doctor_id[0]))
 
-            database.execute_query("DELETE FROM appointment WHERE appointment_room =?, appointment_type = ?, appointment_status = ?,appointment_date = ?,start_time = ?,end_time= ?,patient_id = ?, doctor_id = ?, id = ?;",
-                                 (
-                                       str(appointment_room[0]), appointment_type, appointment_status, appointment_date,
-                                       str(start_time),
-                                       str(end_time), str(patient_id), str(doctor_id[0]),))
+            database.execute_query("DELETE FROM appointment WHERE id = "+id+";")
+            print("HI")
+            print(id)
+
 
             database.commit_db()
         except Error as e:

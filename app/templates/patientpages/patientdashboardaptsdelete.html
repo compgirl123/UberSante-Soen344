@@ -1,0 +1,24 @@
+{% extends 'layouts/main.html' %}
+{% block title %}About{% endblock %}
+{% block content %}
+
+<div class="page-header" >
+
+</div>
+<div class="container">
+  <!--<div class="jumbotron">
+     Search form -->
+
+         <form method="post" class="form" action="{{ url_for('pages.savebookedaptdelete') }}">
+
+             <button type="submit" id = "appointment_selected" name = "appointment_selected" class="btn btn-success btn-lg" value="dd">Delete</button>
+        <!--<button type="submit" id = "appointment_selected" name = "appointment_selected" class="btn btn-success btn-lg" value="dd">UPDATE</button>-->
+        <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout"  >Log Out</a>
+
+       </form>
+
+        <br/><br/>
+
+</div>
+
+{% endblock %}
