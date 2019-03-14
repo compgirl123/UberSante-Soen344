@@ -212,14 +212,17 @@ class Doctorcontroller:
                         end = '0' + end
                     print(start)
                     print(end)
+                    count = 0
                     if (_start_time_hour > int(end[0:2]) and _end_time_hour > int(end[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour < int(start[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _end_time_minute <= int(start[3:5])) or (_start_time_hour >= int(end[0:2]) and _end_time_hour > int(end[0:2]) and _start_time_minute >= int(end[3:5])):
-                        start_time = start_time + ":00"
-                        end_time = end_time + ":00"
-                        query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
-                        database.execute_query(query2, (day, start_time, end_time,doctor_id ))
-                        database.commit_db()
-                        message = "Availability Added"
-                        return message
+                        count += 1
+                        if count == data1:
+                            start_time = start_time + ":00"
+                            end_time = end_time + ":00"
+                            query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
+                            database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+                            database.commit_db()
+                            message = "Availability Added"
+                            return message
                 return "Enter proper values"
         else:
             message = "Enter proper values" 
