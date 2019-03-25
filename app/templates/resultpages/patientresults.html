@@ -1,0 +1,53 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Find Doctor or Patient{% endblock %}
+{% block content %}
+
+{% if results == 1 %}
+<div class="container">
+  <h2>Results</h2>
+  <div class="panel panel-default">
+    <div class="panel-heading">{{results}} Result(s) found</div>
+    <table class="table table-dark">
+  <thead>
+    <tr class="success">
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Birthday</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Phone Number</th>
+        <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Age</th>
+        <th scope="col">Health Card</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="warning">      
+      <td>{{patient_found[1]}}</td>
+      <td>{{patient_found[2]}}</td>
+      <td>{{patient_found[3]}}</td>
+        <td>{{patient_found[4]}}</td>
+      <td>{{patient_found[5]}}</td>
+        <td>{{patient_found[6]}}</td>
+        <td>{{patient_found[7]}}</td>
+      <td>{{patient_found[8]}}</td>
+      <td>{{patient_found[9]}}</td>
+    </tr>
+
+  </tbody>
+</table>
+
+  </div>
+</div>
+{% else %}
+<div class="container">
+  <h2>Results</h2>
+  <div class="panel panel-default">
+    <div class="panel-heading">{{results}} Result(s) found</div>
+  </div>
+</div>
+{% endif%}
+
+
+
+{% endblock %}

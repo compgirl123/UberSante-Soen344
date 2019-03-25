@@ -1,0 +1,34 @@
+{% extends 'layouts/form.html' %}
+{% block title %}Register a Doctor{% endblock %}
+{% block content %}
+  <form method="post" class="form" action="/register_doctor">
+    <h3 class="form-heading">Register a Doctor <a href="/" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      <div class="form-group">
+         <label for="permit_number">Permit Number</label>
+         <input type="text" class="form-control" name="permit_number" placeholder="7 Digits Permit Number i.e 1234567" maxlength="7" pattern="[0-9]{7}" title="7 digits permit number of doctor i.e 1234567" required>
+      </div>
+      <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" class="form-control" name="first_name" placeholder="First Name" pattern="[A-Za-z]{1,25}" title="First name of doctor - single word" required>
+      </div>
+      <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" class="form-control" name="last_name" placeholder="Last Name" pattern="[A-Za-z]{1,25}" title="Last name of doctor - single word" required>
+      </div>
+      <div class="form-group">
+          <label for="speciality">Speciality</label>
+          <input type="text" class="form-control" name="speciality" placeholder="Speciality" title="Speciality of doctor" required>
+      </div>
+      <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" name="city" placeholder="City" title="City of doctor" required>
+      </div>
+      <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Password" minlength="6" title="Minimum 6 characters" required>
+      </div>
+
+      <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+    <br>
+  </form>
+{% endblock %}

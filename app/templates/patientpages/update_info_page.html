@@ -1,0 +1,30 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h1>Update Information</h1>
+  </div>
+
+  <p class="lead">Information about your appointment</p>
+
+  <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+    <div class="container">
+
+    <label for="fname"><i class="fa fa-user-md"></i> Doctor</label>
+    <input type="text" id="fname" name="firstname" placeholder="John M. Doe"> <br>
+    <label for="email"><i class="fa fa-calendar"></i> Day of the Week </label>
+    <input type="text" id="email" name="email" placeholder="Monday"><br>
+    <label for="adr"><i class="fa fa-calendar"></i> Date</label>
+    <input type="text" id="adr" name="address" placeholder="Date"><br>
+    <label for="city"><i class="fa fa-clock-o"></i> Time</label>
+    <input type="text" id="city" name="city" placeholder="Time">
+    </div>
+      <br/>
+      <form method="post" class="form" action="{{ url_for('pages.patientdashboard') }}">
+          <a type="button" id = "update" name = "update" class="btn btn-success btn-lg" >Update</a>
+      </form>
+</div>
+
+
+{% endblock %}
