@@ -558,7 +558,8 @@ def patientaptbook():
     doctorlist = []
 
     for infos in _doctors_list:
-        doctorlist.append(infos[2]+ " "+ infos[1])
+        #doctorlist.append(infos[2]+ " "+ infos[1])
+        doctorlist.append(infos[3])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
     if opt_param is not None:
