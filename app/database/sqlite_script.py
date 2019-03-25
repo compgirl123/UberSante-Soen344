@@ -157,6 +157,13 @@ def initializeAndFillDatabase():
     database.execute_query( "insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike"))
     database.execute_query("insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",
                            ("fake", "nurse", "123123", "fakenurse"))
+    database.execute_query("INSERT into room (name) VALUES ('room1')")
+    database.execute_query("INSERT into room (name) VALUES ('room2')")
+    database.execute_query("INSERT into room (name) VALUES ('room3')")
+    database.execute_query("INSERT into room (name) VALUES ('room4')")
+    database.execute_query("INSERT into room (name) VALUES ('room5')")
+    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number) VALUES ('Samuel','Markis','Dermatology','Montreal','password','1234567')")
+    database.execute_query("INSERT into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES ('Carlos','Mendez','01/01/2001','male','123-456-7890','carlos@patient.com','1500 st catherine','18','LOUX 1234 1234')")
     database.commit_db()
 
     print("- Finished filling database -")
