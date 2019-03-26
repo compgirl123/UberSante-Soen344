@@ -34,7 +34,7 @@ class Doctorcontroller:
 
         results = database.execute_query("SELECT id,last_name,first_name,speciality,city,password,permit_number FROM doctor;")
 
-        for row in database.execute_query("SELECT id,last_name,first_name,speciality,city,password,permit_number FROM doctor;"):
+        for row in database.execute_query("SELECT DISTINCT id,last_name,first_name,speciality,city,password,permit_number FROM doctor;"):
             ids.append(row["id"])
             last_names.append(row["last_name"])
             first_names.append(row["first_name"])
@@ -270,7 +270,6 @@ class Doctorcontroller:
         return d
 
     def get_doctor_by_specialty(self,doctor_specialty):
-
         database = db.get_instance()
         query = "SELECT * FROM doctor WHERE speciality= ""'" + str(doctor_specialty) + "'"""
 
@@ -280,6 +279,23 @@ class Doctorcontroller:
         for row in data:
             d = tuple((row["first_name"], row["last_name"], row["speciality"], row["city"], row["permit_number"],
                        row["password"]))
+        # returns a list of users
+        return d
+    
+    def get_distinct_speciality(self):
+        database = db.get_instance()
+        query = "SELECT DISTINCT speciality FROM doctor"
+
+        cur = database.execute_query(query)
+        
+        data = cur.fetchall()
+        specialties = []
+        d = tuple()
+        for row in data:
+            print(row["speciality"])
+            specialties.append(row["speciality"])
+            #d = tuple((row["speciality"]))
+        d = tuple(specialties)
         # returns a list of users
         return d
 

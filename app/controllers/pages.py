@@ -464,18 +464,14 @@ def patientchoosedoctorspecialty():
     regularChecked = "checked"
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
-    _doctors_list = _doctor_obj.doctor_table()
+    #_doctors_list = _doctor_obj.doctor_table()
+    _doctors_list  = _doctor_obj.get_distinct_speciality()
     doctorlist = []
 
     for infos in _doctors_list:
         #doctorlist.append(infos[2]+ " "+ infos[1])
-        doctorlist.append(infos[3])
-    # check if annual or regular is selected and adjust the time slots accordingly
-    
-
-    return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorlist = doctorlist)   
-
-    
+        doctorlist.append(infos)
+    return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorlist = doctorlist)      
 
 @blueprint.route('/patient_register',  methods=['GET', 'POST'])
 def patient_register():
