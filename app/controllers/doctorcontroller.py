@@ -175,13 +175,14 @@ class Doctorcontroller:
         doctor_id = str(doctor_id)
 
 
-        if (_start_time_hour <= _end_time_hour and _start_time_minute < _end_time_minute) or (_start_time_hour < _end_time_hour and _start_time_minute <= _end_time_minute):
+        if (_start_time_hour <= _end_time_hour and _start_time_minute < _end_time_minute) or (_start_time_hour < _end_time_hour):
             start_time = str(start_time_hour) + ':' + str(start_time_minute)     
             end_time = str(end_time_hour) + ':' + str(end_time_minute) 
             query3 = "SELECT COUNT(*) FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
             cur = database.execute_query(query3)
             data1 = cur.fetchall()
             data1 = int(data1[0][0])
+            print(data1)
             if data1 == 0:
                 doctor_id = int(doctor_id)
                 start_time = start_time + ":00"
@@ -195,6 +196,8 @@ class Doctorcontroller:
                 query = "SELECT * FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
                 cur = database.execute_query(query)
                 data = cur.fetchall()
+                count = 0
+
                 for row in data:
                     start = row[2]
                     end = row[3]
@@ -204,9 +207,13 @@ class Doctorcontroller:
                         end = '0' + end
                     print(start)
                     print(end)
-                    count = 0
-                    if (_start_time_hour > int(end[0:2]) and _end_time_hour > int(end[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour < int(start[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _end_time_minute <= int(start[3:5])) or (_start_time_hour >= int(end[0:2]) and _end_time_hour > int(end[0:2]) and _start_time_minute >= int(end[3:5])):
+                    if (_start_time_hour > int(end[0:2]) and _end_time_hour > int(end[0:2])) or \
+                        (_start_time_hour < int(start[0:2]) and _end_time_hour < int(start[0:2])) or \
+                        (_start_time_hour < int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _end_time_minute <= int(start[3:5])) or \
+                        (_start_time_hour >= int(end[0:2]) and _end_time_hour > int(end[0:2]) and _start_time_minute >= int(end[3:5])) or \
+                        (_start_time_hour <= int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _start_time_minute < int(start[3:5]) and _end_time_minute <= int(start[3:5])):
                         count += 1
+                        print(count)
                         if count == data1:
                             start_time = start_time + ":00"
                             end_time = end_time + ":00"
@@ -215,9 +222,11 @@ class Doctorcontroller:
                             database.commit_db()
                             message = "Availability Added"
                             return message
+                   
+                    
                 return "Enter proper values"
         else:
-            message = "Enter proper values" 
+            message = "Enter proper values!!!" 
         #query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
         #database.execute_query(query2, (day, start_time, end_time,doctor_id ))
         #database.commit_db()
