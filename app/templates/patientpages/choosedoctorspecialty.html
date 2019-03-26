@@ -7,7 +7,8 @@
     <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
       <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add"> View Appointment Cart</button>
  </form>
-</div>
+</div> 
+<form method="post" class="form" action="{{ url_for('pages.patientaptbookdashboard') }}">
 <div class="container">
   <!--<div class="jumbotron">
      Search form -->
@@ -20,7 +21,7 @@
                         <option value="{{dr}}">{{dr}}</option>
                       {%endfor %}
                   </select>-->
-                  <select class="form-control" id = "doctor_picked" name = "doctor_picked">
+                  <select class="form-control" id = "speciality_picked" name = "speciality_picked">
                     {% for dr in doctorlist %}
                         <option value="{{dr}}">{{dr}}</option>
                       {%endfor %}
@@ -29,7 +30,7 @@
             </div>
         <br/><br/>
 
-    <form method="post" class="form" action="{{ url_for('pages.patientaptbook') }}">
+   
         <button type="submit" id = "appointment_selected" name = "appointment_selected" class="btn btn-success btn-lg" value="dd">Next</button>
     </form>
     <br/>

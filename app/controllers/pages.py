@@ -467,12 +467,21 @@ def patientchoosedoctorspecialty():
     #_doctors_list = _doctor_obj.doctor_table()
     _doctors_list  = _doctor_obj.get_distinct_speciality()
     doctorlist = []
-
+    #_time = request.form['time']
     for infos in _doctors_list:
         #doctorlist.append(infos[2]+ " "+ infos[1])
         doctorlist.append(infos)
     return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorlist = doctorlist)      
 
+@blueprint.route('/patientaptbookdashboard',  methods=['GET', 'POST'])
+def patientaptbookdashboard():
+    #patientaptbook
+    if request.method == "POST":
+        _speciality_picked = request.form['speciality_picked']
+        response = redirect(url_for("pages.patientaptbook"))
+        response.set_cookie('speciality_picked', _speciality_picked)
+        return response
+         
 @blueprint.route('/patient_register',  methods=['GET', 'POST'])
 def patient_register():
     if request.method == 'POST':
@@ -568,16 +577,24 @@ def updateapt():
 def patientaptbook():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
-
+    speciality_picked = request.cookies.get('speciality_picked')
+  
     regularChecked = "checked"
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
     _doctors_list = _doctor_obj.doctor_table()
+    _doctor_list_by_speciality = _doctor_obj.get_doctor_by_specialty(speciality_picked)
+   
+    print("SPECIAL")
+    print(_doctor_list_by_speciality)
+
     doctorlist = []
 
-    for infos in _doctors_list:
+    '''for infos in _doctors_list:
         doctorlist.append(infos[2]+ " "+ infos[1])
-        #doctorlist.append(infos[3])
+        #doctorlist.append(infos[3])'''
+    for infos in _doctor_list_by_speciality:
+        doctorlist.append(infos[2]+ " "+ infos[1])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
     if opt_param is not None:
