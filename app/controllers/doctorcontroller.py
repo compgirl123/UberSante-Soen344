@@ -269,3 +269,17 @@ class Doctorcontroller:
         # returns a list of users
         return d
 
+    def get_doctor_by_specialty(self,doctor_specialty):
+
+        database = db.get_instance()
+        query = "SELECT * FROM doctor WHERE speciality= ""'" + str(doctor_specialty) + "'"""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"], row["last_name"], row["speciality"], row["city"], row["permit_number"],
+                       row["password"]))
+        # returns a list of users
+        return d
+
