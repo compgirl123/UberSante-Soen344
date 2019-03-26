@@ -440,7 +440,8 @@ def error_doctor_login():
 def patient_login():
     form = LoginForm(request.form)
     if 'healthcard' in request.cookies:
-        response = redirect(url_for("pages.patientaptbook"))
+        response = redirect(url_for("pages.patientchoosedoctorspecialty"))
+        #response = redirect(url_for("pages.patientaptbook"))
         return response
     else:
         return render_template('forms/patient_login.html', form=form)
@@ -454,6 +455,27 @@ def login():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
+@blueprint.route('/patientchoosedoctorspecialty',  methods=['GET', 'POST'])
+def patientchoosedoctorspecialty():
+    user_id = request.cookies.get('healthcard')
+    password = request.cookies.get('phone_number')
+
+    regularChecked = "checked"
+    annualChecked = ""
+    _doctor_obj = Doctorcontroller()
+    _doctors_list = _doctor_obj.doctor_table()
+    doctorlist = []
+
+    for infos in _doctors_list:
+        #doctorlist.append(infos[2]+ " "+ infos[1])
+        doctorlist.append(infos[3])
+    # check if annual or regular is selected and adjust the time slots accordingly
+    
+
+    return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorlist = doctorlist)   
+
+    
 
 @blueprint.route('/patient_register',  methods=['GET', 'POST'])
 def patient_register():
@@ -558,8 +580,8 @@ def patientaptbook():
     doctorlist = []
 
     for infos in _doctors_list:
-        #doctorlist.append(infos[2]+ " "+ infos[1])
-        doctorlist.append(infos[3])
+        doctorlist.append(infos[2]+ " "+ infos[1])
+        #doctorlist.append(infos[3])
     # check if annual or regular is selected and adjust the time slots accordingly
     opt_param = request.args.get("apttype")
     if opt_param is not None:
@@ -664,9 +686,9 @@ def patient_apts_scheduled():
     _appointment_obj = AppointmentController()
 
     
-    #first_last_name_arr = doctor_selected.split(" ")
-    #_doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
-    _doc_query = _doc_obj.get_doctor_by_specialty(doctor_selected)
+    first_last_name_arr = doctor_selected.split(" ")
+    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    #_doc_query = _doc_obj.get_doctor_by_specialty(doctor_selected)
     print("HEEEERRe")
     #print(_doc_query)
     _doc_speciality = _doc_query[2]
