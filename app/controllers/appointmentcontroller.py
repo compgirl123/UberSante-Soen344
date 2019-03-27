@@ -65,6 +65,7 @@ class AppointmentController:
         message = "Appointment Added"
         return message
 
+
     def getappointment_type(start_time, end_time):
         def get_sec(time_str):
             h, m, s = time_str.split(':')
@@ -80,18 +81,19 @@ class AppointmentController:
 
 
     def find_room(conn, appointment_date, start_time, end_time):
-        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        #query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time==? AND end_time==?) OR  (start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
         query2 = "SELECT id FROM room"
-        conn.execute(query, (appointment_date, start_time, start_time, end_time, end_time))
+        conn.execute(query, (appointment_date, start_time,end_time,start_time,start_time,end_time,end_time))
         occupied = conn.fetchall()
+        print("hello")
         conn.execute(query2, ())
-
         availableRooms = conn.fetchall()
-        for room in availableRooms:
-            if room in occupied:
-                availableRooms.remove(room)
-        if availableRooms != []:
-            return availableRooms[0]
+       
+        result = sorted(set(availableRooms) - set(occupied)) 
+
+        if result != []:
+            return result[0]
         else:
             return False
 
