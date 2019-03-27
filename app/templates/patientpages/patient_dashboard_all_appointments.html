@@ -6,30 +6,38 @@
   <h1>UberSante - Appointment Cart</h1><br>
 </div>
 
-{% for apt in apts %}
+
+{% for apt, docname in arrinfo %}
 <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
   <div class="container">
-       <h3>Id #:</h3>
-      <p class="id1" id="{{apt['id']}}">{{apt['id']}}</p>
+       
+      <h3>Doctor Name:</h3>
+      <p class="id1" id="{{docname[0]}}">{{docname[0]}}</p>
+      <p class="id1" id="{{docname[1]}}">{{docname[1]}}</p>
       <table class="table">
   <thead>
+    
     <tr>
+        <th scope="col">Id #:</th>
       <th scope="col">Room #:</th>
       <th scope="col">Appointment Type:</th>
       <th scope="col">Appointment Status:</th>
       <th scope="col">Appointment Date:</th>
         <th scope="col">Start Time:</th>
         <th scope="col">End Time:</th>
+       
     </tr>
   </thead>
   <tbody>
     <tr>
+        <td>{{apt["id"]}}</td>
       <td>{{apt["appointment_room"]}}</td>
         <td>{{apt["appointment_type"]}}</td>
       <td>{{apt["appointment_status"]}}</td>
       <td>{{apt["appointment_date"]}}</td>
       <td>{{apt["start_time"]}}</td>
         <td>{{apt["end_time"]}}</td>
+       
     </tr>
   </tbody>
 </table>

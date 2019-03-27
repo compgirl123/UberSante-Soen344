@@ -319,3 +319,24 @@ class Doctorcontroller:
         # returns a list of users
         return d
 
+    def get_doctor_name_from_id(self,patient_id):
+        database = db.get_instance()
+        query = "SELECT doctor.first_name, doctor.last_name FROM doctor INNER JOIN appointment ON doctor.id = appointment.doctor_id WHERE appointment.patient_id = ""'" + str(patient_id) + "'"""
+
+        cur = database.execute_query(query)
+        
+        data = cur.fetchall()
+        firstnames = []
+        lastnames = []
+        d = tuple()
+
+        for row in data:
+            #print(doctor.first_name)
+            firstnames.append(row["first_name"])
+            lastnames.append(row["last_name"])
+            #d = tuple((row["speciality"]))
+        d = tuple(list(zip(firstnames,lastnames)))
+
+        # returns a list of users
+        return d
+        

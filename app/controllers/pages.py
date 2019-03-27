@@ -640,18 +640,17 @@ def savebookedaptdelete():
 # save selected appointments booked for patients
 @blueprint.route('/savebookedapt', methods=['GET', 'POST'])
 def savebookedapt():
-
     if request.method == "POST":
         print(request.form)
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
-        _doctor_picked = request.form['doctor_picked']
+        #_doctor_picked = request.form['doctor_picked']
         _appointment = request.form['appt_type']
         #print( _appointment)
         response = redirect(url_for("pages.patient_apts_scheduled"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
-        response.set_cookie('doctor_picked',_doctor_picked)
+        #response.set_cookie('doctor_picked',_doctor_picked)
         response.set_cookie('appt1', _appointment)
     return response
 
@@ -674,6 +673,7 @@ def patient_apts_scheduled_complete():
     print(_patient_found[0])
 
     _apts = _appointment_obj.getallappointments(_patient_found[0])
+    get_doctor_name_from_id = _doc_obj.get_doctor_name_from_id((_patient_found[0]))
 
     '''_doc_id = _apts['doctor_id']
     _get_doc_name = _doc_obj.get_doctor_by_id(_doc_id)'''
@@ -682,9 +682,9 @@ def patient_apts_scheduled_complete():
     for result in _apts:
         _id_doc = result['doctor_id']
         _get_doc_name = _doc_obj.get_doctor_by_id(_id_doc)
-        #_get_doc_name[0] + " "+_get_doc_name[1]
-
-    return render_template('patientpages/patient_dashboard_all_appointments.html', apts = _apts )
+         #_get_doc_name[0] + " "+_get_doc_name[1]
+    _infohere = zip(_apts,get_doctor_name_from_id)
+    return render_template('patientpages/patient_dashboard_all_appointments.html',arrinfo = _infohere, apts = _apts, docname = get_doctor_name_from_id )
 
 # view latest appointment scheduled for the patient
 @blueprint.route('/patient_apts_scheduled', methods=['GET', 'POST'])
@@ -692,20 +692,30 @@ def patient_apts_scheduled():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
     doctor_selected = request.cookies.get('doctor_picked')
+    speciality_picked = request.cookies.get('speciality_picked')
+    print("DDDDDD")
+    print(speciality_picked)
     health_care = request.cookies.get('healthcard')
     apt = request.cookies.get('appt1')
 
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
 
-    
     first_last_name_arr = doctor_selected.split(" ")
-    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    # check if its valid (aka check which doctors have a certain specialty)
+    #_doc_query = 
+    _dq = _doc_obj.get_doctor_by_specialty(speciality_picked)
+    doctor_speciality_selected_infos = []
+    for doctor in _dq:
+        _doc_query = _doc_obj.find_doctor_by_full_name(doctor[2], doctor[1])
+        doctor_speciality_selected_infos.append(_doc_query)
+    print(doctor_speciality_selected_infos)
     #_doc_query = _doc_obj.get_doctor_by_specialty(doctor_selected)
     print("HEEEERRe")
     #print(_doc_query)
-    _doc_speciality = _doc_query[2]
-    print(_doc_speciality)
+    print(_dq)
+    print(_doc_query)
+   
     # print(_doc_query[2])
 
     #_time_end = get_time_end()
@@ -730,7 +740,7 @@ def patient_apts_scheduled():
     #print(_doc_query[2])
     print(str("0"+date))
 
-    message = _appointment_obj.create_appointment(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),day_of_week)
+    message = _appointment_obj.create_appointment(speciality_picked, _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),day_of_week)
      #message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
             #columns = shutil.get_terminal_size().columns
     flash(message)

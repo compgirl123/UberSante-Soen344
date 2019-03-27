@@ -209,10 +209,11 @@ class AppointmentController:
     def getallappointments(self, patient_id):
         database = db.get_instance()
         query = "SELECT * FROM appointment WHERE patient_id=" + str(patient_id)
-        print(query )
+        print(query)
         queryexecute = database.execute_query(query)
         data = queryexecute.fetchall()
         return data
+
 
     def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week):
         conn = AppointmentController.connect_database(self)
