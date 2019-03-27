@@ -619,12 +619,12 @@ def savebookedaptupdate():
         print(request.form)
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
-        _doctor_picked = request.form['doctor_picked']
+        #_doctor_picked = request.form['doctor_picked']
         _apt1 = request.form['appt_type']
         response = redirect(url_for("pages.patient_apts_scheduled_update"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
-        response.set_cookie('doctor_picked',_doctor_picked)
+        #response.set_cookie('doctor_picked',_doctor_picked)
         response.set_cookie('appt2',_apt1)
     return response
 
