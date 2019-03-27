@@ -138,9 +138,10 @@ class AppointmentController:
                 allAppointmentTimes = conn.fetchall()
                 print(allAppointmentTimes)
                 if allAppointmentTimes == []:
-                    specialist = specialist
-        if allAppointmentTimes == []:
-            return specialist         
+                    #specialist = specialist
+                    return specialist         
+        '''if allAppointmentTimes == []:
+            return specialist   '''      
         return False
 
 
