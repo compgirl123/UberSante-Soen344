@@ -53,12 +53,17 @@
           <div class="row">
               <div class="col-xs-6 col-md-6">
                   <!-- Add a dropdown here -->
-                  <p><strong>Pick Doctor</strong></p>
+                  <!--<p><strong>Doctor Assignment :</strong></p>
                   <select id = "doctor_picked" name = "doctor_picked">
                       {% for dr in doctorlist %}
                         <option value="{{dr}}">{{dr}}</option>
                       {%endfor %}
                   </select>
+                  <select class="form-control" id = "doctor_picked" name = "doctor_picked">
+                    {% for dr in doctorlist %}
+                        <option value="{{dr}}">{{dr}}</option>
+                      {%endfor %}
+                  </select>-->
               </div>
             </div>
 
@@ -148,7 +153,7 @@
       }
       else if(dayNum == 5){
         console.log("FRI-" + document.getElementById('friDate').innerHTML + "-" + selTime);
-        var get_date = "FRIDAY" + document.getElementById('friDate').innerHTML
+        var get_date = "FRIDAY-" + document.getElementById('friDate').innerHTML
         document.getElementById("appointment_selected").value = get_date;
         console.log();
       }
