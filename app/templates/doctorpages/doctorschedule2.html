@@ -17,24 +17,30 @@
     <table class="table">
         <tbody>
             <tr>
-              <form class="infobro" action="/doctorschedule" method="post">
-
               <td style="border-color:black">Monday</td>
               <td style="border-color:black">
                 <ul class="list-group">
                 {% for i in sel %}
                 {% if date_days[0] == i[1]%}
-                <input name="idd" type="hidden" value="{{i[0]}}">
-                <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                  <!--<form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.doctoralsotry')}}">-->
-                  <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit"  value="delete">
+                <!--<p>{{i[0]}}</p>-->
+                <input name="idd" id ="impo" type="hidden" value="{{i[0]}}" onclick="myFunction()">
+                <li class="list-group-item" style="border: none">
+                  <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                  <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                  <span class="glyphicon glyphicon-pencil"></span>
+                  </button>
+                  <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name ="submit"  value="delete">
                   <span class="glyphicon glyphicon-trash"></span>
                   </button>    
-                  <!--</form>-->                           
+                  </form>                          
                 </li>
                 {% endif %}
                 {% endfor %}
               </ul>
+              <form class="infobro" action="/doctorschedule" method="post">
+
               <div class="collapse" id="demo" >
                   
                 <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -86,6 +92,47 @@
                     SUBMIT
                     </button>
                   </form>
+                  <script type="text/javascript">
+                    function reply_click(clicked_id)
+                    {
+                        alert(clicked_id);
+                        var data1 = "yo";
+                    $.ajax({
+                    type: "POST",
+                    processData: true,
+                    contentType: "application/json;charset=utf-8",
+                    traditional: true,
+                    url: "/doctorschedule",
+                    data: JSON.stringify({"price": parseFloat(clicked_id)}),
+                    dataType: "json",
+                    success: function(response) {
+                    console.log(response);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                    });
+
+                    }
+
+                    $('body').on('click', '[data-editable]', function(){
+                    var $el = $(this);
+              
+                    var $input = $('<input type="text" name="hello"/>').val( $el.text() );
+                    $el.replaceWith( $input );
+              
+                    var save = function(){
+                    var $p = $('<span data-editable/>').text( $input.val() );
+                    $input.replaceWith( $p );
+                    };
+                    $input.one('blur', save).focus();
+                    });
+
+                    $('#changeMe').click(function(){
+                    $this = $(this)
+                    $this.replaceWith( $('<input type="text" name="hello"/>').val( $this.text() ) )
+                    })
+                  </script>
             </div>
             </td style="border-color:black">
               <td style="text-align:center; border-color:black">
@@ -95,24 +142,29 @@
               </td>
             </tr>
             <tr>
-                <form class="infobro" action="/doctorschedule2" method="post">
-
                   <td style="border-color:black">Tuesday</td>
                   <td style="border-color:black">
                     <ul class="list-group">
                     {% for i in sel %}
                     {% if date_days[1] == i[1]%}
                     <input name="id1" type="hidden" value="{{i[0]}}">
-                    <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-                      
-                      <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      </button>                               
+                    <li class="list-group-item" style="border: none">
+                      <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                        <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" onClick="reply_click(this.id)" style="float: right; border: none;" name = "submit"  value="delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>    
+                        </form>                         
                     </li>
                     {% endif %}
                     {% endfor %}
     
                   </ul>
+                <form class="infobro" action="/doctorschedule2" method="post">
                 <div class="collapse" id="demo1" >
                   
                   <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -174,24 +226,30 @@
               </td>            
             </tr>
             <tr>
-                <form class="infobro" action="/doctorschedule3" method="post">
-
                   <td style="border-color:black">Wednesday</td>
                   <td style="border-color:black">
                     <ul class="list-group">
                     {% for i in sel %}
                     {% if date_days[2] == i[1]%}
                     <input name="id2" type="hidden" value="{{i[0]}}">
-                    <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-    
-                      <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      </button>                               
+                    <li class="list-group-item" style="border: none">
+                      <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                        <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" onClick="reply_click(this.id)" style="float: right; border: none;" name = "submit"  value="delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>    
+                        </form>                                                       
                     </li>
                     {% endif %}
                     {% endfor %}
     
-                  </ul>
+                  </ul>                
+                  <form class="infobro" action="/doctorschedule3" method="post">
+
                   <div class="collapse" id="demo2" >
                       
                     <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -251,24 +309,29 @@
               </td>            
             </tr>
             <tr>
-                <form class="infobro" action="/doctorschedule4" method="post">
-
                   <td style="border-color:black">Thursday</td>
                   <td style="border-color:black">
                     <ul class="list-group">
                     {% for i in sel %}
                     {% if date_days[3] == i[1]%}
                     <input name="id3" type="hidden" value="{{i[0]}}">
-                    <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-
-                      <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      </button>                               
+                    <li class="list-group-item" style="border: none">
+                      <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                        <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" onClick="reply_click(this.id)" style="float: right; border: none;" name = "submit"  value="delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>    
+                        </form>                                                       
                     </li>
                     {% endif %}
                     {% endfor %}
     
                   </ul>
+                  <form class="infobro" action="/doctorschedule5" method="post">
                   <div class="collapse" id="demo3" >
                       
                     <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -328,7 +391,6 @@
               </td>
             </tr>  
             <tr>
-                <form class="infobro" action="/doctorschedule5" method="post">
 
                   <td style="border-color:black">Friday</td>
                   <td style="border-color:black">
@@ -336,16 +398,23 @@
                     {% for i in sel %}
                     {% if date_days[4] == i[1]%}
                     <input name="id4" type="hidden" value="{{i[0]}}">
-                    <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-    
-                      <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      </button>                               
+                    <li class="list-group-item" style="border: none">
+                      <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                        <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" onClick="reply_click(this.id)" style="float: right; border: none;" name = "submit"  value="delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>    
+                        </form>                                                       
                     </li>
                     {% endif %}
                     {% endfor %}
     
                   </ul>
+                  <form class="infobro" action="/doctorschedule5" method="post">
                   <div class="collapse" id="demo4" >
                       
                     <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -405,24 +474,29 @@
                 </td>
               </tr>
               <tr>
-                  <form class="infobro" action="/doctorschedule6" method="post">
-
                     <td style="border-color:black">Saturday</td>
                     <td style="border-color:black">
                       <ul class="list-group">
                       {% for i in sel %}
                       {% if date_days[5] == i[1]%}
                       <input name="id5" type="hidden" value="{{i[0]}}">
-                      <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-      
-                        <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
-                        <span class="glyphicon glyphicon-trash"></span>
-                        </button>                               
+                      <li class="list-group-item" style="border: none">
+                        <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                          <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                          <span class="glyphicon glyphicon-pencil"></span>
+                          </button>
+                          <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" onClick="reply_click(this.id)" style="float: right; border: none;" name = "submit"  value="delete">
+                          <span class="glyphicon glyphicon-trash"></span>
+                          </button>    
+                          </form>                                                       
                       </li>
                       {% endif %}
                       {% endfor %}
       
                     </ul>
+                    <form class="infobro" action="/doctorschedule6" method="post">
                     <div class="collapse" id="demo5" >
                         
                       <p style="padding-left:20px;"><b>Add a session</b></p>
@@ -482,7 +556,6 @@
                 </td>
               </tr>
               <tr>
-                  <form class="infobro" action="/doctorschedule7" method="post">
 
                     <td style="border-color:black">Sunday</td>
                     <td style="border-color:black">
@@ -490,16 +563,24 @@
                       {% for i in sel %}
                       {% if date_days[6] == i[1]%}
                       <input name="id6" type="hidden" value="{{i[0]}}">
-                      <li class="list-group-item" style="border: none"> {{i[2]}} - {{i[3]}}
-
-                        <button type="submit" class="btn btn-default btn-sm" style="float: right; border: none;" name = "submit" value="delete">
-                        <span class="glyphicon glyphicon-trash"></span>
-                        </button>                               
+                      <li class="list-group-item" style="border: none">
+                        <form  style="display: inline-block;" method="post" class="form" action="/doctorschedule/{{i[0]}}/{{i[2]}}/{{i[3]}}">
+                          <span data-editable>{{i[2]}} - {{i[3]}}</span> 
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" style="float: right; border: none;" name="submit"  value="update"> 
+                          <span class="glyphicon glyphicon-pencil"></span>
+                          </button>
+                          <button type="submit" id="{{i[0]}}" class="btn btn-default btn-sm" onClick="reply_click(this.id)" style="float: right; border: none;" name = "submit"  value="delete">
+                          <span class="glyphicon glyphicon-trash"></span>
+                          </button>    
+                          </form>                                                       
                       </li>
                       {% endif %}
                       {% endfor %}
       
-                    </ul>
+                    </ul>                  
+                    <form class="infobro" action="/doctorschedule7" method="post">
+
                     <div class="collapse" id="demo6" >
                         
                       <p style="padding-left:20px;"><b>Add a session</b></p>

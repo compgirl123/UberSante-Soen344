@@ -52,7 +52,7 @@ def about():
 
 @app.route('/doctorschedule')
 def doctorschedule():
-    return render_template('doctorpages/doctorschedule.html')
+    return render_template('doctorpages/doctorschedule2.html')
 
 @app.route('/findnurse')
 def findnurse():

@@ -17,9 +17,8 @@ class AppointmentController:
             raise Exception('No doctor is available!')
 
         # If no room is available
-        elif availableRoom == False:
-            message = "Availability Added"
-            #raise Exception('No room is available!')
+        elif availableRoom == False or doctorsAvailable == "No room available!":
+            raise Exception('No room is available!')
         
         else:
             return [doctorsAvailable, availableRoom]
@@ -52,7 +51,7 @@ class AppointmentController:
             return message
             #raise Exception('No doctor is available!')
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
-        if appointment_room == False:
+        if appointment_room == False or doctor_id == "No room available!":
             #message = "Availability Added"
             message = "No room is available!"
             return message
@@ -64,6 +63,7 @@ class AppointmentController:
         AppointmentController.finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
         message = "Appointment Added"
         return message
+
 
     def getappointment_type(start_time, end_time):
         def get_sec(time_str):
@@ -80,18 +80,19 @@ class AppointmentController:
 
 
     def find_room(conn, appointment_date, start_time, end_time):
-        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        #query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
+        query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time==? AND end_time==?) OR  (start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
         query2 = "SELECT id FROM room"
-        conn.execute(query, (appointment_date, start_time, start_time, end_time, end_time))
+        conn.execute(query, (appointment_date, start_time,end_time,start_time,start_time,end_time,end_time))
         occupied = conn.fetchall()
+        print("hello")
         conn.execute(query2, ())
-
         availableRooms = conn.fetchall()
-        for room in availableRooms:
-            if room in occupied:
-                availableRooms.remove(room)
-        if availableRooms != []:
-            return availableRooms[0]
+       
+        result = sorted(set(availableRooms) - set(occupied)) 
+
+        if result != []:
+            return result[0]
         else:
             return False
 
@@ -99,7 +100,8 @@ class AppointmentController:
     def find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time , day_of_week):
         query = "SELECT id FROM doctor WHERE speciality=?"
         query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=? AND start_time<=? AND end_time>=?"
-        query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
+        #query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<? AND end_time>?) OR (start_time<? AND end_time>?))"
+        query3 = "SELECT id FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time==? AND end_time==?) OR  (start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
 
         # query = "SELECT id FROM doctor WHERE speciality=""'"+doctor_speciality+"'"""
         #query2 = "SELECT doctor_id FROM doctoravailability WHERE date_day=""'"+appointment_date+"'"""+" AND start_time<=""'"+start_time+"'"""\
@@ -113,7 +115,7 @@ class AppointmentController:
 
         conn.execute(query,(doctor_speciality,))
         specialists = conn.fetchall()
-        conn.execute(query2,(day_of_week, start_time, end_time))
+        conn.execute(query2,(day_of_week, start_time,end_time))
         availableDoctors = conn.fetchall()
 
         print("DOCCCCCS")
@@ -134,12 +136,22 @@ class AppointmentController:
                 idtuple = specialist[0]
                 id = int(idtuple)
                 print(id)
-                conn.execute(query3, (id, appointment_date, start_time, start_time, end_time, end_time))
+                conn.execute(query3, (id, appointment_date, start_time,end_time,start_time,start_time,end_time,end_time))
                 allAppointmentTimes = conn.fetchall()
                 print(allAppointmentTimes)
-                if allAppointmentTimes == []:
+                count = 0
+                for i in allAppointmentTimes:
+                    count+=1
+                    print("yoyoyo")
+                    print(count)
+                if count < 5:
+
+                #if allAppointmentTimes == []:
                     #specialist = specialist
-                    return specialist         
+                    return specialist
+                else:
+                    message = "No room available!"
+                    return message         
         '''if allAppointmentTimes == []:
             return specialist   '''      
         return False
@@ -189,7 +201,7 @@ class AppointmentController:
         if doctor_id == False:
             raise Exception('No doctor is available!')
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
-        if appointment_room == False:
+        if appointment_room == False or doctor_id == "No room available!":
             raise Exception('No room is available!')
         appointment_status = "Approved"
         appointment_type = AppointmentController.getappointment_type(start_time, end_time)
