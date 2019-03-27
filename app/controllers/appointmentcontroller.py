@@ -45,14 +45,15 @@ class AppointmentController:
         print("DOCTOR")
         print(doctor_speciality)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time , day_of_week)
-        #print()
+        print("MOOSe")
+        print(doctor_id)
         if doctor_id == False:
             message = "No doctor is available!"
             return message
             #raise Exception('No doctor is available!')
         appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
         if appointment_room == False:
-            message = "Availability Added"
+            #message = "Availability Added"
             message = "No room is available!"
             return message
             #raise Exception('No room is available!')
@@ -115,20 +116,31 @@ class AppointmentController:
         conn.execute(query2,(day_of_week, start_time, end_time))
         availableDoctors = conn.fetchall()
 
+        print("DOCCCCCS")
+        print(availableDoctors)
+        print(specialists)
+
         print(day_of_week)
         print(start_time)
         print(end_time)
 
         for specialist in specialists:
+            print("HHHHH")
+            print(specialist)
+            allAppointmentTimes = []
             if specialist in availableDoctors: 
                 print("HEEEEEERE")
+                print(specialist)
                 idtuple = specialist[0]
                 id = int(idtuple)
                 print(id)
                 conn.execute(query3, (id, appointment_date, start_time, start_time, end_time, end_time))
                 allAppointmentTimes = conn.fetchall()
+                print(allAppointmentTimes)
                 if allAppointmentTimes == []:
-                    return specialist
+                    specialist = specialist
+        if allAppointmentTimes == []:
+            return specialist         
         return False
 
 
