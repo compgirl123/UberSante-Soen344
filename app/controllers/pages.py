@@ -701,7 +701,7 @@ def patient_apts_scheduled():
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
 
-    first_last_name_arr = doctor_selected.split(" ")
+    #first_last_name_arr = doctor_selected.split(" ")
     # check if its valid (aka check which doctors have a certain specialty)
     #_doc_query = 
     _dq = _doc_obj.get_doctor_by_specialty(speciality_picked)
