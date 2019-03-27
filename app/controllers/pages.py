@@ -776,6 +776,7 @@ def patient_apts_scheduled_update():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
     doctor_selected = request.cookies.get('doctor_picked')
+    speciality_picked = request.cookies.get('speciality_picked')
     health_care = request.cookies.get('healthcard')
     _update_id = request.cookies.get('update')
     apt = request.cookies.get('appt2')
@@ -783,9 +784,14 @@ def patient_apts_scheduled_update():
     _doc_obj = Doctorcontroller()
     _appointment_obj = AppointmentController()
 
-    first_last_name_arr = doctor_selected.split(" ")
-    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
-    _doc_speciality = _doc_query[2]
+    #first_last_name_arr = doctor_selected.split(" ")
+    _dq = _doc_obj.get_doctor_by_specialty(speciality_picked)
+    #_doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    #_doc_speciality = _doc_query[2]
+    doctor_speciality_selected_infos = []
+    for doctor in _dq:
+        _doc_query = _doc_obj.find_doctor_by_full_name(doctor[2], doctor[1])
+        doctor_speciality_selected_infos.append(_doc_query)
 
     if apt == "Regular Appt":
         _time_end = get_time_end()
