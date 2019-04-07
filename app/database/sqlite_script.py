@@ -148,7 +148,8 @@ def initializeAndFillDatabase():
                                         FOREIGN KEY(clinic_name) REFERENCES clinic(name)
                                     );""",
                             "clinic_table": """CREATE TABLE IF NOT EXISTS clinic  (
-                                        name TEXT UNIQUE NOT NULL PRIMARY KEY
+                                        name TEXT UNIQUE NOT NULL PRIMARY KEY,
+                                        location TEXT NOT NULL
                                     );""",
                            }
 
@@ -164,7 +165,7 @@ def initializeAndFillDatabase():
     # Don't commit until the end
     app.classes.database_container.DatabaseContainer.commit_lock = True
     # hardcoded  data insert inside database
-    database.execute_query("INSERT into clinic (name) VALUES ('Default Clinic')")
+    database.execute_query("INSERT into clinic (name, location) VALUES ('Default Clinic', 'Omnipresent')")
     database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike", "Default Clinic"))
     database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",   ("fake", "nurse", "123123", "fakenurse", "Default Clinic"))
     database.execute_query("INSERT into room (name, clinic_name) VALUES ('room1', 'Default Clinic')")
