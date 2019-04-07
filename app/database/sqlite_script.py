@@ -88,7 +88,6 @@ def initializeAndFillDatabase():
                                                             address TEXT NOT NULL ,
                                                             age  INTEGER NOT NULL,
                                                             health_card TEXT NOT NULL
-
                                                         );""",
 
                            "doctor_table": """CREATE TABLE IF NOT EXISTS doctor (
@@ -98,13 +97,18 @@ def initializeAndFillDatabase():
                                         speciality  TEXT NOT NULL,
                                         city TEXT NOT NULL,
                                         password TEXT NOT NULL,
-                                        permit_number integer NOT NULL
+                                        permit_number integer NOT NULL,
+                                        clinic_name TEXT NOT NULL,
 
+                                        FOREIGN KEY(clinic_name) REFERENCES clinic(name)
                                     );""",
 
                            "room_table": """CREATE TABLE IF NOT EXISTS room (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        name TEXT NOT NULL
+                                        name TEXT NOT NULL,
+                                        clinic_name TEXT NOT NULL,
+
+                                        FOREIGN KEY(clinic_name) REFERENCES clinic(name)
                                     );""",
 
                            "appointment_table": """CREATE TABLE IF NOT EXISTS appointment (
@@ -117,10 +121,12 @@ def initializeAndFillDatabase():
                                         end_time TIME NOT NULL ,
                                         patient_id INTEGER NOT NULL,
                                         doctor_id INTEGER NOT NULL,
+                                        clinic_name TEXT NOT NULL,
 
                                         FOREIGN KEY(appointment_room) REFERENCES room(id),
                                         FOREIGN KEY(patient_id) REFERENCES patient(id),
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id),
+                                        FOREIGN KEY(clinic_name) REFERENCES clinic(name)
                                     );""",
                            "doctoravailablility_table": """CREATE TABLE IF NOT EXISTS doctoravailability  (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -128,23 +134,23 @@ def initializeAndFillDatabase():
                                         start_time TIME NOT NULL,
                                         end_time TIME NOT NULL ,
                                         doctor_id INTEGER NOT NULL,
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)
+
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)    
                                     );""",
                            "nurse_table": """CREATE TABLE IF NOT EXISTS nurse  (
-                                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                            last_name TEXT NOT NULL,
-                                            first_name TEXT NOT NULL,
-                                            password TEXT NOT NULL,
-                                            access_id TEXT NOT NULL
+                                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                        last_name TEXT NOT NULL,
+                                        first_name TEXT NOT NULL,
+                                        password TEXT NOT NULL,
+                                        access_id TEXT NOT NULL,
+                                        clinic_name TEXT NOT NULL,
 
-
-                                        );""",
-                            "clinic_table":"""CREATE TABLE IF NOT EXISTS clinic (
-                                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                clinic_name TEXT NOT NULL,
-                                location TEXT NOT NULL
-                            );"""
-
+                                        FOREIGN KEY(clinic_name) REFERENCES clinic(name)
+                                    );""",
+                            "clinic_table": """CREATE TABLE IF NOT EXISTS clinic  (
+                                        name TEXT UNIQUE NOT NULL PRIMARY KEY,
+                                        location TEXT NOT NULL
+                                    );""",
                            }
 
     # Create all tables
@@ -159,15 +165,15 @@ def initializeAndFillDatabase():
     # Don't commit until the end
     app.classes.database_container.DatabaseContainer.commit_lock = True
     # hardcoded  data insert inside database
-    database.execute_query( "insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike"))
-    database.execute_query("insert into nurse(last_name, first_name, password, access_id ) VALUES (?,?,?,?)",
-                           ("fake", "nurse", "123123", "fakenurse"))
-    database.execute_query("INSERT into room (name) VALUES ('room1')")
-    database.execute_query("INSERT into room (name) VALUES ('room2')")
-    database.execute_query("INSERT into room (name) VALUES ('room3')")
-    database.execute_query("INSERT into room (name) VALUES ('room4')")
-    database.execute_query("INSERT into room (name) VALUES ('room5')")
-    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number) VALUES ('Samuel','Markis','Dermatology','Montreal','password','1234567')")
+    database.execute_query("INSERT into clinic (name, location) VALUES ('Default Clinic', 'Omnipresent')")
+    database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike", "Default Clinic"))
+    database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",   ("fake", "nurse", "123123", "fakenurse", "Default Clinic"))
+    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room1', 'Default Clinic')")
+    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room2', 'Default Clinic')")
+    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room3', 'Default Clinic')")
+    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room4', 'Default Clinic')")
+    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room5', 'Default Clinic')")
+    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Samuel','Markis','Dermatology','Montreal','password','1234567', 'Default Clinic')")
     database.execute_query("INSERT into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES ('Carlos','Mendez','01/01/2001','male','123-456-7890','carlos@patient.com','1500 st catherine','18','LOUX 1234 1234')")
     database.commit_db()
 
