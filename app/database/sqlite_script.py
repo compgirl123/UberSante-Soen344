@@ -139,6 +139,11 @@ def initializeAndFillDatabase():
 
 
                                         );""",
+                            "clinic_table":"""CREATE TABLE IF NOT EXISTS clinic (
+                                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                                clinic_name TEXT NOT NULL,
+                                location TEXT NOT NULL
+                            );"""
 
                            }
 
