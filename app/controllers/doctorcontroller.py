@@ -310,6 +310,49 @@ class Doctorcontroller:
         d = values_from_db
         # returns a list of users
         return d
+
+       
+       # A new function that will get the doctors works works at that clinic
+    def get_doctor_by_clinic_name(self,doctor_clinic_name):
+        database = db.get_instance()
+        # Claudia's comment (query)
+        # Get all the doctor specialities information for the clinic
+        query = "SELECT * FROM doctor WHERE clinic_name = ""'" + str(doctor_clinic_name) + "'"""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        ids = []
+        last_names = []
+        first_names = []
+        specialties = []
+        clinic_names = []
+        cities = []
+        passwords = []
+        permit_numbers = []
+        
+        d = tuple()
+        for row in data:
+            ids.append(row["id"])
+            last_names.append(row["last_name"])
+            first_names.append(row["first_name"])
+            specialties.append(row["speciality"])
+            clinic_names.append(row["clinic_name"])
+            cities.append(row["city"])
+            passwords.append(row["password"])
+            permit_numbers.append(row["permit_number"])
+
+        values_from_db = tuple(list(zip(ids,last_names,first_names,specialties,clinic_names, cities,passwords,passwords,permit_numbers)))
+        print(values_from_db)
+        print()
+        '''doctors_list.append(row["first_name"], row["last_name"], row["speciality"], row["clinic_name"], row["city"], row["permit_number"],
+                    row["password"])'''
+    
+        #d = tuple((row["first_name"], row["last_name"], row["speciality"], row["clinic_name"], row["city"], row["permit_number"],
+                    #row["password"]))
+        d = values_from_db
+        
+        # returns a list of doctors
+        return d
     
     def get_distinct_speciality(self):
         database = db.get_instance()
