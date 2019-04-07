@@ -22,8 +22,8 @@
                       {%endfor %}
                   </select>-->
                   <select class="form-control" id = "speciality_picked" name = "speciality_picked">
-                    {% for dr in doctorlist %}
-                        <option value="{{dr}}">{{dr}}</option>
+                    {% for speciality in doctorspecialities %}
+                        <option value="{{speciality}}">{{speciality}}</option>
                       {%endfor %}
                   </select>
               </div>

@@ -4,6 +4,7 @@ from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
 from app.controllers.appointmentcontroller import *
+from app.controllers.cliniccontroller import *
 import datetime
 import shutil
 from datetime import date
@@ -431,39 +432,62 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
+
 @blueprint.route('/patientchoosedoctorclinic',  methods=['GET', 'POST'])
 def patientchoosedoctorclinic():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
-
     regularChecked = "checked"
     annualChecked = ""
-    _doctor_obj = Doctorcontroller()
-    #_doctors_list = _doctor_obj.doctor_table()
-    _doctors_list  = _doctor_obj.get_distinct_speciality()
-    doctorlist = []
-    #_time = request.form['time']
-    for infos in _doctors_list:
-        #doctorlist.append(infos[2]+ " "+ infos[1])
-        doctorlist.append(infos)
-    return render_template('patientpages/chooseclinic.html', user = user_id,  doctorlist = doctorlist) 
+   
+    _clinic_obj = Cliniccontroller()
+    _clinics_list = _clinic_obj.get_all_clinics()
+    
+    print(_clinics_list)
+    clinic_names = []
+    location_names = []
+   
+    for infos in _clinics_list:
+        clinic_names.append(infos[0])
+        location_names.append(infos[1])
+    
+    print(location_names)
+    print(clinic_names)
+        
+    return render_template('patientpages/chooseclinic.html', user = user_id, locations = location_names, cliniclist = clinic_names) 
+
+@blueprint.route('/patientchoosedoctorspecialtydashboard',  methods=['GET', 'POST'])
+def patientchoosedoctorspecialtydashboard():
+    if request.method == "POST":
+        _clinic_name_picked = request.form['clinic_picked'];# stores the name that was entered to the next page
+        print("*****************")
+        print(_clinic_name_picked)
+        print("*****************")
+    response = redirect(url_for("pages.patientchoosedoctorspecialty"))
+    response.set_cookie('clinic_picked', _clinic_name_picked)
+    return response
 
 @blueprint.route('/patientchoosedoctorspecialty',  methods=['GET', 'POST'])
 def patientchoosedoctorspecialty():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
+    clinic_name_picked = request.cookies.get('clinic_picked')
 
     regularChecked = "checked"
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
-    #_doctors_list = _doctor_obj.doctor_table()
+    _get_doc_info = _doctor_obj.get_doctor_by_clinic_name(clinic_name_picked)
+    print("*****************")
+    print(_get_doc_info)
+    print("*****************")
     _doctors_list  = _doctor_obj.get_distinct_speciality()
-    doctorlist = []
-    #_time = request.form['time']
-    for infos in _doctors_list:
-        #doctorlist.append(infos[2]+ " "+ infos[1])
-        doctorlist.append(infos)
-    return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorlist = doctorlist)      
+    doctorspecialities = []
+
+    for infos in _get_doc_info:
+        doctorspecialities.append(infos[3])
+    print(doctorspecialities)
+    return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorspecialities = doctorspecialities,
+    clinic_picked = clinic_name_picked )      
 
 @blueprint.route('/patientaptbookdashboard',  methods=['GET', 'POST'])
 def patientaptbookdashboard():
