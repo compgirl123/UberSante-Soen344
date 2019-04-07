@@ -415,7 +415,7 @@ def error_doctor_login():
 def patient_login():
     form = LoginForm(request.form)
     if 'healthcard' in request.cookies:
-        response = redirect(url_for("pages.patientchoosedoctorspecialty"))
+        response = redirect(url_for("pages.patientchoosedoctorclinic"))
         #response = redirect(url_for("pages.patientaptbook"))
         return response
     else:
@@ -430,6 +430,23 @@ def login():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
+@blueprint.route('/patientchoosedoctorclinic',  methods=['GET', 'POST'])
+def patientchoosedoctorclinic():
+    user_id = request.cookies.get('healthcard')
+    password = request.cookies.get('phone_number')
+
+    regularChecked = "checked"
+    annualChecked = ""
+    _doctor_obj = Doctorcontroller()
+    #_doctors_list = _doctor_obj.doctor_table()
+    _doctors_list  = _doctor_obj.get_distinct_speciality()
+    doctorlist = []
+    #_time = request.form['time']
+    for infos in _doctors_list:
+        #doctorlist.append(infos[2]+ " "+ infos[1])
+        doctorlist.append(infos)
+    return render_template('patientpages/chooseclinic.html', user = user_id,  doctorlist = doctorlist) 
 
 @blueprint.route('/patientchoosedoctorspecialty',  methods=['GET', 'POST'])
 def patientchoosedoctorspecialty():

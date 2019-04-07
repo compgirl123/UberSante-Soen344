@@ -1,0 +1,109 @@
+{% extends 'layouts/main.html' %}
+{% block title %}About{% endblock %}
+{% block content %}
+
+<div class="page-header" onload="dtpick_script.js" >
+  <h1>Welcome {{ user }}</h1>
+    <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
+      <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add"> View Appointment Cart</button>
+ </form>
+</div> 
+<form method="post" class="form" action="{{ url_for('pages.patientchoosedoctorspecialty') }}">
+<div class="container">
+  <!--<div class="jumbotron">
+     Search form -->
+          <div class="row">
+              <div class="col-xs-6 col-md-6">
+                  <!-- Add a dropdown here -->
+                  <p><strong>Pick a Clinic:</strong></p>
+                  <!--<select id = "doctor_picked" name = "doctor_picked">
+                      {% for dr in doctorlist %}
+                        <option value="{{dr}}">{{dr}}</option>
+                      {%endfor %}
+                  </select>-->
+                  <!-- FOR LATER TO ADD DYNAMICALLY -->
+                  <!--<select class="form-control" id = "clinic_picked" name = "clinic_picked">
+                    {% for cl in cliniclist %}
+                        <option value="{{cl}}">{{cl}}</option>
+                      {%endfor %}
+                  </select>-->
+
+                   <select class="form-control" id = "clinic_picked" name = "clinic_picked">
+                        <option value="clinic1">Clinic #1</option>
+                        <option value="clinic1">Clinic #2</option>
+                        <option value="clinic1">Clinic #3</option>
+                        <option value="clinic1">Clinic #4</option>
+                  </select>
+
+              </div>
+            </div>
+        <br/><br/>
+
+   
+        <button type="submit" id = "appointment_selected" name = "appointment_selected" class="btn btn-success btn-lg" value="dd">Next</button>
+    </form>
+    <br/>
+        <a type="button" class="btn btn-primary btn-lg" href="/nurse_doctor_logout"  >Log Out</a>
+       </form>
+
+        <br/><br/>
+
+</div>
+
+<script>
+
+    function changeHourBlock() {
+      var chkRegular = document.getElementById("regular");
+      var chkAnnual = document.getElementById("annual");
+
+      if(chkRegular.checked){
+        console.log("Regular checked");
+        document.getElementById("regular").checked = true;
+        document.getElementById("annual").checked = false;
+        window.location.href = "/patientaptbook?apttype=regular";
+
+      }
+      else if(chkAnnual.checked){
+        console.log("Annual checked");
+        document.getElementById("regular").checked = false;
+        document.getElementById("annual").checked = true;
+        window.location.href = "/patientaptbook?apttype=annual";
+
+      }
+    }
+
+    function getSelDateTime(dayNum, click_id) {
+      var selTime = document.getElementById(click_id).value;
+      if(dayNum == 1){
+        console.log("MON-" + document.getElementById('monDate').innerHTML + "-" + selTime);
+        var get_date = "MONDAY-" + document.getElementById('monDate').innerHTML
+        document.getElementById("appointment_selected").value = get_date;
+        console.log();
+      }
+      else if(dayNum == 2){
+        console.log("TUE-" + document.getElementById('tueDate').innerHTML + "-" + selTime);
+        var get_date = "TUESDAY-" + document.getElementById('tueDate').innerHTML
+        document.getElementById("appointment_selected").value = get_date;
+        console.log();
+      }
+      else if(dayNum == 3){
+        console.log("WED-" + document.getElementById('wedDate').innerHTML + "-" + selTime);
+        var get_date = "WEDNESDAY-" + document.getElementById('wedDate').innerHTML
+        document.getElementById("appointment_selected").value = get_date;
+        console.log();
+      }
+      else if(dayNum == 4){
+        console.log("THU-" + document.getElementById('thuDate').innerHTML + "-" + selTime);
+        var get_date = "THURSDAY-" + document.getElementById('thuDate').innerHTML
+        document.getElementById("appointment_selected").value = get_date;
+        console.log();
+      }
+      else if(dayNum == 5){
+        console.log("FRI-" + document.getElementById('friDate').innerHTML + "-" + selTime);
+        var get_date = "FRIDAY-" + document.getElementById('friDate').innerHTML
+        document.getElementById("appointment_selected").value = get_date;
+        console.log();
+      }
+    }
+</script>
+{% endblock %}
