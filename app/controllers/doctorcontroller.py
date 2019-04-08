@@ -154,6 +154,50 @@ class Doctorcontroller:
         # returns a list of users
         return d
 
+    def nurse_find_doctor_by_clinic(self, permit_number):
+        '''
+            Nurse finds the particular doctor according to the clinic the doctor belongs to
+        '''
+        database = db.get_instance()
+        try:
+            val = int(permit_number)
+            if (val > 0):
+                query = "SELECT * FROM doctor WHERE permit_number=" + permit_number
+            else:
+                query = ""
+        except ValueError:
+            query = ""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+        # returns a list of users
+        return d
+
+    def nurse_find_patient_by_clinic(self, permit_number):
+        '''
+             Nurse finds the particular patient according to the clinic the patient belongs to
+        '''
+        database = db.get_instance()
+        try:
+            val = int(permit_number)
+            if (val > 0):
+                query = "SELECT * FROM doctor WHERE permit_number=" + permit_number
+            else:
+                query = ""
+        except ValueError:
+            query = ""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
+        # returns a list of users
+        return d
+
     def find_doctor_id(self,permit_number):
         database = db.get_instance()
         query = "SELECT id FROM doctor WHERE permit_number=" + permit_number
