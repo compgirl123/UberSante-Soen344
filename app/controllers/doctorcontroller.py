@@ -315,7 +315,7 @@ class Doctorcontroller:
        # A new function that will get the doctors works works at that clinic
     def get_doctor_by_clinic_name(self,doctor_clinic_name):
         database = db.get_instance()
-        # Claudia's comment (query)
+
         # Get all the doctor specialities information for the clinic
         query = "SELECT * FROM doctor WHERE clinic_name = ""'" + str(doctor_clinic_name) + "'"""
 

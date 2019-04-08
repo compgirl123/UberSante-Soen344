@@ -460,9 +460,7 @@ def patientchoosedoctorclinic():
 def patientchoosedoctorspecialtydashboard():
     if request.method == "POST":
         _clinic_name_picked = request.form['clinic_picked'];# stores the name that was entered to the next page
-        print("*****************")
-        print(_clinic_name_picked)
-        print("*****************")
+
     response = redirect(url_for("pages.patientchoosedoctorspecialty"))
     response.set_cookie('clinic_picked', _clinic_name_picked)
     return response
@@ -477,9 +475,6 @@ def patientchoosedoctorspecialty():
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
     _get_doc_info = _doctor_obj.get_doctor_by_clinic_name(clinic_name_picked)
-    print("*****************")
-    print(_get_doc_info)
-    print("*****************")
     _doctors_list  = _doctor_obj.get_distinct_speciality()
     doctorspecialities = []
 

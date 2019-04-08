@@ -16,25 +16,12 @@
               <div class="col-xs-6 col-md-6">
                   <!-- Add a dropdown here -->
                   <p><strong>Pick a Clinic:</strong></p>
-                  <!--<select id = "doctor_picked" name = "doctor_picked">
-                      {% for dr in doctorlist %}
-                        <option value="{{dr}}">{{dr}}</option>
-                      {%endfor %}
-                  </select>-->
-                  <!-- FOR LATER TO ADD DYNAMICALLY -->
+
                   <select class="form-control" id = "clinic_picked" name = "clinic_picked">
                     {% for cl in cliniclist %}
                         <option value="{{cl}}">{{cl}}</option>
                       {%endfor %}
                   </select>
-
-                   <!--<select class="form-control" id = "clinic_picked" name = "clinic_picked">
-                        <option value="clinic1">Clinic #1</option>
-                        <option value="clinic1">Clinic #2</option>
-                        <option value="clinic1">Clinic #3</option>
-                        <option value="clinic1">Clinic #4</option>
-                  </select>
-                  -->
 
               </div>
             </div>
