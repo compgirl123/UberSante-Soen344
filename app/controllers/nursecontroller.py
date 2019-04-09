@@ -142,7 +142,7 @@ class Nursecontroller:
 
         for row in data:
             d = row["clinic_name"]
-        #print(d)
+        print(d)
         # returns a list of users
         return d
         

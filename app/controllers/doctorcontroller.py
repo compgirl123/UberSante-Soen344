@@ -171,22 +171,6 @@ class Doctorcontroller:
         # returns a list of users
         return d
 
-    def nurse_find_patient_by_clinic(self, healthcard_number, clinic_name):
-        '''
-             Nurse finds the particular patient according to the clinic the patient belongs to
-        '''
-        database = db.get_instance()
-        
-        query = "SELECT * FROM patient WHERE health_card=" + permit_number + " AND clinic_name="+"'"+ clinic_name+ "'"
-        print(query)
-
-        cur = database.execute_query(query)
-        data = cur.fetchall()
-        d = tuple()
-        for row in data:
-            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["password"]))
-        # returns a list of users
-        return d
 
     def find_doctor_id(self,permit_number):
         database = db.get_instance()

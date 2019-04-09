@@ -298,13 +298,13 @@ def nursesearchctrlpermit():
 
 @blueprint.route('/nursesearchctrlhealthcare', methods=['GET', 'POST'])
 def nursesearchctrlhealthcare():
-
     if request.method == "POST":
         _healthcare = request.form['healthcare']  # stores the name that was entered to the next page
         print("HEALTHCARE")
         print(_healthcare)
         _obj = Patientcontroller()
         _patient_found = _obj.find_a_patient(_healthcare)
+        nurse_find_patient_by_clinic
         response = redirect(url_for("pages.patientresults"))
         response.set_cookie('healthcare', _healthcare)
     return response
