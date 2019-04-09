@@ -8,24 +8,21 @@
       <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add"> View Appointment Cart</button>
  </form>
 </div> 
-<form method="post" class="form" action="{{ url_for('pages.patientaptbookdashboard') }}">
+<form method="post" class="form" action="{{ url_for('pages.patientchoosedoctorspecialtydashboard') }}">
 <div class="container">
   <!--<div class="jumbotron">
      Search form -->
           <div class="row">
               <div class="col-xs-6 col-md-6">
                   <!-- Add a dropdown here -->
-                  <p><strong>Pick Doctor Speciality:</strong></p>
-                  <!--<select id = "doctor_picked" name = "doctor_picked">
-                      {% for dr in doctorlist %}
-                        <option value="{{dr}}">{{dr}}</option>
-                      {%endfor %}
-                  </select>-->
-                  <select class="form-control" id = "speciality_picked" name = "speciality_picked">
-                    {% for speciality in doctorspecialities %}
-                        <option value="{{speciality}}">{{speciality}}</option>
+                  <p><strong>Pick a Clinic:</strong></p>
+
+                  <select class="form-control" id = "clinic_picked" name = "clinic_picked">
+                    {% for cl in cliniclist %}
+                        <option value="{{cl}}">{{cl}}</option>
                       {%endfor %}
                   </select>
+
               </div>
             </div>
         <br/><br/>
