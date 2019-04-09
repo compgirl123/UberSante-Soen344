@@ -916,7 +916,7 @@ def patientdashboard():
             response = redirect(url_for("pages.patient_login"))
 
         else:
-            response = redirect(url_for("pages.patientchoosedoctorspecialty"))
+            response = redirect(url_for("pages.patientchoosedoctorclinic"))
             #response = redirect(url_for("pages.patientaptbook"))
             response.set_cookie('healthcard', _healthcard)
             response.set_cookie('phone_number', _phone_number)
