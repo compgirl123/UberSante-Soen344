@@ -127,4 +127,22 @@ class Nursecontroller:
         print(d)
         # returns a list of users
         return d
+
+    def nurse_clinic(self,user_id):
+        '''
+            Finding the particular clinic that a nurse works at
+        '''
+
+        database = db.get_instance()
+        query = "SELECT clinic_name FROM nurse WHERE access_id=" + "'" + user_id +"'"
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+
+        for row in data:
+            d = row["clinic_name"]
+        print(d)
+        # returns a list of users
+        return d
         

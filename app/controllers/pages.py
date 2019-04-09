@@ -272,32 +272,39 @@ def thank_you():
 def findnurse():
     user_id = request.cookies.get('nurseid')
     password = request.cookies.get('password')
+    print(user_id)
     _obj = Nursecontroller()
     _nurse_full_name = _obj.nurse_full_name(user_id)
+    _nurse_clinic = _obj.nurse_clinic(user_id)
+    print(_nurse_clinic)
     print(_nurse_full_name)
-    return render_template('nursepages/findnurse.html',name=user_id, nurse_full_name = _nurse_full_name)
+    return render_template('nursepages/findnurse.html',name=user_id, nurse_full_name = _nurse_full_name,
+    clinic_name = _nurse_clinic)
 
 @blueprint.route('/nursesearchctrlpermit', methods=['GET', 'POST'])
 def nursesearchctrlpermit():
-
     if request.method == "POST":
+        user_id = request.cookies.get('nurseid')
         _permit = request.form['permit']  # stores the name that was entered to the next page
         print(_permit)
-        _obj = Doctorcontroller()
-        _doctor_found = _obj.find_doctor_by_permit_number(_permit)
+        _obj1 = Doctorcontroller()
+        _obj2 = Nursecontroller()
+        _nurse_clinic = _obj2.nurse_clinic(user_id)
+        #_doctor_found = _obj.find_doctor_by_permit_number(_permit)
+        _doctor_found = _obj1.nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
         response = redirect(url_for("pages.doctorresults"))
         response.set_cookie('permit',_permit)
     return response
 
 @blueprint.route('/nursesearchctrlhealthcare', methods=['GET', 'POST'])
 def nursesearchctrlhealthcare():
-
     if request.method == "POST":
         _healthcare = request.form['healthcare']  # stores the name that was entered to the next page
         print("HEALTHCARE")
         print(_healthcare)
         _obj = Patientcontroller()
         _patient_found = _obj.find_a_patient(_healthcare)
+        #nurse_find_patient_by_clinic
         response = redirect(url_for("pages.patientresults"))
         response.set_cookie('healthcare', _healthcare)
     return response
@@ -305,8 +312,13 @@ def nursesearchctrlhealthcare():
 @blueprint.route('/doctorresults', methods=['GET', 'POST'])
 def doctorresults():
     permit = request.cookies.get('permit')
+    user_id = request.cookies.get('nurseid')
+    _obj2 = Nursecontroller()
+    _nurse_clinic = _obj2.nurse_clinic(user_id)
     _obj = Doctorcontroller()
-    _doctor_found = _obj.find_doctor_by_permit_number(permit)
+    #_doctor_found = _obj.find_doctor_by_permit_number(permit)
+    _doctor_found = _obj.nurse_find_doctor_by_clinic(permit,_nurse_clinic)
+    print(_doctor_found)
     _results = 0
     if not _doctor_found:
         _results = 0
