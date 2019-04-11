@@ -1054,3 +1054,9 @@ def patientnurse2():
    
     _infohere = zip(_apts,get_doctor_name_from_id)
     return render_template('patientpages/patient_dashboard_all_appointments.html',arrinfo = _infohere, apts = _apts, docname = get_doctor_name_from_id)
+
+@blueprint.route('/doctornurse/<id>',methods=['GET', 'POST'])
+def doctornurse(id):
+    response = redirect(url_for("pages.doctornurse2"))
+    response.set_cookie('permitnumber', id)
+    return response
