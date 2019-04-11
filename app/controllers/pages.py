@@ -32,7 +32,7 @@ def add(id, start_time,end_time):
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         if request.form['submit'] == 'update':
             print(start_time)
@@ -52,7 +52,7 @@ def doctorschedule():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -61,8 +61,8 @@ def doctorschedule():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            sels.append(request.form.get("sel4"))
+            message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             columns = shutil.get_terminal_size().columns
             flash(message)
             print(message.center(columns))
@@ -87,7 +87,7 @@ def doctorschedule2():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -95,8 +95,8 @@ def doctorschedule2():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Tuesday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            sels.append(request.form.get("sel4"))
+            message = obj.doctorappointmentbook("Tuesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
 
         #DELETE BUTTON ADDS AVAILABILITY
@@ -104,7 +104,7 @@ def doctorschedule2():
             dels = []
             dels.append((request.form.get("id1")))
             obj.deleteappointment(dels[0])
-        
+
     sel = obj.doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
@@ -116,7 +116,7 @@ def doctorschedule3():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -124,15 +124,15 @@ def doctorschedule3():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Wednesday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            sels.append(request.form.get("sel4"))
+            message = obj.doctorappointmentbook("Wednesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id2")))
             obj.deleteappointment(dels[0])
-        
+
     sel = obj.doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
@@ -144,7 +144,7 @@ def doctorschedule4():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -152,15 +152,15 @@ def doctorschedule4():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
+            sels.append(request.form.get("sel4"))
             message = obj.doctorappointmentbook("Thursday", sels[0], sels[1],sels[2],sels[3], doctor_id)
-            flash(message) 
+            flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id3")))
             obj.deleteappointment(dels[0])
-        
+
     sel = obj.doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
@@ -172,7 +172,7 @@ def doctorschedule5():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -180,15 +180,15 @@ def doctorschedule5():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Friday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            sels.append(request.form.get("sel4"))
+            message = obj.doctorappointmentbook("Friday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id4")))
             obj.deleteappointment(dels[0])
-        
+
     sel = obj.doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
@@ -200,7 +200,7 @@ def doctorschedule6():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -208,15 +208,15 @@ def doctorschedule6():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            sels.append(request.form.get("sel4"))
+            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id5")))
             obj.deleteappointment(dels[0])
-        
+
     sel = obj.doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
@@ -228,7 +228,7 @@ def doctorschedule7():
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
-    
+
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
         if request.form['submit'] == 'submit':
@@ -236,15 +236,15 @@ def doctorschedule7():
             sels.append(request.form.get("sel1"))
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
-            sels.append(request.form.get("sel4"))       
-            message = obj.doctorappointmentbook("Sunday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+            sels.append(request.form.get("sel4"))
+            message = obj.doctorappointmentbook("Sunday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id6")))
             obj.deleteappointment(dels[0])
-        
+
     sel = obj.doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
@@ -451,22 +451,22 @@ def patientchoosedoctorclinic():
     password = request.cookies.get('phone_number')
     regularChecked = "checked"
     annualChecked = ""
-   
+
     _clinic_obj = Cliniccontroller()
     _clinics_list = _clinic_obj.get_all_clinics()
-    
+
     print(_clinics_list)
     clinic_names = []
     location_names = []
-   
+
     for infos in _clinics_list:
         clinic_names.append(infos[0])
         location_names.append(infos[1])
-    
+
     print(location_names)
     print(clinic_names)
-        
-    return render_template('patientpages/chooseclinic.html', user = user_id, locations = location_names, cliniclist = clinic_names) 
+
+    return render_template('patientpages/chooseclinic.html', user = user_id, locations = location_names, cliniclist = clinic_names)
 
 @blueprint.route('/patientchoosedoctorspecialtydashboard',  methods=['GET', 'POST'])
 def patientchoosedoctorspecialtydashboard():
@@ -494,7 +494,7 @@ def patientchoosedoctorspecialty():
         doctorspecialities.append(infos[3])
     print(doctorspecialities)
     return render_template('patientpages/choosedoctorspecialty.html', user = user_id,  doctorspecialities = doctorspecialities,
-    clinic_picked = clinic_name_picked )      
+    clinic_picked = clinic_name_picked )
 
 @blueprint.route('/patientaptbookdashboard',  methods=['GET', 'POST'])
 def patientaptbookdashboard():
@@ -504,7 +504,7 @@ def patientaptbookdashboard():
         response = redirect(url_for("pages.patientaptbook"))
         response.set_cookie('speciality_picked', _speciality_picked)
         return response
-         
+
 @blueprint.route('/patient_register',  methods=['GET', 'POST'])
 def patient_register():
     if request.method == 'POST':
@@ -601,13 +601,13 @@ def patientaptbook():
     user_id = request.cookies.get('healthcard')
     password = request.cookies.get('phone_number')
     speciality_picked = request.cookies.get('speciality_picked')
-  
+
     regularChecked = "checked"
     annualChecked = ""
     _doctor_obj = Doctorcontroller()
     _doctors_list = _doctor_obj.doctor_table()
     _doctor_list_by_speciality = _doctor_obj.get_doctor_by_specialty(speciality_picked)
-   
+
     print("SPECIAL")
     print(_doctor_list_by_speciality)
 
@@ -726,7 +726,7 @@ def patient_apts_scheduled():
 
     first_last_name_arr = doctor_selected.split(" ")
     # check if its valid (aka check which doctors have a certain specialty)
-    #_doc_query = 
+    #_doc_query =
     _dq = _doc_obj.get_doctor_by_specialty(speciality_picked)
     doctor_speciality_selected_infos = []
     for doctor in _dq:
@@ -738,7 +738,7 @@ def patient_apts_scheduled():
     #print(_doc_query)
     print(_dq)
     print(_doc_query)
-   
+
     # print(_doc_query[2])
 
     #_time_end = get_time_end()
@@ -764,7 +764,7 @@ def patient_apts_scheduled():
     print(str("0"+date))
 
     message = _appointment_obj.create_appointment(speciality_picked, _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),day_of_week)
-     #message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id) 
+     #message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             #columns = shutil.get_terminal_size().columns
     flash(message)
             #print(message.center(columns))
@@ -953,7 +953,7 @@ def schedule_time_slots(block_size = 1200, num_blocks = 36):
 
     a = datetime.time(8,0,0)
     time_slot_list.append(a)
-    #print a          
+    #print a
     for x in range(0,num_blocks):
         b = addSecs(a, block_size)
         timeStr = str(b)
@@ -1015,8 +1015,23 @@ def test():
     _res = convert_date_to_day_of_week()
     return _res
 
+@blueprint.route('/doctorappointments', methods=['GET', 'POST'])
+def doctorappointments():
+    permit = request.cookies.get('permitnumber')
+    doctor_obj = Doctorcontroller()
+    appointment_obj = AppointmentController()
+    patient_obj = Patientcontroller()
+
+    doctor_id = doctor_obj.find_doctor_id(permit)
+    doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
+    patient_name = patient_obj.get_patient_name_from_id(doctor_id)
+
+    info = zip(doctor_appointments,patient_name)
+
+    return render_template('doctorpages/doctorappointments.html', arrinfo = info, apts = doctor_appointments, patient_name = patient_name )
+
 @blueprint.route('/patientnurse/<id>',methods=['GET', 'POST'])
 def patientnurse(id):
     response = redirect(url_for("pages.patientnurse2"))
     response.set_cookie('healthcard', id)
-    return response
+    return response 
