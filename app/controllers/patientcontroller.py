@@ -108,7 +108,7 @@ class Patientcontroller:
 
     def find_user(self, health_card, phone_number):
         # Make an sql  query to search for the name and pasword instead of seleting all
-        
+
         self.health_card = health_card
         self.phone_number = phone_number
 
@@ -119,7 +119,7 @@ class Patientcontroller:
             mycursor = con.cursor()
             mycursor.execute(a.health_card, loadhealth_card)
             health_cardcheck = mycursor.fetchone()
-        
+
             loadphone_number = ("select phone_number from patient where phone_number = '%s'")
             mycursor2 = con.cursor()
             mycursor2.execute(a.phone_number,loadphone_number)
@@ -137,7 +137,7 @@ class Patientcontroller:
         try:
             database = db.get_instance()
             #cur = con.cursor()
-            database.execute_query("insert into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES (?,?,?,?,?,?,?,?,?)", 
+            database.execute_query("insert into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES (?,?,?,?,?,?,?,?,?)",
                 (first_name, last_name,birthday,gender,phone_number,email,address,age,health_card))
             database.commit_db()
             message = "Record Successfully added"
@@ -173,7 +173,7 @@ class Patientcontroller:
              Nurse finds the particular patient according to the clinic the patient belongs to
         '''
         database = db.get_instance()
-        
+
         query = "SELECT * FROM patient WHERE health_card=" + "'" + healthcard_number+"'"
         print(query)
 
@@ -186,3 +186,20 @@ class Patientcontroller:
         # returns a list of users
         return d
 
+    def getallappointmentsfordoctor(self, doctor_id):
+        database = db.get_instance()
+        query = "SELECT * FROM appointment WHERE doctor_id=" + str(doctor_id)
+        print(query)
+        queryexecute = database.execute_query(query)
+        data = queryexecute.fetchall()
+        return data
+
+    def deleteappointment(self, appointment_id):
+        database = db.get_instance()
+        print(appointment_id)
+        appointment_id = str(appointment_id)
+        query = "DELETE FROM appointment WHERE id =" + appointment_id
+        database.execute_query(query)
+        database.commit_db()
+        message = "Availability Deleted"
+        return message
