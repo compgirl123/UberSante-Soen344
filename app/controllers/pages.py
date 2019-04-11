@@ -1034,7 +1034,7 @@ def doctorappointments():
 def patientnurse(id):
     response = redirect(url_for("pages.patientnurse2"))
     response.set_cookie('healthcard', id)
-    return response 
+    return response
 
 @blueprint.route('/patientnurse2',methods=['GET', 'POST'])
 def patientnurse2():
@@ -1051,7 +1051,7 @@ def patientnurse2():
     _apts = _appointment_obj.getallappointments(_patient_found[0])
     get_doctor_name_from_id = _doc_obj.get_doctor_name_from_id((_patient_found[0]))
 
-   
+
     _infohere = zip(_apts,get_doctor_name_from_id)
     return render_template('patientpages/patient_dashboard_all_appointments.html',arrinfo = _infohere, apts = _apts, docname = get_doctor_name_from_id)
 
@@ -1068,6 +1068,24 @@ def doctornurse2():
     doctor_obj = Doctorcontroller()
     appointment_obj = AppointmentController()
     patient_obj = Patientcontroller()
+
+    doctor_id = doctor_obj.find_doctor_id(permit)
+    doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
+    patient_name = patient_obj.get_patient_name_from_id(doctor_id)
+
+    info = zip(doctor_appointments,patient_name)
+
+    return render_template('doctorpages/nursedoctorappointments.html', arrinfo = info, apts = doctor_appointments, patient_name = patient_name )
+
+@blueprint.route('/doctornurse2/<id>',methods=['GET', 'POST'])
+def doctornurse22(id):
+    permit = request.cookies.get('permitnumber')
+    doctor_obj = Doctorcontroller()
+    appointment_obj = AppointmentController()
+    patient_obj = Patientcontroller()
+
+    if request.method == 'POST':
+        appointment_obj.deleteappointment(id)
 
     doctor_id = doctor_obj.find_doctor_id(permit)
     doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
