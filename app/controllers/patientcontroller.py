@@ -203,3 +203,24 @@ class Patientcontroller:
         database.commit_db()
         message = "Availability Deleted"
         return message
+
+    def get_patient_name_from_id(self,doctor_id):
+        database = db.get_instance()
+        query = "SELECT patient.first_name, patient.last_name FROM patient INNER JOIN appointment ON patient.id = appointment.patient_id WHERE appointment.doctor_id = ""'" + str(doctor_id) + "'"""
+
+        cur = database.execute_query(query)
+
+        data = cur.fetchall()
+        firstnames = []
+        lastnames = []
+        d = tuple()
+
+        for row in data:
+            #print(doctor.first_name)
+            firstnames.append(row["first_name"])
+            lastnames.append(row["last_name"])
+            #d = tuple((row["speciality"]))
+        d = tuple(list(zip(firstnames,lastnames)))
+
+        # returns a list of users
+        return d
