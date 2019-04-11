@@ -186,6 +186,17 @@ class Patientcontroller:
         # returns a list of users
         return d
 
+    def deleteappointment(self, appointment_id):
+            database = db.get_instance()
+            print(appointment_id)
+            appointment_id = str(appointment_id)
+            query = "DELETE FROM appointment WHERE id =" + appointment_id
+            database.execute_query(query)
+            database.commit_db()
+            message = "Availability Deleted"
+            return message
+
+
     def getallappointmentsfordoctor(self, doctor_id):
         database = db.get_instance()
         query = "SELECT * FROM appointment WHERE doctor_id=" + str(doctor_id)
@@ -194,15 +205,6 @@ class Patientcontroller:
         data = queryexecute.fetchall()
         return data
 
-    def deleteappointment(self, appointment_id):
-        database = db.get_instance()
-        print(appointment_id)
-        appointment_id = str(appointment_id)
-        query = "DELETE FROM appointment WHERE id =" + appointment_id
-        database.execute_query(query)
-        database.commit_db()
-        message = "Availability Deleted"
-        return message
 
     def get_patient_name_from_id(self,doctor_id):
         database = db.get_instance()
