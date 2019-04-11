@@ -1014,3 +1014,9 @@ def convert_date_to_day_of_week():
 def test():
     _res = convert_date_to_day_of_week()
     return _res
+
+@blueprint.route('/patientnurse/<id>',methods=['GET', 'POST'])
+def patientnurse(id):
+    response = redirect(url_for("pages.patientnurse2"))
+    response.set_cookie('healthcard', id)
+    return response
