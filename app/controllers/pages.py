@@ -1035,3 +1035,22 @@ def patientnurse(id):
     response = redirect(url_for("pages.patientnurse2"))
     response.set_cookie('healthcard', id)
     return response 
+
+@blueprint.route('/patientnurse2',methods=['GET', 'POST'])
+def patientnurse2():
+    print(id)
+    _doc_obj = Doctorcontroller()
+    _appointment_obj = AppointmentController()
+
+    #_get_patient
+    healthcard = request.cookies.get('healthcard')
+
+    _obj = Patientcontroller()
+    _patient_found = _obj.find_a_patient(healthcard)
+
+    _apts = _appointment_obj.getallappointments(_patient_found[0])
+    get_doctor_name_from_id = _doc_obj.get_doctor_name_from_id((_patient_found[0]))
+
+   
+    _infohere = zip(_apts,get_doctor_name_from_id)
+    return render_template('patientpages/patient_dashboard_all_appointments.html',arrinfo = _infohere, apts = _apts, docname = get_doctor_name_from_id)
