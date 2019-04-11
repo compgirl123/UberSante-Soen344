@@ -5,11 +5,13 @@ from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
 from app.controllers.appointmentcontroller import *
 from app.controllers.cliniccontroller import *
+from app.controllers.clinicAbstract import *
 import datetime
 import shutil
 from datetime import date
 import calendar
 import json, requests
+
 
 blueprint = Blueprint('pages', __name__)
 
@@ -287,11 +289,12 @@ def nursesearchctrlpermit():
         user_id = request.cookies.get('nurseid')
         _permit = request.form['permit']  # stores the name that was entered to the next page
         print(_permit)
-        _obj1 = Doctorcontroller()
+        _obj1 = ClinicAbstract()
+        #_obj1 = Doctorcontroller()
         _obj2 = Nursecontroller()
         _nurse_clinic = _obj2.nurse_clinic(user_id)
-        #_doctor_found = _obj.find_doctor_by_permit_number(_permit)
-        _doctor_found = _obj1.nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
+        #_doctor_found = _obj1.find_doctor_by_permit_number(_permit)
+        _doctor_found = _obj1.process_doctor().nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
         response = redirect(url_for("pages.doctorresults"))
         response.set_cookie('permit',_permit)
     return response
@@ -316,6 +319,7 @@ def doctorresults():
     _obj2 = Nursecontroller()
     _nurse_clinic = _obj2.nurse_clinic(user_id)
     _obj = Doctorcontroller()
+    #template design pattern
     #_doctor_found = _obj.find_doctor_by_permit_number(permit)
     _doctor_found = _obj.nurse_find_doctor_by_clinic(permit,_nurse_clinic)
     print(_doctor_found)
