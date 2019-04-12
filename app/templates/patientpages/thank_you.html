@@ -12,6 +12,10 @@
 
         <p>Transaction succesfully completed! Thank you.</p>
 
-    </div>
+    </div>    
 </div>
+
+<form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patient_apts_scheduled_complete') }}">
+  <button type="submit" id = "viewcart" name = "viewcart" class="btn btn-info btn-lg" value="add">Back to Cart</button>
+</form>
 {% endblock %}

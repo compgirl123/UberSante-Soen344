@@ -120,10 +120,10 @@ class Doctorcontroller:
         con.commit()
         con.close()
 
-    def register_doctor(self, first_name, last_name, speciality, city, password, permit_number):
+    def register_doctor(self, first_name, last_name, speciality, city, password, permit_number, clinic_name):
         try:
             database = db.get_instance()
-            database.execute_query("insert into doctor(first_name, last_name, speciality, city, password, permit_number) VALUES (?,?,?,?,?,?)", (first_name, last_name, speciality, city, password, permit_number))
+            database.execute_query("insert into doctor(first_name, last_name, speciality, city, password, permit_number,clinic_name) VALUES (?,?,?,?,?,?,?)", (first_name, last_name, speciality, city, password, permit_number,clinic_name))
             database.commit_db()
             message = "Record Successfully added"
         except:
@@ -154,6 +154,25 @@ class Doctorcontroller:
         # returns a list of users
         return d
 
+    def nurse_find_doctor_by_clinic(self, permit_number, clinic_name):
+        '''
+            Nurse finds the particular doctor according to the clinic the doctor belongs to
+        '''
+        database = db.get_instance()
+        
+        query = "SELECT * FROM doctor WHERE permit_number=" + permit_number + " AND clinic_name="+"'"+ clinic_name+ "'"
+        print(query)
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        d = tuple()
+        for row in data:
+            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["clinic_name"]))
+        # returns a list of users
+        print(d)
+        return d
+
+
     def find_doctor_id(self,permit_number):
         database = db.get_instance()
         query = "SELECT id FROM doctor WHERE permit_number=" + permit_number
@@ -175,13 +194,14 @@ class Doctorcontroller:
         doctor_id = str(doctor_id)
 
 
-        if (_start_time_hour <= _end_time_hour and _start_time_minute < _end_time_minute) or (_start_time_hour < _end_time_hour and _start_time_minute <= _end_time_minute):
+        if (_start_time_hour <= _end_time_hour and _start_time_minute < _end_time_minute) or (_start_time_hour < _end_time_hour):
             start_time = str(start_time_hour) + ':' + str(start_time_minute)     
             end_time = str(end_time_hour) + ':' + str(end_time_minute) 
             query3 = "SELECT COUNT(*) FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
             cur = database.execute_query(query3)
             data1 = cur.fetchall()
             data1 = int(data1[0][0])
+            print(data1)
             if data1 == 0:
                 doctor_id = int(doctor_id)
                 start_time = start_time + ":00"
@@ -195,6 +215,8 @@ class Doctorcontroller:
                 query = "SELECT * FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
                 cur = database.execute_query(query)
                 data = cur.fetchall()
+                count = 0
+
                 for row in data:
                     start = row[2]
                     end = row[3]
@@ -204,9 +226,13 @@ class Doctorcontroller:
                         end = '0' + end
                     print(start)
                     print(end)
-                    count = 0
-                    if (_start_time_hour > int(end[0:2]) and _end_time_hour > int(end[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour < int(start[0:2])) or (_start_time_hour < int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _end_time_minute <= int(start[3:5])) or (_start_time_hour >= int(end[0:2]) and _end_time_hour > int(end[0:2]) and _start_time_minute >= int(end[3:5])):
+                    if (_start_time_hour > int(end[0:2]) and _end_time_hour > int(end[0:2])) or \
+                        (_start_time_hour < int(start[0:2]) and _end_time_hour < int(start[0:2])) or \
+                        (_start_time_hour < int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _end_time_minute <= int(start[3:5])) or \
+                        (_start_time_hour >= int(end[0:2]) and _end_time_hour > int(end[0:2]) and _start_time_minute >= int(end[3:5])) or \
+                        (_start_time_hour <= int(start[0:2]) and _end_time_hour <= int(start[0:2]) and _start_time_minute < int(start[3:5]) and _end_time_minute <= int(start[3:5])):
                         count += 1
+                        print(count)
                         if count == data1:
                             start_time = start_time + ":00"
                             end_time = end_time + ":00"
@@ -215,9 +241,11 @@ class Doctorcontroller:
                             database.commit_db()
                             message = "Availability Added"
                             return message
+                   
+                    
                 return "Enter proper values"
         else:
-            message = "Enter proper values" 
+            message = "Enter proper values!!!" 
         #query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
         #database.execute_query(query2, (day, start_time, end_time,doctor_id ))
         #database.commit_db()
@@ -300,6 +328,49 @@ class Doctorcontroller:
                        #row["password"]))
         d = values_from_db
         # returns a list of users
+        return d
+
+       
+       # A new function that will get the doctors works works at that clinic
+    def get_doctor_by_clinic_name(self,doctor_clinic_name):
+        database = db.get_instance()
+
+        # Get all the doctor specialities information for the clinic
+        query = "SELECT * FROM doctor WHERE clinic_name = ""'" + str(doctor_clinic_name) + "'"""
+
+        cur = database.execute_query(query)
+        data = cur.fetchall()
+        ids = []
+        last_names = []
+        first_names = []
+        specialties = []
+        clinic_names = []
+        cities = []
+        passwords = []
+        permit_numbers = []
+        
+        d = tuple()
+        for row in data:
+            ids.append(row["id"])
+            last_names.append(row["last_name"])
+            first_names.append(row["first_name"])
+            specialties.append(row["speciality"])
+            clinic_names.append(row["clinic_name"])
+            cities.append(row["city"])
+            passwords.append(row["password"])
+            permit_numbers.append(row["permit_number"])
+
+        values_from_db = tuple(list(zip(ids,last_names,first_names,specialties,clinic_names, cities,passwords,passwords,permit_numbers)))
+        print(values_from_db)
+        print()
+        '''doctors_list.append(row["first_name"], row["last_name"], row["speciality"], row["clinic_name"], row["city"], row["permit_number"],
+                    row["password"])'''
+    
+        #d = tuple((row["first_name"], row["last_name"], row["speciality"], row["clinic_name"], row["city"], row["permit_number"],
+                    #row["password"]))
+        d = values_from_db
+        
+        # returns a list of doctors
         return d
     
     def get_distinct_speciality(self):

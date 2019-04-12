@@ -4,7 +4,9 @@
 
     <div class="container">
         <h1>Welcome {{nurse_full_name[0]}} {{nurse_full_name[1]}}</h1>
-        <h2>Find Doctor or Patient</h2>
+        <br>
+        <h3>The {{clinic_name}} </h3>
+        <h3>Find Doctor or Patient</h3>
           <div class="jumbotron">
             <!-- Search form -->
               <form method="post" class="form" action="{{ url_for('pages.nursesearchctrlpermit') }}">
