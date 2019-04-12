@@ -38,13 +38,13 @@
             
             
             <h3>Payment Information <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png"></h3>
-            <a href="/payment?strategy=credit_or_debit"><input type="radio" id="CoD" name="strategy" value="CreditOrDebit" checked/>
+            <a href=""></a><input type="radio" id="CoD" name="strategy" value="CreditOrDebit" onClick="{% set strategy = 'credit_or_debit' %}" checked/>
+            <!-- <a href="/payment?strategy=credit_or_debit"><input type="radio" id="CoD" name="strategy" value="CreditOrDebit" checked/> -->
             <label for="CreditOrDebit">Credit or Debit</label></a>
             <a href="/payment?strategy=paypall"><input type="radio" id="Paypall" name="strategy" value="Paypall" />
             <label for="Paypall">Paypall</label></a>
-            <h1 value=strategy>Value is: {{strategy}}</h1>
             
-            {% include ['patientpages/',strategy, '.html']|join ignore missing %}
+            {% include ['patientpages/',strategy,'.html']|join ignore missing %}
 
         </form>
 
