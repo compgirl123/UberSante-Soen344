@@ -1,7 +1,9 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Payment{% endblock %}
 {% block content %}
-
+<script>
+                var strategy = $_GET["strategy"];
+            </script>
 <div class="page-header">
     <h1>Payment</h1>
   </div>
@@ -36,22 +38,14 @@
             
             
             <h3>Payment Information <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png"></h3>
-            <a href="/payment/update/cod"><input type="radio" id="CoD" name="strategy" value="CreditOrDebit" onClick="/payment/update/cod" checked/>
+            <a href="/payment?strategy=credit_or_debit"><input type="radio" id="CoD" name="strategy" value="CreditOrDebit" checked/>
             <label for="CreditOrDebit">Credit or Debit</label></a>
-            <a href="/payment/update/paypall"><input type="radio" id="Paypall" name="strategy" value="Paypall" onClick="/payment/update/paypall"/>
+            <a href="/payment?strategy=paypall"><input type="radio" id="Paypall" name="strategy" value="Paypall" />
             <label for="Paypall">Paypall</label></a>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-block alert-error fade in">
-                    <a class="close" data-dismiss="alert">&times;</a>
-                    {{ message }}
-                    </div>
-                {% endfor %}
-                {% endif %}
-            {% endwith %}
+            <h1 value=strategy>Value is: {{strategy}}</h1>
+            
+            {% include ['patientpages/',strategy, '.html']|join ignore missing %}
 
-            {% block payment %}{% endblock %}
         </form>
 
     </div>
