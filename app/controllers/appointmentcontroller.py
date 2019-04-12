@@ -24,7 +24,7 @@ class AppointmentController:
             return [doctorsAvailable, availableRoom]
 
 
-    def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time, day_of_week):
+    def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time, day_of_week,clinic_name_picked):
         conn = AppointmentController.connect_database(self)
         database = db.get_instance()
         queryexecute = database.execute_query("SELECT id FROM room WHERE id = 2")
@@ -41,11 +41,11 @@ class AppointmentController:
         #print(data[0]['id'])
 
         database.commit_db()
-        print("DOCTOR")
-        print(doctor_speciality)
+        '''print("DOCTOR")
+        print(doctor_speciality)'''
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time , day_of_week)
-        print("MOOSe")
-        print(doctor_id)
+        '''print("MOOSe")
+        print(doctor_id)'''
         if doctor_id == False:
             message = "No doctor is available!"
             return message
@@ -60,7 +60,7 @@ class AppointmentController:
         appointment_type = AppointmentController.getappointment_type(start_time, end_time)
 
         print(type(doctor_id))
-        AppointmentController.finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id)
+        AppointmentController.finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,clinic_name_picked)
         message = "Appointment Added"
         return message
 
@@ -109,35 +109,36 @@ class AppointmentController:
         #query3 = "SELECT start_time, end_time FROM appointment WHERE doctor_id=? AND appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
         # conn.execute(query)
         # conn.execute(query)
-        print("DA DOC")
+        '''print("DA DOC")
         print("SELECT id FROM doctor WHERE speciality="+doctor_speciality)
-        print(type(doctor_speciality))
+        print(type(doctor_speciality))'''
 
         conn.execute(query,(doctor_speciality,))
         specialists = conn.fetchall()
         conn.execute(query2,(day_of_week, start_time,end_time))
         availableDoctors = conn.fetchall()
 
-        print("DOCCCCCS")
+        '''print("DOCCCCCS")
         print(availableDoctors)
         print(specialists)
 
         print(day_of_week)
         print(start_time)
-        print(end_time)
+        print(end_time)'''
 
         for specialist in specialists:
-            print("HHHHH")
-            print(specialist)
+            '''print("HHHHH")
+            print(specialist)'''
             allAppointmentTimes = []
             if specialist in availableDoctors:
                 print("HEEEEEERE")
-                print(specialist)
+                '''print(specialist)'''
                 idtuple = specialist[0]
                 id = int(idtuple)
-                print(id)
-                conn.execute(query3, (id, appointment_date, start_time,end_time,start_time,start_time,end_time,end_time))
+                #print(id)
+                conn.execute(query3, (1, appointment_date, start_time,end_time,start_time,start_time,end_time,end_time))
                 allAppointmentTimes = conn.fetchall()
+                print("HEEELOO")
                 print(allAppointmentTimes)
                 count = 0
                 for i in allAppointmentTimes:
@@ -165,19 +166,25 @@ class AppointmentController:
         except Error as e:
             print(e)
             return None
-
-    def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id):
+            
+    def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,clinic_name_picked):
         try:
             database = db.get_instance()
 
             item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
-                    str(end_time), str(patient_id), int(doctor_id[0]))
+                    str(end_time), str(patient_id), int(doctor_id[0]),str(clinic_name_picked))
+
+            print(item)
+ 
+            print(clinic_name_picked)
 
             database.execute_query("INSERT INTO appointment(appointment_room, appointment_type, appointment_status," \
-                    " appointment_date, start_time, end_time, patient_id, doctor_id)" \
-                    "VALUES (?,?,?,?,?,?,?,?)",(str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
-                    str(end_time), str(patient_id), int(doctor_id[0])))
+                    " appointment_date, start_time, end_time, patient_id, doctor_id,clinic_name)" \
+                    "VALUES (?,?,?,?,?,?,?,?,?)",(str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
+                    str(end_time), str(patient_id), int(doctor_id[0]),str(clinic_name_picked)))
             database.commit_db()
+
+            #print(query)
             #conn.execute(query,item)
             #result = conn.fetchall()
 
