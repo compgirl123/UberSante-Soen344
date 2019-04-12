@@ -295,6 +295,9 @@ def nursesearchctrlpermit():
         _nurse_clinic = _obj2.nurse_clinic(user_id)
         #_doctor_found = _obj1.find_doctor_by_permit_number(_permit)
         _doctor_found = _obj1.process_doctor().nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
+        print(_doctor_found)
+        print("DOCCC1")
+    
         response = redirect(url_for("pages.doctorresults"))
         response.set_cookie('permit',_permit)
     return response
@@ -322,7 +325,7 @@ def doctorresults():
     #template design pattern
     #_doctor_found = _obj.find_doctor_by_permit_number(permit)
     _doctor_found = _obj.nurse_find_doctor_by_clinic(permit,_nurse_clinic)
-    print(_doctor_found)
+   
     _results = 0
     if not _doctor_found:
         _results = 0

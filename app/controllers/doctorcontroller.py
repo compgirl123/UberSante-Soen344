@@ -159,15 +159,20 @@ class Doctorcontroller:
             Nurse finds the particular doctor according to the clinic the doctor belongs to
         '''
         database = db.get_instance()
-        
-        query = "SELECT * FROM doctor WHERE permit_number=" + permit_number + " AND clinic_name="+"'"+ clinic_name+ "'"
+        print("DOCCC")
+        print(permit_number == "")
+        if (not permit_number == ""):
+            query = "SELECT * FROM doctor WHERE permit_number=" + permit_number + " AND clinic_name="+"'"+ clinic_name+ "'"
+            cur = database.execute_query(query)
+            data = cur.fetchall()
+            d = tuple()
+            for row in data:
+                d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["clinic_name"]))
+        else:
+            query = ""
+            d = query
         print(query)
 
-        cur = database.execute_query(query)
-        data = cur.fetchall()
-        d = tuple()
-        for row in data:
-            d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["clinic_name"]))
         # returns a list of users
         return d
 
