@@ -25,10 +25,21 @@ def home():
 def about():
     return render_template('pages/placeholder.about.html')
 
+
+@blueprint.route('/doctorclinic', methods=['GET', 'POST'])
+def doctorclinic():
+    permit = request.cookies.get('permitnumber')
+    obj = Doctorcontroller()
+    doctor_clinics = obj.doctorgetclinic(permit)
+    print(doctor_clinics)
+    doctor_info = obj.find_doctor_by_permit_number(permit)
+    return render_template('doctorpages/doctorclinics.html', doctor_clinics = doctor_clinics, doctor_info = doctor_info)
+
 @blueprint.route('/doctorschedule/<id>/<start_time>/<end_time>',methods=['GET', 'POST'])
 def add(id, start_time,end_time):
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
+    clinic_name = request.cookies.get('clinic_name')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
     doctor_id = obj.find_doctor_id(permit)
@@ -39,15 +50,27 @@ def add(id, start_time,end_time):
             print(end_time)
         elif request.form['submit'] == 'delete':
             print(id)
-            obj.deleteappointment(id)
+            obj.deleteappointment(id,clinic_name)
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id, clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
+
+@blueprint.route('/beforedoctorschedule', methods=['GET', 'POST'])
+def beforedoctorschedule():
+    if request.method == "POST":
+        clinic_name = request.form['clinic_name']  # stores the name that was entered to the next page
+        #_patient_found = _obj.find_a_patient(_healthcare)
+        #nurse_find_patient_by_clinic
+        response = redirect(url_for("pages.doctorschedule"))
+        response.set_cookie('clinic_name', clinic_name)
+    return response
 
 @blueprint.route('/doctorschedule', methods=['GET', 'POST'])
 def doctorschedule():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')
+    print(clinic_name)
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -62,7 +85,7 @@ def doctorschedule():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             columns = shutil.get_terminal_size().columns
             flash(message)
             print(message.center(columns))
@@ -76,13 +99,14 @@ def doctorschedule():
             #dels.append((request.form.get("id")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id,clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days , clinic_name = clinic_name)
 
 @blueprint.route('/doctorschedule2', methods=['GET', 'POST'])
 def doctorschedule2():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -96,7 +120,7 @@ def doctorschedule2():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Tuesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Tuesday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             flash(message)
 
         #DELETE BUTTON ADDS AVAILABILITY
@@ -105,13 +129,14 @@ def doctorschedule2():
             dels.append((request.form.get("id1")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id, clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
 
 @blueprint.route('/doctorschedule3', methods=['GET', 'POST'])
 def doctorschedule3():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -125,7 +150,7 @@ def doctorschedule3():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Wednesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Wednesday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
@@ -133,13 +158,14 @@ def doctorschedule3():
             dels.append((request.form.get("id2")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id,clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
 
 @blueprint.route('/doctorschedule4', methods=['GET', 'POST'])
 def doctorschedule4():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')   
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -153,7 +179,7 @@ def doctorschedule4():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Thursday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Thursday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
@@ -161,13 +187,14 @@ def doctorschedule4():
             dels.append((request.form.get("id3")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id,clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
 
 @blueprint.route('/doctorschedule5', methods=['GET', 'POST'])
 def doctorschedule5():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -181,7 +208,7 @@ def doctorschedule5():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Friday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Friday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
@@ -189,13 +216,14 @@ def doctorschedule5():
             dels.append((request.form.get("id4")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id,clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
 
 @blueprint.route('/doctorschedule6', methods=['GET', 'POST'])
 def doctorschedule6():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -209,7 +237,7 @@ def doctorschedule6():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
@@ -217,13 +245,14 @@ def doctorschedule6():
             dels.append((request.form.get("id5")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id,clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
 
 @blueprint.route('/doctorschedule7', methods=['GET', 'POST'])
 def doctorschedule7():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    clinic_name = request.cookies.get('clinic_name')
     permit = request.cookies.get('permitnumber')
     obj = Doctorcontroller()
     doctor_info = obj.find_doctor_by_permit_number(permit)
@@ -237,7 +266,7 @@ def doctorschedule7():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Sunday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.doctorappointmentbook("Sunday", sels[0], sels[1],sels[2],sels[3], doctor_id,clinic_name)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
@@ -245,9 +274,9 @@ def doctorschedule7():
             dels.append((request.form.get("id6")))
             obj.deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.doctorgetallappointments(doctor_id,clinic_name)
 
-    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
+    return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days, clinic_name = clinic_name)
 
 @blueprint.route('/Delete_confirmation')
 def Delete_confirmation():
@@ -385,7 +414,7 @@ def doctordashboard():
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_doctor_login"))
         else:
-            response = redirect(url_for("pages.doctorschedule"))
+            response = redirect(url_for("pages.doctorclinic"))
 
         response.set_cookie('permitnumber', _name)
         response.set_cookie('password', _password)
@@ -396,7 +425,7 @@ def doctordashboard():
 def doctor_login():
     form = LoginForm(request.form)
     if 'permitnumber' in request.cookies:
-        response = redirect(url_for("pages.doctorschedule"))
+        response = redirect(url_for("pages.doctorclinic"))
         return response
     else:
         return render_template('forms/doctor_login.html', form=form)
@@ -1041,12 +1070,14 @@ def test():
 @blueprint.route('/doctorappointments', methods=['GET', 'POST'])
 def doctorappointments():
     permit = request.cookies.get('permitnumber')
+    clinic_name = request.cookies.get('clinic_name')
+
     doctor_obj = Doctorcontroller()
     appointment_obj = AppointmentController()
     patient_obj = Patientcontroller()
 
     doctor_id = doctor_obj.find_doctor_id(permit)
-    doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
+    doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id,clinic_name)
     patient_name = patient_obj.get_patient_name_from_id(doctor_id)
 
     info = zip(doctor_appointments,patient_name)
@@ -1082,6 +1113,8 @@ def patientnurse2():
 def doctornurse(id):
     response = redirect(url_for("pages.doctornurse2"))
     response.set_cookie('permitnumber', id)
+    
+
     return response
 
 @blueprint.route('/doctornurse2',methods=['GET', 'POST'])
@@ -1091,9 +1124,13 @@ def doctornurse2():
     doctor_obj = Doctorcontroller()
     appointment_obj = AppointmentController()
     patient_obj = Patientcontroller()
+    user_id = request.cookies.get('nurseid')
+    print(user_id)
+    _obj = Nursecontroller()
+    _nurse_clinic = _obj.nurse_clinic(user_id)
 
     doctor_id = doctor_obj.find_doctor_id(permit)
-    doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
+    doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id,_nurse_clinic)
     patient_name = patient_obj.get_patient_name_from_id(doctor_id)
 
     info = zip(doctor_appointments,patient_name)

@@ -1,0 +1,23 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+
+        <div class="page-header">
+                <h2>Welcome Dr.{{doctor_info[0]}} {{doctor_info[1]}}</h2>
+              </div>
+        
+              <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+
+        <div class="container">
+
+                <h3>Choose a clinic: </h3>
+
+        </div>
+        {% for cl in doctor_clinics %}
+        <form  style="display: inline-block;" method="post" class="form" action="/beforedoctorschedule">
+        <button type="submit" id = "clinic_name" name = "clinic_name" class="btn btn-success btn-lg" value="{{cl[0]}}">{{cl[0]}}</button>
+        </form>
+        {%endfor %}
+</div>
+{% endblock %}

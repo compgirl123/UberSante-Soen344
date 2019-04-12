@@ -288,9 +288,9 @@ class AppointmentController:
         message = "Availability Deleted"
         return message
 
-    def getallappointmentsfordoctor(self, doctor_id):
+    def getallappointmentsfordoctor(self, doctor_id,clinic_name):
         database = db.get_instance()
-        query = "SELECT * FROM appointment WHERE doctor_id=" + str(doctor_id)
+        query = "SELECT * FROM appointment WHERE doctor_id=" + str(doctor_id) + " AND clinic_name="+"'"+ clinic_name + "'"
         print(query)
         queryexecute = database.execute_query(query)
         data = queryexecute.fetchall()
