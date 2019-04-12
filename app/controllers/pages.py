@@ -5,7 +5,6 @@ from app.controllers.doctorcontroller import *
 from app.controllers.patientcontroller import *
 from app.controllers.appointmentcontroller import *
 from app.controllers.cliniccontroller import *
-from app.controllers.paymentcontroller import *
 import datetime
 import shutil
 from datetime import date
