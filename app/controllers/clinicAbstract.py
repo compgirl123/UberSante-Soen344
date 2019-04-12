@@ -7,6 +7,7 @@ steps of an algorithm without changing the algorithm's structure.
 import abc
 from app.controllers.nursecontroller import *
 from app.controllers.doctorcontroller import *
+from app.controllers.patientcontroller import *
 # add patient 
 class ClinicAbstract(metaclass=abc.ABCMeta):
     """
@@ -20,6 +21,7 @@ class ClinicAbstract(metaclass=abc.ABCMeta):
     def template_method(self):  
         self.process_doctor()
         self.process_nurse()
+        self.process_patient()
 
     def process_doctor(self):
         _obj1 = Doctorcontroller()
@@ -30,3 +32,7 @@ class ClinicAbstract(metaclass=abc.ABCMeta):
         _obj2 = Nursecontroller()
         return _obj2
        # pass
+
+    def process_patient(self):
+        _obj3 = Patientcontroller()
+        return _obj3

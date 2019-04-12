@@ -290,15 +290,11 @@ def nursesearchctrlpermit():
         print(user_id)
         _permit = request.form['permit']  # stores the name that was entered to the next page
         print(_permit)
+
         _obj1 = ClinicAbstract()
         _nurse_clinic = _obj1.process_nurse().nurse_clinic(user_id)
         _doctor_found = _obj1.process_doctor().nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
-        #_obj1 = Doctorcontroller()
-        #_obj2 = Nursecontroller()
-        #_nurse_clinic = _obj2.nurse_clinic(user_id)
-        #_doctor_found = _obj.find_doctor_by_permit_number(_permit)
-        #_doctor_found = _obj1.nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
-       
+    
         response = redirect(url_for("pages.doctorresults"))
         response.set_cookie('permit',_permit)
     return response
