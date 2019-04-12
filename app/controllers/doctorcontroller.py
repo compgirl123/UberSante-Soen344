@@ -120,10 +120,10 @@ class Doctorcontroller:
         con.commit()
         con.close()
 
-    def register_doctor(self, first_name, last_name, speciality, city, password, permit_number):
+    def register_doctor(self, first_name, last_name, speciality, city, password, permit_number, clinic_name):
         try:
             database = db.get_instance()
-            database.execute_query("insert into doctor(first_name, last_name, speciality, city, password, permit_number) VALUES (?,?,?,?,?,?)", (first_name, last_name, speciality, city, password, permit_number))
+            database.execute_query("insert into doctor(first_name, last_name, speciality, city, password, permit_number,clinic_name) VALUES (?,?,?,?,?,?,?)", (first_name, last_name, speciality, city, password, permit_number,clinic_name))
             database.commit_db()
             message = "Record Successfully added"
         except:
@@ -169,6 +169,7 @@ class Doctorcontroller:
         for row in data:
             d = tuple((row["first_name"],row["last_name"],row["speciality"],row["city"],row["permit_number"],row["clinic_name"]))
         # returns a list of users
+        print(d)
         return d
 
 

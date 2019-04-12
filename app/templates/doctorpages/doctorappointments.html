@@ -5,17 +5,18 @@
   <h1>Appointments</h1><br>
 </div>
 {% for apt, patient_name in arrinfo %}
-<div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+<div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;display:inline-block">
   <div class="container">
 
-      <h3>Patient Name: </h3>
-      <p>{{patient_name[0]}} {{patient_name[1]}}</p>
+      <h3>Clinic:</h3>
+      <p class="id1">{{apt["clinic_name"]}}</p>
 
   <table class="table">
   <thead>
 
     <tr>
-        <th scope="col">Id #:</th>
+        <th scope="col">Patient Name:</th>
+      <th scope="col">Id #:</th>
       <th scope="col">Room #:</th>
       <th scope="col">Appointment Type:</th>
       <th scope="col">Appointment Status:</th>
@@ -27,6 +28,8 @@
   </thead>
   <tbody>
     <tr>
+        <td>{{patient_name[0]}} {{patient_name[1]}}</td>
+
         <td>{{apt["id"]}}</td>
       <td>{{apt["appointment_room"]}}</td>
         <td>{{apt["appointment_type"]}}</td>

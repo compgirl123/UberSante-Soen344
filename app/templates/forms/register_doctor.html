@@ -16,6 +16,14 @@
           <input type="text" class="form-control" name="last_name" placeholder="Last Name" pattern="[A-Za-z]{1,25}" title="Last name of doctor - single word" required>
       </div>
       <div class="form-group">
+        <label for="clinic">Clinic</label>
+        <select class="form-control" id = "clinic_picked" name = "clinic_picked">
+          {% for cl in cliniclist %}
+              <option value="{{cl}}">{{cl}}</option>
+            {%endfor %}
+        </select>    
+      </div>
+      <div class="form-group">
           <label for="speciality">Speciality</label>
           <input type="text" class="form-control" name="speciality" placeholder="Speciality" title="Speciality of doctor" required>
       </div>

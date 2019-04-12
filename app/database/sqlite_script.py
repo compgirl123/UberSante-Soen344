@@ -105,7 +105,7 @@ def initializeAndFillDatabase():
 
                            "room_table": """CREATE TABLE IF NOT EXISTS room (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                                        name TEXT NOT NULL,
+                                        room_number integer NOT NULL,
                                         clinic_name TEXT NOT NULL,
 
                                         FOREIGN KEY(clinic_name) REFERENCES clinic(name)
@@ -165,16 +165,29 @@ def initializeAndFillDatabase():
     # Don't commit until the end
     app.classes.database_container.DatabaseContainer.commit_lock = True
     # hardcoded  data insert inside database
-    database.execute_query("INSERT into clinic (name, location) VALUES ('Default Clinic', 'Omnipresent')")
-    database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",  ("tyson" , "mike" , "123123" , "mike", "Default Clinic"))
-    database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",   ("fake", "nurse", "123123", "fakenurse", "Default Clinic"))
-    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room1', 'Default Clinic')")
-    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room2', 'Default Clinic')")
-    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room3', 'Default Clinic')")
-    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room4', 'Default Clinic')")
-    database.execute_query("INSERT into room (name, clinic_name) VALUES ('room5', 'Default Clinic')")
-    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Samuel','Markis','Dermatology','Montreal','password','1234567', 'Default Clinic')")
-    database.execute_query("INSERT into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES ('Carlos','Mendez','01/01/2001','male','123-456-7890','carlos@patient.com','1500 st catherine','18','LOUX 1234 1234')")
+    database.execute_query("INSERT into clinic (name, location) VALUES ('Lakeshore Clinic', 'West Island')")
+    database.execute_query("INSERT into clinic (name, location) VALUES ('Statcare Clinic', 'West Island')")
+    database.execute_query("INSERT into clinic (name, location) VALUES ('Dawson Clinic', 'Montreal')")
+    database.execute_query("INSERT into clinic (name, location) VALUES ('Downtown Clinic', 'Montreal')")
+
+    database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",  ("Cordova" , "Rodrigo" , "123123" , "rodrigoc", "Lakeshore Clinic"))
+    database.execute_query("INSERT into nurse (last_name, first_name, password, access_id, clinic_name) VALUES (?,?,?,?,?)",   ("Feochari", "Claudia", "123123", "claudiaf", "Statcare Clinic"))
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('1', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('2', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('3', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('4', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('5', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('1', 'Statcare Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('2', 'Statcare Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('3', 'Statcare Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('4', 'Statcare Clinic')")
+    database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('5', 'Statcare Clinic')")
+    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Bilal','Nassir','Dermatology','Montreal','password','1234567', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Beeri','Nduwimana','Family Doctor','Montreal','password','7654321', 'Statcare Clinic')")
+
+    database.execute_query("INSERT into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES ('Sajeel','Shabir','01/01/2001','male','123-456-7890','sajeel@patient.com','1500 st catherine','18','SAJE 1234 1234')")
+    database.execute_query("INSERT into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES ('Pierre','Watine','01/01/2000','male','987-654-3210','pierre@patient.com','1500 st catherine','18','PIER 1234 1234')")
+
     database.commit_db()
 
     print("- Finished filling database -")
