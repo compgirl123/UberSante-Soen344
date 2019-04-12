@@ -19,10 +19,10 @@ class AppointmentController:
         # If no room is available
         elif availableRoom == False or doctorsAvailable == "No room available!":
             raise Exception('No room is available!')
-        
+
         else:
             return [doctorsAvailable, availableRoom]
-        
+
 
     def create_appointment(self,doctor_speciality, patient_id, appointment_date, start_time, end_time, day_of_week,clinic_name_picked):
         conn = AppointmentController.connect_database(self)
@@ -58,7 +58,7 @@ class AppointmentController:
             #raise Exception('No room is available!')
         appointment_status = "Approved"
         appointment_type = AppointmentController.getappointment_type(start_time, end_time)
-        
+
         print(type(doctor_id))
         AppointmentController.finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,clinic_name_picked)
         message = "Appointment Added"
@@ -88,8 +88,8 @@ class AppointmentController:
         print("hello")
         conn.execute(query2, ())
         availableRooms = conn.fetchall()
-       
-        result = sorted(set(availableRooms) - set(occupied)) 
+
+        result = sorted(set(availableRooms) - set(occupied))
 
         if result != []:
             return result[0]
@@ -130,7 +130,7 @@ class AppointmentController:
             '''print("HHHHH")
             print(specialist)'''
             allAppointmentTimes = []
-            if specialist in availableDoctors: 
+            if specialist in availableDoctors:
                 print("HEEEEEERE")
                 '''print(specialist)'''
                 idtuple = specialist[0]
@@ -152,9 +152,9 @@ class AppointmentController:
                     return specialist
                 else:
                     message = "No room available!"
-                    return message         
+                    return message
         '''if allAppointmentTimes == []:
-            return specialist   '''      
+            return specialist   '''
         return False
 
 
@@ -170,7 +170,7 @@ class AppointmentController:
     def finalize_appointment(conn, appointment_room, appointment_type, appointment_status, appointment_date, start_time, end_time, patient_id, doctor_id,clinic_name_picked):
         try:
             database = db.get_instance()
-           
+
             item = (str(appointment_room[0]), appointment_type, appointment_status, appointment_date, str(start_time),
                     str(end_time), str(patient_id), int(doctor_id[0]),str(clinic_name_picked))
 
@@ -278,5 +278,20 @@ class AppointmentController:
         database = db.get_instance()
 
         return 0'''
+    def deleteappointment(self, appointment_id):
+        database = db.get_instance()
+        print(appointment_id)
+        appointment_id = str(appointment_id)
+        query = "DELETE FROM appointment WHERE id =" + appointment_id
+        database.execute_query(query)
+        database.commit_db()
+        message = "Availability Deleted"
+        return message
 
-
+    def getallappointmentsfordoctor(self, doctor_id):
+        database = db.get_instance()
+        query = "SELECT * FROM appointment WHERE doctor_id=" + str(doctor_id)
+        print(query)
+        queryexecute = database.execute_query(query)
+        data = queryexecute.fetchall()
+        return data

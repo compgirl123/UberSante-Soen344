@@ -1,0 +1,53 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <div class="page-header">
+      <h1>Appointments</h1><br>
+    </div>
+
+    {% for apt, patient_name in arrinfo %}
+        <div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;">
+          <div class="container">
+
+              <h3>Patient Name: </h3>
+              <p>{{patient_name[0]}} {{patient_name[1]}}</p>
+
+          <table class="table">
+
+          <thead>
+            <tr>
+            <th scope="col">Id #:</th>
+            <th scope="col">Room #:</th>
+            <th scope="col">Appointment Type:</th>
+            <th scope="col">Appointment Status:</th>
+            <th scope="col">Appointment Date:</th>
+            <th scope="col">Start Time:</th>
+            <th scope="col">End Time:</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+                <td>{{apt["id"]}}</td>
+                <td>{{apt["appointment_room"]}}</td>
+                <td>{{apt["appointment_type"]}}</td>
+                <td>{{apt["appointment_status"]}}</td>
+                <td>{{apt["appointment_date"]}}</td>
+                <td>{{apt["start_time"]}}</td>
+                <td>{{apt["end_time"]}}</td>
+
+            </tr>
+          </tbody>
+
+        </table>
+        </div>
+        <h3>Action : </h3>
+        <form  style="display:inline-block" method="post" class="form" action="/doctornurse2/{{apt['id']}}">
+        <button type="submit" id = "delete" name = "delete" class="btn btn-danger btn-lg" value="{{apt['id']}}"> Delete</button>
+        </form>
+        </div>
+
+    {%endfor %}
+
+{% endblock %}
