@@ -134,8 +134,11 @@ def initializeAndFillDatabase():
                                         start_time TIME NOT NULL,
                                         end_time TIME NOT NULL ,
                                         doctor_id INTEGER NOT NULL,
+                                        clinic_name TEXT NOT NULL,
 
-                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id)    
+                                        FOREIGN KEY(doctor_id) REFERENCES doctor(id),                                         
+                                        FOREIGN KEY(clinic_name) REFERENCES clinic(name)
+   
                                     );""",
                            "nurse_table": """CREATE TABLE IF NOT EXISTS nurse  (
                                         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -182,7 +185,9 @@ def initializeAndFillDatabase():
     database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('3', 'Statcare Clinic')")
     database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('4', 'Statcare Clinic')")
     database.execute_query("INSERT into room (room_number, clinic_name) VALUES ('5', 'Statcare Clinic')")
-    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Bilal','Nassir','Dermatology','Montreal','password','1234567', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Bilal','Nasir','Dermatology','Montreal','password','1234567', 'Lakeshore Clinic')")
+    database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Bilal','Nasir','Dermatology','Montreal','password','1234567', 'Statcare Clinic')")
+
     database.execute_query("INSERT into doctor(first_name, last_name, speciality, city, password, permit_number, clinic_name) VALUES ('Beeri','Nduwimana','Family Doctor','Montreal','password','7654321', 'Statcare Clinic')")
 
     database.execute_query("INSERT into patient(first_name, last_name,birthday,gender,phone_number,email,address,age,health_card) VALUES ('Sajeel','Shabir','01/01/2001','male','123-456-7890','sajeel@patient.com','1500 st catherine','18','SAJE 1234 1234')")

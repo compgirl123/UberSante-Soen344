@@ -181,7 +181,7 @@ class Doctorcontroller:
 
         return str(data[0][0])
 
-    def doctorappointmentbook(self, day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, doctor_id):
+    def doctorappointmentbook(self, day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, doctor_id, clinic_name):
         message = "Availabilities loaded"
         database = db.get_instance()
         _start_time_hour = int(start_time_hour)
@@ -197,7 +197,7 @@ class Doctorcontroller:
         if (_start_time_hour <= _end_time_hour and _start_time_minute < _end_time_minute) or (_start_time_hour < _end_time_hour):
             start_time = str(start_time_hour) + ':' + str(start_time_minute)     
             end_time = str(end_time_hour) + ':' + str(end_time_minute) 
-            query3 = "SELECT COUNT(*) FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
+            query3 = "SELECT COUNT(*) FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id + " AND clinic_name="+"'"+ clinic_name+ "'"
             cur = database.execute_query(query3)
             data1 = cur.fetchall()
             data1 = int(data1[0][0])
@@ -206,13 +206,13 @@ class Doctorcontroller:
                 doctor_id = int(doctor_id)
                 start_time = start_time + ":00"
                 end_time = end_time + ":00"
-                query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
-                database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+                query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id,clinic_name) VALUES (?,?,?,?,?)"
+                database.execute_query(query2, (day, start_time, end_time,doctor_id, clinic_name))
                 database.commit_db()
                 print("hello")
                 return "Availability Added"
             else:
-                query = "SELECT * FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id
+                query = "SELECT * FROM doctoravailability WHERE date_day= '" + day + "' AND doctor_id=" + doctor_id + " AND clinic_name="+"'"+ clinic_name+ "'"
                 cur = database.execute_query(query)
                 data = cur.fetchall()
                 count = 0
@@ -236,8 +236,8 @@ class Doctorcontroller:
                         if count == data1:
                             start_time = start_time + ":00"
                             end_time = end_time + ":00"
-                            query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id) VALUES (?,?,?,?)"
-                            database.execute_query(query2, (day, start_time, end_time,doctor_id ))
+                            query2 = "insert into doctoravailability(date_day, start_time, end_time, doctor_id,clinic_name) VALUES (?,?,?,?,?)"
+                            database.execute_query(query2, (day, start_time, end_time,doctor_id,clinic_name))
                             database.commit_db()
                             message = "Availability Added"
                             return message
@@ -251,18 +251,26 @@ class Doctorcontroller:
         #database.commit_db()
         return message
 
-    def doctorgetallappointments(self, doctor_id):
+    def doctorgetallappointments(self, doctor_id,clinic_name):
         database = db.get_instance()
-        query = "SELECT * FROM doctoravailability WHERE doctor_id=" + doctor_id
+        query = "SELECT * FROM doctoravailability WHERE doctor_id=" + doctor_id + " AND clinic_name="+"'"+ clinic_name+ "'"
         queryexecute = database.execute_query(query)
         data = queryexecute.fetchall()
         return data
 
-    def deleteappointment(self, doctor_id):
+    def doctorgetclinic(self, doctor_id):
+        database = db.get_instance()
+        query = "SELECT clinic_name FROM doctor WHERE permit_number=" + doctor_id
+        queryexecute = database.execute_query(query)
+        data = queryexecute.fetchall()
+        print(data)
+        return data
+
+    def deleteappointment(self, doctor_id,clinic_name):
         database = db.get_instance()
         print(doctor_id)
         doctor_id = str(doctor_id)
-        query = "DELETE FROM doctoravailability WHERE id =" + doctor_id
+        query = "DELETE FROM doctoravailability WHERE id =" + doctor_id + " AND clinic_name="+"'"+ clinic_name+ "'"
         database.execute_query(query)
         database.commit_db()
         message = "Availability Deleted"
