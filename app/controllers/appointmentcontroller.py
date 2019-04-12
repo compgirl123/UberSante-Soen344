@@ -50,7 +50,7 @@ class AppointmentController:
             message = "No doctor is available!"
             return message
             #raise Exception('No doctor is available!')
-        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time, clinic_name_picked)
         if appointment_room == False or doctor_id == "No room available!":
             #message = "Availability Added"
             message = "No room is available!"
@@ -79,10 +79,10 @@ class AppointmentController:
             return "Special"
 
 
-    def find_room(conn, appointment_date, start_time, end_time):
+    def find_room(conn, appointment_date, start_time, end_time, clinic_name):
         #query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
         query = "SELECT appointment_room FROM appointment WHERE appointment_date=? AND ((start_time==? AND end_time==?) OR  (start_time<=? AND end_time>?) OR (start_time<? AND end_time>=?))"
-        query2 = "SELECT id FROM room"
+        query2 = "SELECT room_number FROM room WHERE clinic_name="+"'"+ clinic_name+ "'"
         conn.execute(query, (appointment_date, start_time,end_time,start_time,start_time,end_time,end_time))
         occupied = conn.fetchall()
         print("hello")
@@ -202,12 +202,12 @@ class AppointmentController:
         result = conn.fetchall()
         return result
 
-    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week):
+    def appointmentupdate(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week,clinic_name):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time,day_of_week)
         if doctor_id == False:
             raise Exception('No doctor is available!')
-        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time,clinic_name)
         if appointment_room == False or doctor_id == "No room available!":
             raise Exception('No room is available!')
         appointment_status = "Approved"
@@ -247,12 +247,12 @@ class AppointmentController:
         return data
 
 
-    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week):
+    def appointmentdelete(self,doctor_speciality, patient_id, appointment_date, start_time, end_time,id,day_of_week,clinic_name):
         conn = AppointmentController.connect_database(self)
         doctor_id = AppointmentController.find_a_doctor(conn, doctor_speciality, appointment_date, start_time, end_time,day_of_week)
         '''if doctor_id == False:
             raise Exception('No doctor is available!')'''
-        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time)
+        appointment_room = AppointmentController.find_room(conn, appointment_date, start_time, end_time,clinic_name)
         '''if appointment_room == False:
             raise Exception('No room is available!')'''
         appointment_status = "Approved"

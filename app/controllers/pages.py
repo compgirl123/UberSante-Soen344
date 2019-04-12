@@ -271,6 +271,7 @@ def thank_you():
 @blueprint.route('/findnurse', methods=['GET', 'POST'])
 def findnurse():
     user_id = request.cookies.get('nurseid')
+    print(user_id)
     password = request.cookies.get('password')
     print(user_id)
     _obj = Nursecontroller()
@@ -285,13 +286,14 @@ def findnurse():
 def nursesearchctrlpermit():
     if request.method == "POST":
         user_id = request.cookies.get('nurseid')
+        print(user_id)
         _permit = request.form['permit']  # stores the name that was entered to the next page
         print(_permit)
         _obj1 = Doctorcontroller()
         _obj2 = Nursecontroller()
         _nurse_clinic = _obj2.nurse_clinic(user_id)
         #_doctor_found = _obj.find_doctor_by_permit_number(_permit)
-        _doctor_found = _obj1.nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
+        #_doctor_found = _obj1.nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
         response = redirect(url_for("pages.doctorresults"))
         response.set_cookie('permit',_permit)
     return response
@@ -303,7 +305,7 @@ def nursesearchctrlhealthcare():
         print("HEALTHCARE")
         print(_healthcare)
         _obj = Patientcontroller()
-        _patient_found = _obj.find_a_patient(_healthcare)
+        #_patient_found = _obj.find_a_patient(_healthcare)
         #nurse_find_patient_by_clinic
         response = redirect(url_for("pages.patientresults"))
         response.set_cookie('healthcare', _healthcare)
@@ -315,6 +317,8 @@ def doctorresults():
     user_id = request.cookies.get('nurseid')
     _obj2 = Nursecontroller()
     _nurse_clinic = _obj2.nurse_clinic(user_id)
+    print(_nurse_clinic)
+    print(permit)
     _obj = Doctorcontroller()
     #_doctor_found = _obj.find_doctor_by_permit_number(permit)
     _doctor_found = _obj.nurse_find_doctor_by_clinic(permit,_nurse_clinic)
@@ -642,12 +646,13 @@ def savebookedaptupdate():
         print(request.form)
         _time = request.form['time']
         _appointment_selected = request.form['appointment_selected']
-        _doctor_picked = request.form['doctor_picked']
+        #_doctor_picked = request.form['doctor_picked']
+        
         _apt1 = request.form['appt_type']
         response = redirect(url_for("pages.patient_apts_scheduled_update"))
         response.set_cookie('time', _time)
         response.set_cookie('appointment_selected', _appointment_selected)
-        response.set_cookie('doctor_picked',_doctor_picked)
+        #response.set_cookie('doctor_picked',_doctor_picked)
         response.set_cookie('appt2',_apt1)
     return response
 
@@ -800,6 +805,9 @@ def setcookiesdelete():
 def patient_apts_scheduled_update():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
+    speciality_picked = request.cookies.get('speciality_picked')
+    clinic_name_picked = request.cookies.get('clinic_picked')
+
     #doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
     _update_id = request.cookies.get('update')
@@ -809,8 +817,8 @@ def patient_apts_scheduled_update():
     _appointment_obj = AppointmentController()
 
     #first_last_name_arr = doctor_selected.split(" ")
-    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
-    _doc_speciality = _doc_query[2]
+    #_doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    #_doc_speciality = _doc_query[2]
 
     if apt == "Regular Appt":
         _time_end = get_time_end()
@@ -829,7 +837,7 @@ def patient_apts_scheduled_update():
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
 
-    _appointment_obj.appointmentupdate(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_update_id,day_of_week)
+    _appointment_obj.appointmentupdate(speciality_picked, _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_update_id,day_of_week,clinic_name_picked)
     print(_update_id)
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
@@ -844,10 +852,13 @@ def patient_apts_scheduled_update():
 def patient_apts_scheduled_delete():
     time = request.cookies.get('time')
     appointment_selected = request.cookies.get('appointment_selected')
+    speciality_picked = request.cookies.get('speciality_picked')
     #doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
     _delete_id = request.cookies.get('delete')
     apt = request.cookies.get('appt1')
+    clinic_name_picked = request.cookies.get('clinic_picked')
+
     print("HEEERRE")
     print(_delete_id)
 
@@ -855,9 +866,9 @@ def patient_apts_scheduled_delete():
     _appointment_obj = AppointmentController()
 
     #first_last_name_arr = doctor_selected.split(" ")
-    _doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
-    _doc_speciality = _doc_query[2]
-    print(_doc_query[2])
+    #_doc_query = _doc_obj.find_doctor_by_full_name(first_last_name_arr[0], first_last_name_arr[1])
+    #_doc_speciality = _doc_query[2]
+    #print(_doc_query[2])
 
     _time_end = get_time_end()
 
@@ -871,7 +882,7 @@ def patient_apts_scheduled_delete():
     _obj = Patientcontroller()
     _patient_found = _obj.find_a_patient(health_care)
 
-    _appointment_obj.appointmentdelete(_doc_query[2], _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_delete_id,day_of_week)
+    _appointment_obj.appointmentdelete(speciality_picked, _patient_found[0], str("0"+date), str(time), str(_time_end[0]+":"+_time_end[1]+":"+_time_end[2]),_delete_id,day_of_week,clinic_name_picked)
 
     _obj_user = Patientcontroller()
     _patient_obj = Patientcontroller()
@@ -928,9 +939,19 @@ def patientdashboard():
 
 @blueprint.route('/register_doctor',  methods=['GET', 'POST'])
 def register_doctor():
+    _clinic_obj = Cliniccontroller()
+    _clinics_list = _clinic_obj.get_all_clinics()
+
+    print(_clinics_list)
+    clinic_names = []
+
+    for infos in _clinics_list:
+        clinic_names.append(infos[0])
+
     if request.method == 'POST':
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
+        clinic_name_picked = request.form['clinic_picked']
         speciality = request.form.get("speciality")
         city = request.form.get("city")
         password = request.form.get("password")
@@ -943,10 +964,10 @@ def register_doctor():
             message = "Registration failed!!! User already exists."
             flash(message)
             return redirect(url_for(".doctor_login"))
-        message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number)
+        message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number,clinic_name_picked)
         flash(message)
         return redirect(url_for(".doctor_login"))
-    return render_template('forms/register_doctor.html')
+    return render_template('forms/register_doctor.html', cliniclist = clinic_names)
 
 
 #function to generate time slots
