@@ -8,11 +8,9 @@
 
 
 {% for apt, docname in arrinfo %}
-<div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;display:inline-block">
+<div class="jumbotron jumbotron-fluid" style="background-color:#ccffcc;display:inline-block;padding:10px 5px 10px 10px;margin:10px 5px 5px 10px ">
   <div class="container">
-       
-      <h3>Clinic:</h3>
-      <p class="id1">{{apt["clinic_name"]}}</p>
+       <p class="id1" style="text-decoration: underline;">Clinic: {{apt["clinic_name"]}}</p>
       <table class="table">
   <thead>
     
@@ -65,7 +63,7 @@
        <h3>Doctor Id: </h3>
       <p>{{apt["doctor_id"]}}</p>-->
   </div>
-    <h3>Action : </h3>
+    Action:
     <form  style="display:inline-block" method="post" class="form" action="{{ url_for('pages.setcookiesupdate') }}">
       <button type="submit" id = "update" name = "update" class="btn btn-warning btn-lg" value="{{apt['id']}}" onclick="changeHourBlock()"> Update</button>
     </form>
@@ -75,7 +73,7 @@
 </div>
 <script>
 function changeHourBlock() {
-var test = {{apt['id']}};
+var test = "{{ apt['id'] }}";
     //alert(test);
       var id_number1 = document.getElementById(test).value;
       console.log(id_number1);
@@ -83,17 +81,17 @@ var test = {{apt['id']}};
       //var id_number3 = document.getElementsByTagName("p");
         //console.log(id_number);
         //console.log("Regular checked");
-        window.location.href = "/updateapt?id="+test+"";
+        window.location.href = "/updateapt?id="+test;
     }
 
 
 </script>
-{%endfor %}
+{% endfor %}
 
 <form style="display:inline-block" method="post" class="form" action="{{ url_for('pages.patientaptbook') }}">
-      <button type="submit" id = "add" name = "add" class="btn btn-primary btn-lg" value="add"> Add new Appointment</button>
+      <button type="submit" id = "add" name = "add" class="btn btn-primary btn-lg" value="add">Add new Appointment</button>
     </form>
-<a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a>
+<a type="button" class="btn btn-success btn-lg" href="/payment">Make a Payment</a><br/><br/>
 
 
 
