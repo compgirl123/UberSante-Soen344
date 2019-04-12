@@ -30,9 +30,10 @@ def about():
 def add(id, start_time,end_time):
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    obj = ClinicAbstract()
+    #obj = Doctorcontroller()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         if request.form['submit'] == 'update':
@@ -40,9 +41,9 @@ def add(id, start_time,end_time):
             print(end_time)
         elif request.form['submit'] == 'delete':
             print(id)
-            obj.deleteappointment(id)
+            obj.process_doctor().deleteappointment(id)
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -50,9 +51,10 @@ def add(id, start_time,end_time):
 def doctorschedule():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    obj = ClinicAbstract()
+    #obj = Doctorcontroller()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -63,7 +65,7 @@ def doctorschedule():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Monday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             columns = shutil.get_terminal_size().columns
             flash(message)
             print(message.center(columns))
@@ -75,9 +77,9 @@ def doctorschedule():
             #print(id)
             dels.append(request.form.get("idd"))
             #dels.append((request.form.get("id")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -85,9 +87,10 @@ def doctorschedule():
 def doctorschedule2():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    obj = ClinicAbstract()
+    #obj = Doctorcontroller()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -97,16 +100,16 @@ def doctorschedule2():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Tuesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Tuesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
 
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id1")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -114,9 +117,10 @@ def doctorschedule2():
 def doctorschedule3():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    #obj = Doctorcontroller()
+    obj = ClinicAbstract()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -126,15 +130,15 @@ def doctorschedule3():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Wednesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Wednesday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id2")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -142,9 +146,10 @@ def doctorschedule3():
 def doctorschedule4():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+   # obj = Doctorcontroller()
+    obj = ClinicAbstract()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -154,15 +159,15 @@ def doctorschedule4():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Thursday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Thursday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id3")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -170,9 +175,10 @@ def doctorschedule4():
 def doctorschedule5():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    #obj = Doctorcontroller()
+    obj = ClinicAbstract()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -182,15 +188,15 @@ def doctorschedule5():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Friday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Friday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id4")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -198,9 +204,10 @@ def doctorschedule5():
 def doctorschedule6():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    obj = ClinicAbstract()
+    #obj = Doctorcontroller()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -210,15 +217,15 @@ def doctorschedule6():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Saturday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id5")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -226,9 +233,10 @@ def doctorschedule6():
 def doctorschedule7():
     date_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     permit = request.cookies.get('permitnumber')
-    obj = Doctorcontroller()
-    doctor_info = obj.find_doctor_by_permit_number(permit)
-    doctor_id = obj.find_doctor_id(permit)
+    #obj = Doctorcontroller()
+    obj = ClinicAbstract()
+    doctor_info = obj.process_doctor().find_doctor_by_permit_number(permit)
+    doctor_id = obj.process_doctor().find_doctor_id(permit)
 
     if request.method == 'POST':
         #ADD/UPDATE BUTTON ADDS AVAILABILITY
@@ -238,15 +246,15 @@ def doctorschedule7():
             sels.append(request.form.get("sel2"))
             sels.append(request.form.get("sel3"))
             sels.append(request.form.get("sel4"))
-            message = obj.doctorappointmentbook("Sunday", sels[0], sels[1],sels[2],sels[3], doctor_id)
+            message = obj.process_doctor().doctorappointmentbook("Sunday", sels[0], sels[1],sels[2],sels[3], doctor_id)
             flash(message)
         #DELETE BUTTON ADDS AVAILABILITY
         elif request.form['submit'] == 'delete':
             dels = []
             dels.append((request.form.get("id6")))
-            obj.deleteappointment(dels[0])
+            obj.process_doctor().deleteappointment(dels[0])
 
-    sel = obj.doctorgetallappointments(doctor_id)
+    sel = obj.process_doctor().doctorgetallappointments(doctor_id)
 
     return render_template('doctorpages/doctorschedule2.html', doctor_info = doctor_info, sel=sel, date_days=date_days)
 
@@ -290,7 +298,7 @@ def nursesearchctrlpermit():
         print(user_id)
         _permit = request.form['permit']  # stores the name that was entered to the next page
         print(_permit)
-
+        
         _obj1 = ClinicAbstract()
         _nurse_clinic = _obj1.process_nurse().nurse_clinic(user_id)
         _doctor_found = _obj1.process_doctor().nurse_find_doctor_by_clinic(_permit,_nurse_clinic)
@@ -305,9 +313,6 @@ def nursesearchctrlhealthcare():
         _healthcare = request.form['healthcare']  # stores the name that was entered to the next page
         print("HEALTHCARE")
         print(_healthcare)
-        _obj = Patientcontroller()
-        #_patient_found = _obj.find_a_patient(_healthcare)
-        #nurse_find_patient_by_clinic
         response = redirect(url_for("pages.patientresults"))
         response.set_cookie('healthcare', _healthcare)
     return response
@@ -316,14 +321,12 @@ def nursesearchctrlhealthcare():
 def doctorresults():
     permit = request.cookies.get('permit')
     user_id = request.cookies.get('nurseid')
-    _obj2 = Nursecontroller()
-    _nurse_clinic = _obj2.nurse_clinic(user_id)
-    print(_nurse_clinic)
-    print(permit)
-    _obj = Doctorcontroller()
-    #_doctor_found = _obj.find_doctor_by_permit_number(permit)
-    _doctor_found = _obj.nurse_find_doctor_by_clinic(permit,_nurse_clinic)
-    print(_doctor_found)
+
+    _obj = ClinicAbstract()
+
+    _nurse_clinic = _obj.process_nurse().nurse_clinic(user_id)
+    _doctor_found = _obj.process_doctor().nurse_find_doctor_by_clinic(permit,_nurse_clinic)
+    
     _results = 0
     if not _doctor_found:
         _results = 0
@@ -334,8 +337,9 @@ def doctorresults():
 @blueprint.route('/patientresults', methods=['GET', 'POST'])
 def patientresults():
     healthcare = request.cookies.get('healthcare')
-    _obj = Patientcontroller()
-    _patient_found = _obj.find_a_patient(healthcare)
+
+    _obj = ClinicAbstract()
+    _patient_found = _obj.process_patient().find_a_patient(healthcare)
     _results = 0
     if not _patient_found:
         _results = 0
@@ -353,13 +357,14 @@ def nursedashboard():
     if request.method == "POST":
         _name = request.form['name'];# stores the name that was entered to the next page
         _password = request.form['password'];# stores the password that was entered to the next page
-        _obj = Nursecontroller()
-        _user = _obj.user(_name,_password)
+        _obj = ClinicAbstract()
+        _user = _obj.process_nurse().user(_name,_password)
 
         print(type(_user))
         print(type(_user) == type(None))
         _user2 = 1
-        _obj2 = _obj.nurse_table(_name)
+        _obj2 = _obj.process_nurse().nurse_table(_name)
+
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_nurse_login"))
         else:
@@ -376,13 +381,12 @@ def doctordashboard():
     if request.method == "POST":
         _name = request.form['name'];# stores the name that was entered to the next page
         _password = request.form['password'];# stores the password that was entered to the next page
-        _obj = Doctorcontroller()
-        _user = _obj.user(_name,_password)
+        _obj = ClinicAbstract()
+        _user = _obj.process_doctor().user(_name,_password)
 
         print(type(_user))
         print(type(_user) == type(None))
         _user2 = 1
-        #_obj2 = _obj.doctor_table(_name)
         if type(_user) == type(None):
             response = redirect(url_for("pages.error_doctor_login"))
         else:
@@ -490,9 +494,10 @@ def patientchoosedoctorspecialty():
 
     regularChecked = "checked"
     annualChecked = ""
-    _doctor_obj = Doctorcontroller()
-    _get_doc_info = _doctor_obj.get_doctor_by_clinic_name(clinic_name_picked)
-    _doctors_list  = _doctor_obj.get_distinct_speciality()
+    #_doctor_obj = Doctorcontroller()
+    _doctor_obj = ClinicAbstract()
+    _get_doc_info = _doctor_obj.process_doctor().get_doctor_by_clinic_name(clinic_name_picked)
+    _doctors_list  = _doctor_obj.process_doctor().get_distinct_speciality()
     doctorspecialities = []
 
     for infos in _get_doc_info:
@@ -543,8 +548,9 @@ def deleteapt():
     _update_id = request.cookies.get('update')
     regularChecked = "checked"
     annualChecked = ""
-    _doctor_obj = Doctorcontroller()
-    _doctors_list = _doctor_obj.doctor_table()
+    _doctor_obj = ClinicAbstract()
+    #_doctor_obj = Doctorcontroller()
+    _doctors_list = _doctor_obj.process_doctor().doctor_table()
     print(_doctors_list)
     doctorlist = []
     print(_doctors_list)
@@ -575,8 +581,9 @@ def updateapt():
     _update_id = request.cookies.get('update')
     regularChecked = "checked"
     annualChecked = ""
-    _doctor_obj = Doctorcontroller()
-    _doctors_list = _doctor_obj.doctor_table()
+   # _doctor_obj = Doctorcontroller()
+    _doctor_obj = ClinicAbstract()
+    _doctors_list = _doctor_obj.process_doctor().doctor_table()
     print(_doctors_list)
     doctorlist = []
     print(_doctors_list)
@@ -609,9 +616,10 @@ def patientaptbook():
 
     regularChecked = "checked"
     annualChecked = ""
-    _doctor_obj = Doctorcontroller()
-    _doctors_list = _doctor_obj.doctor_table()
-    _doctor_list_by_speciality = _doctor_obj.get_doctor_by_specialty(speciality_picked)
+    #_doctor_obj = Doctorcontroller()
+    _doctor_obj = ClinicAbstract()
+    _doctors_list = _doctor_obj.process_doctor().doctor_table()
+    _doctor_list_by_speciality = _doctor_obj.process_doctor().get_doctor_by_specialty(speciality_picked)
 
     print("SPECIAL")
     print(_doctor_list_by_speciality)
@@ -691,18 +699,19 @@ def patient_apts_scheduled_complete():
     #doctor_selected = request.cookies.get('doctor_picked')
     health_care = request.cookies.get('healthcard')
 
-    _doc_obj = Doctorcontroller()
+    #_doc_obj = Doctorcontroller()
+    _doc_obj = ClinicAbstract()
     _appointment_obj = AppointmentController()
 
     #_get_patient
     _obj = Patientcontroller()
-    _patient_found = _obj.find_a_patient(health_care)
+    _patient_found = _doc_obj.process_patient().find_a_patient(health_care)
     print()
     print("THE PATIENT")
     print(_patient_found[0])
 
     _apts = _appointment_obj.getallappointments(_patient_found[0])
-    get_doctor_name_from_id = _doc_obj.get_doctor_name_from_id((_patient_found[0]))
+    get_doctor_name_from_id = _doc_obj.process_doctor().get_doctor_name_from_id((_patient_found[0]))
 
     '''_doc_id = _apts['doctor_id']
     _get_doc_name = _doc_obj.get_doctor_by_id(_doc_id)'''
@@ -710,7 +719,7 @@ def patient_apts_scheduled_complete():
     print(len(_apts))
     for result in _apts:
         _id_doc = result['doctor_id']
-        _get_doc_name = _doc_obj.get_doctor_by_id(_id_doc)
+        _get_doc_name = _doc_obj.process_doctor().get_doctor_by_id(_id_doc)
          #_get_doc_name[0] + " "+_get_doc_name[1]
     _infohere = zip(_apts,get_doctor_name_from_id)
     return render_template('patientpages/patient_dashboard_all_appointments.html',arrinfo = _infohere, apts = _apts, docname = get_doctor_name_from_id )
@@ -728,16 +737,17 @@ def patient_apts_scheduled():
     health_care = request.cookies.get('healthcard')
     apt = request.cookies.get('appt1')
 
-    _doc_obj = Doctorcontroller()
+    #_doc_obj = Doctorcontroller()
+    _doc_obj = ClinicAbstract()
     _appointment_obj = AppointmentController()
 
     #first_last_name_arr = doctor_selected.split(" ")
     # check if its valid (aka check which doctors have a certain specialty)
     #_doc_query =
-    _dq = _doc_obj.get_doctor_by_specialty(speciality_picked)
+    _dq = _doc_obj.process_doctor().get_doctor_by_specialty(speciality_picked)
     doctor_speciality_selected_infos = []
     for doctor in _dq:
-        _doc_query = _doc_obj.find_doctor_by_full_name(doctor[2], doctor[1])
+        _doc_query = _doc_obj.process_doctor().find_doctor_by_full_name(doctor[2], doctor[1])
         doctor_speciality_selected_infos.append(_doc_query)
     '''print(doctor_speciality_selected_infos)
     #_doc_query = _doc_obj.get_doctor_by_specialty(doctor_selected)
@@ -814,7 +824,8 @@ def patient_apts_scheduled_update():
     _update_id = request.cookies.get('update')
     apt = request.cookies.get('appt2')
 
-    _doc_obj = Doctorcontroller()
+    #_doc_obj = Doctorcontroller()
+    _doc_obj = ClinicAbstract()
     _appointment_obj = AppointmentController()
 
     #first_last_name_arr = doctor_selected.split(" ")
@@ -863,7 +874,8 @@ def patient_apts_scheduled_delete():
     print("HEEERRE")
     print(_delete_id)
 
-    _doc_obj = Doctorcontroller()
+    #_doc_obj = Doctorcontroller()
+    _doc_obj = ClinicAbstract()
     _appointment_obj = AppointmentController()
 
     #first_last_name_arr = doctor_selected.split(" ")
@@ -958,14 +970,15 @@ def register_doctor():
         password = request.form.get("password")
         permit_number = int(request.form.get("permit_number"))
         permit_number_str = request.form.get("permit_number")
-        _obj = Doctorcontroller()
-        users = _obj.find_doctor_by_permit_number(permit_number_str)
+        #_obj = Doctorcontroller()
+        _obj = ClinicAbstract()
+        users = _obj.process_doctor().find_doctor_by_permit_number(permit_number_str)
         # checks if the returned list is not empty
         if len(users) != 0:
             message = "Registration failed!!! User already exists."
             flash(message)
             return redirect(url_for(".doctor_login"))
-        message = _obj.register_doctor(first_name, last_name, speciality, city, password, permit_number,clinic_name_picked)
+        message = _obj.process_doctor().register_doctor(first_name, last_name, speciality, city, password, permit_number,clinic_name_picked)
         flash(message)
         return redirect(url_for(".doctor_login"))
     return render_template('forms/register_doctor.html', cliniclist = clinic_names)
@@ -1042,13 +1055,14 @@ def test():
 @blueprint.route('/doctorappointments', methods=['GET', 'POST'])
 def doctorappointments():
     permit = request.cookies.get('permitnumber')
-    doctor_obj = Doctorcontroller()
+    #doctor_obj = Doctorcontroller()
+    doctor_obj = ClinicAbstract()
     appointment_obj = AppointmentController()
-    patient_obj = Patientcontroller()
+    #patient_obj = Patientcontroller()
 
-    doctor_id = doctor_obj.find_doctor_id(permit)
+    doctor_id = doctor_obj.process_doctor().find_doctor_id(permit)
     doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
-    patient_name = patient_obj.get_patient_name_from_id(doctor_id)
+    patient_name = doctor_obj.process_patient().get_patient_name_from_id(doctor_id)
 
     info = zip(doctor_appointments,patient_name)
 
@@ -1063,7 +1077,8 @@ def patientnurse(id):
 @blueprint.route('/patientnurse2',methods=['GET', 'POST'])
 def patientnurse2():
     print(id)
-    _doc_obj = Doctorcontroller()
+    #_doc_obj = Doctorcontroller()
+    _doc_obj = ClinicAbstract()
     _appointment_obj = AppointmentController()
 
     #_get_patient
@@ -1073,7 +1088,7 @@ def patientnurse2():
     _patient_found = _obj.find_a_patient(healthcard)
 
     _apts = _appointment_obj.getallappointments(_patient_found[0])
-    get_doctor_name_from_id = _doc_obj.get_doctor_name_from_id((_patient_found[0]))
+    get_doctor_name_from_id = _doc_obj.process_doctor().get_doctor_name_from_id((_patient_found[0]))
 
 
     _infohere = zip(_apts,get_doctor_name_from_id)
@@ -1089,13 +1104,14 @@ def doctornurse(id):
 def doctornurse2():
     print(id)
     permit = request.cookies.get('permitnumber')
-    doctor_obj = Doctorcontroller()
+    #doctor_obj = Doctorcontroller()
+    doctor_obj= ClinicAbstract()
     appointment_obj = AppointmentController()
     patient_obj = Patientcontroller()
 
-    doctor_id = doctor_obj.find_doctor_id(permit)
+    doctor_id = doctor_obj.process_doctor().find_doctor_id(permit)
     doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
-    patient_name = patient_obj.get_patient_name_from_id(doctor_id)
+    patient_name = doctor_obj.process_patient().get_patient_name_from_id(doctor_id)
 
     info = zip(doctor_appointments,patient_name)
 
@@ -1104,16 +1120,17 @@ def doctornurse2():
 @blueprint.route('/doctornurse2/<id>',methods=['GET', 'POST'])
 def doctornurse22(id):
     permit = request.cookies.get('permitnumber')
-    doctor_obj = Doctorcontroller()
+    #doctor_obj = Doctorcontroller()
+    doctor_obj =ClinicAbstract()
     appointment_obj = AppointmentController()
     patient_obj = Patientcontroller()
 
     if request.method == 'POST':
         appointment_obj.deleteappointment(id)
 
-    doctor_id = doctor_obj.find_doctor_id(permit)
+    doctor_id = doctor_obj.process_doctor().find_doctor_id(permit)
     doctor_appointments = appointment_obj.getallappointmentsfordoctor(doctor_id)
-    patient_name = patient_obj.get_patient_name_from_id(doctor_id)
+    patient_name = doctor_obj.process_patient().get_patient_name_from_id(doctor_id)
 
     info = zip(doctor_appointments,patient_name)
 
